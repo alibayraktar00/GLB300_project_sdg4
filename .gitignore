@@ -1,0 +1,45 @@
+# Gizli bilgiler (anahtarlar asla repoya girmez)
+.env
+.env.*
+!.env.example
+app/env/*.json
+!app/env/*.example.json
+
+# Anahtar ve servis hesabı dosyaları
+*firebase-adminsdk*.json
+*service-account*.json
+*.p8
+*.pem
+*.key
+*.jks
+*.keystore
+key.properties
+supabase/signing_keys.json
+
+# Supabase yerel dosyaları
+supabase/.temp/
+supabase/.branches/
+supabase/functions/.env
+
+# IDE ve işletim sistemi
+.idea/
+.vscode/
+*.iml
+.DS_Store
+Thumbs.db
+
+# Web (Next.js, web/)
+node_modules/
+web/.next/
+web/out/
+web/next-env.d.ts
+web/coverage/
+*.tsbuildinfo
+.vercel/
+npm-debug.log*
+
+# Web testleri (Vitest, Playwright)
+web/test-results/
+web/playwright-report/
+web/blob-report/
+web/playwright/.cache/

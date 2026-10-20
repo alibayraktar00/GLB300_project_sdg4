@@ -1,0 +1,605 @@
+/*
+ * TASARIM TOKEN'LARI (docs/tasarim-sistemi.md). Ham renk, çizgi ve yazı boyutu değerleri YALNIZCA bu
+ * dosyada yazılır (Stylelint bunu denetler); diğer CSS dosyaları `var(--...)` kullanır.
+ *
+ * Bölümler:
+ *   1. RENKLER ve çizgi kalınlıkları: 4 tema. BEGIN/END arası otomatik üretilir
+ *      (`npm run tokens`, kaynak: palette.json). Elle düzenleme.
+ *   2. Yazı tipi, yazı ölçeği, boşluk, köşe, boyut, hareket: elle yazılır.
+ *
+ * Tema seçimi `<html data-theme>` ile yapılır (yoksa sistem ayarı):
+ *   (yok)  sistem: prefers-color-scheme ve prefers-contrast: more
+ *   light | dark                      açık ya da koyu (sistem yüksek kontrast isterse yüksek kontrast)
+ *   hc                                yüksek kontrast, açık/koyu sistem ayarına göre
+ *   hc-light | hc-dark                yüksek kontrast, açık ya da koyu
+ * Aynı öznitelikler herhangi bir öğeye yazılabilir (galeride önizleme kutuları böyle çalışır).
+ *
+ * Birimler: boyutlar rem'dir, böylece tarayıcının yazı boyutu ayarı ve uygulama içi yazı boyutu
+ * (`<html data-text-scale>`) her şeyi birlikte ölçekler; %200 ve %400 yakınlaştırmada düzen bozulmaz.
+ * 1 rem = 16 px (varsayılan). Dokunma alanı alt sınırları `max(48px, ...)` ile mutlak olarak korunur.
+ */
+
+/* === BEGIN renkler (scripts/generate-tokens.mjs üretir; src/styles/palette.json düzenlenir) === */
+
+/* Açık (normal): varsayılan; açıkça seçilmişse de aynı. */
+:root,
+[data-theme='light'] {
+  color-scheme: light;
+  --line: 1px;
+  --line-control: 1.5px;
+  --focus-width: 3px;
+  --shadow-overlay: 0 0.25rem 1.25rem rgb(31 34 48 / 0.18);
+  --color-surface: #fbf8f3;
+  --color-surface-lowest: #ffffff;
+  --color-surface-low: #f6f2ea;
+  --color-surface-container: #f0ebe1;
+  --color-surface-high: #e9e3d7;
+  --color-surface-highest: #e2dbcd;
+  --color-on-surface: #1f2230;
+  --color-on-surface-variant: #4a4d5c;
+  --color-outline: #6e7081;
+  --color-outline-variant: #cfc8b8;
+  --color-primary: #3b4ba0;
+  --color-on-primary: #ffffff;
+  --color-primary-container: #e1e4fa;
+  --color-on-primary-container: #1b2465;
+  --color-secondary: #8f4f00;
+  --color-on-secondary: #ffffff;
+  --color-secondary-container: #ffe3bd;
+  --color-on-secondary-container: #4a2800;
+  --color-tertiary: #386447;
+  --color-on-tertiary: #ffffff;
+  --color-tertiary-container: #d8ebdd;
+  --color-on-tertiary-container: #17361f;
+  --color-error: #b3261e;
+  --color-on-error: #ffffff;
+  --color-error-container: #fadad5;
+  --color-on-error-container: #5c0f0a;
+  --color-inverse-surface: #2e3140;
+  --color-on-inverse-surface: #f4f1ea;
+  --color-inverse-primary: #b9c2ff;
+  --color-success: #2f6b3f;
+  --color-on-success: #ffffff;
+  --color-success-container: #d8ebdd;
+  --color-on-success-container: #17361f;
+  --color-warning: #8f4f00;
+  --color-warning-container: #ffe3bd;
+  --color-on-warning-container: #4a2800;
+  --color-border-subtle: #cfc8b8;
+  --color-border-primary: #e1e4fa;
+  --color-border-success: #d8ebdd;
+  --color-border-warning: #ffe3bd;
+  --color-border-error: #fadad5;
+}
+
+/* Koyu (normal): kullanıcı açıkça seçti. */
+[data-theme='dark'] {
+  color-scheme: dark;
+  --line: 1px;
+  --line-control: 1.5px;
+  --focus-width: 3px;
+  --shadow-overlay: 0 0.25rem 1.25rem rgb(0 0 0 / 0.55);
+  --color-surface: #14161f;
+  --color-surface-lowest: #0f1118;
+  --color-surface-low: #1a1d28;
+  --color-surface-container: #1e212d;
+  --color-surface-high: #272b38;
+  --color-surface-highest: #313545;
+  --color-on-surface: #e6e3ec;
+  --color-on-surface-variant: #b5b8c8;
+  --color-outline: #8e91a3;
+  --color-outline-variant: #444859;
+  --color-primary: #b9c2ff;
+  --color-on-primary: #101a5e;
+  --color-primary-container: #2a3680;
+  --color-on-primary-container: #dde1ff;
+  --color-secondary: #ffb867;
+  --color-on-secondary: #3d2100;
+  --color-secondary-container: #5a3400;
+  --color-on-secondary-container: #ffddb8;
+  --color-tertiary: #a5d3b3;
+  --color-on-tertiary: #0e2a17;
+  --color-tertiary-container: #264b35;
+  --color-on-tertiary-container: #d1efd9;
+  --color-error: #ffb4ab;
+  --color-on-error: #690005;
+  --color-error-container: #7f0a12;
+  --color-on-error-container: #ffdad6;
+  --color-inverse-surface: #e6e3ec;
+  --color-on-inverse-surface: #2b2d3a;
+  --color-inverse-primary: #3b4ba0;
+  --color-success: #a5d3b3;
+  --color-on-success: #0e2a17;
+  --color-success-container: #264b35;
+  --color-on-success-container: #d1efd9;
+  --color-warning: #ffb867;
+  --color-warning-container: #5a3400;
+  --color-on-warning-container: #ffddb8;
+  --color-border-subtle: #444859;
+  --color-border-primary: #2a3680;
+  --color-border-success: #264b35;
+  --color-border-warning: #5a3400;
+  --color-border-error: #7f0a12;
+}
+
+/* Koyu (normal): sistem koyu ve kullanıcı bir tema seçmemiş. */
+@media (prefers-color-scheme: dark) {
+  :root:not([data-theme]) {
+    color-scheme: dark;
+    --line: 1px;
+    --line-control: 1.5px;
+    --focus-width: 3px;
+    --shadow-overlay: 0 0.25rem 1.25rem rgb(0 0 0 / 0.55);
+    --color-surface: #14161f;
+    --color-surface-lowest: #0f1118;
+    --color-surface-low: #1a1d28;
+    --color-surface-container: #1e212d;
+    --color-surface-high: #272b38;
+    --color-surface-highest: #313545;
+    --color-on-surface: #e6e3ec;
+    --color-on-surface-variant: #b5b8c8;
+    --color-outline: #8e91a3;
+    --color-outline-variant: #444859;
+    --color-primary: #b9c2ff;
+    --color-on-primary: #101a5e;
+    --color-primary-container: #2a3680;
+    --color-on-primary-container: #dde1ff;
+    --color-secondary: #ffb867;
+    --color-on-secondary: #3d2100;
+    --color-secondary-container: #5a3400;
+    --color-on-secondary-container: #ffddb8;
+    --color-tertiary: #a5d3b3;
+    --color-on-tertiary: #0e2a17;
+    --color-tertiary-container: #264b35;
+    --color-on-tertiary-container: #d1efd9;
+    --color-error: #ffb4ab;
+    --color-on-error: #690005;
+    --color-error-container: #7f0a12;
+    --color-on-error-container: #ffdad6;
+    --color-inverse-surface: #e6e3ec;
+    --color-on-inverse-surface: #2b2d3a;
+    --color-inverse-primary: #3b4ba0;
+    --color-success: #a5d3b3;
+    --color-on-success: #0e2a17;
+    --color-success-container: #264b35;
+    --color-on-success-container: #d1efd9;
+    --color-warning: #ffb867;
+    --color-warning-container: #5a3400;
+    --color-on-warning-container: #ffddb8;
+    --color-border-subtle: #444859;
+    --color-border-primary: #2a3680;
+    --color-border-success: #264b35;
+    --color-border-warning: #5a3400;
+    --color-border-error: #7f0a12;
+  }
+}
+
+/* Yüksek kontrast açık: açıkça ('hc-light') ya da sistem şemasıyla ('hc') seçildi. */
+[data-theme='hc-light'],
+[data-theme='hc'] {
+  color-scheme: light;
+  --line: 2px;
+  --line-control: 2.5px;
+  --focus-width: 4px;
+  --shadow-overlay: none;
+  --color-surface: #ffffff;
+  --color-surface-lowest: #ffffff;
+  --color-surface-low: #ffffff;
+  --color-surface-container: #f5f5f7;
+  --color-surface-high: #ededf0;
+  --color-surface-highest: #e4e4e9;
+  --color-on-surface: #0b0c12;
+  --color-on-surface-variant: #2a2c38;
+  --color-outline: #2f3140;
+  --color-outline-variant: #5a5c6b;
+  --color-primary: #1f2a7a;
+  --color-on-primary: #ffffff;
+  --color-primary-container: #e6e8ff;
+  --color-on-primary-container: #0e1450;
+  --color-secondary: #6b3600;
+  --color-on-secondary: #ffffff;
+  --color-secondary-container: #ffe8c8;
+  --color-on-secondary-container: #2e1700;
+  --color-tertiary: #1f4a32;
+  --color-on-tertiary: #ffffff;
+  --color-tertiary-container: #ddf0e3;
+  --color-on-tertiary-container: #0b2415;
+  --color-error: #8c0009;
+  --color-on-error: #ffffff;
+  --color-error-container: #ffe1de;
+  --color-on-error-container: #3e0004;
+  --color-inverse-surface: #14151c;
+  --color-on-inverse-surface: #ffffff;
+  --color-inverse-primary: #d3d9ff;
+  --color-success: #184d2b;
+  --color-on-success: #ffffff;
+  --color-success-container: #ddf0e3;
+  --color-on-success-container: #0b2415;
+  --color-warning: #6b3600;
+  --color-warning-container: #ffe8c8;
+  --color-on-warning-container: #2e1700;
+  --color-border-subtle: #2f3140;
+  --color-border-primary: #1f2a7a;
+  --color-border-success: #184d2b;
+  --color-border-warning: #6b3600;
+  --color-border-error: #8c0009;
+}
+
+/* Yüksek kontrast açık: sistem yüksek kontrast istiyor (prefers-contrast: more). */
+@media (prefers-contrast: more) {
+  :root:not([data-theme]),
+  [data-theme='light'] {
+    color-scheme: light;
+    --line: 2px;
+    --line-control: 2.5px;
+    --focus-width: 4px;
+    --shadow-overlay: none;
+    --color-surface: #ffffff;
+    --color-surface-lowest: #ffffff;
+    --color-surface-low: #ffffff;
+    --color-surface-container: #f5f5f7;
+    --color-surface-high: #ededf0;
+    --color-surface-highest: #e4e4e9;
+    --color-on-surface: #0b0c12;
+    --color-on-surface-variant: #2a2c38;
+    --color-outline: #2f3140;
+    --color-outline-variant: #5a5c6b;
+    --color-primary: #1f2a7a;
+    --color-on-primary: #ffffff;
+    --color-primary-container: #e6e8ff;
+    --color-on-primary-container: #0e1450;
+    --color-secondary: #6b3600;
+    --color-on-secondary: #ffffff;
+    --color-secondary-container: #ffe8c8;
+    --color-on-secondary-container: #2e1700;
+    --color-tertiary: #1f4a32;
+    --color-on-tertiary: #ffffff;
+    --color-tertiary-container: #ddf0e3;
+    --color-on-tertiary-container: #0b2415;
+    --color-error: #8c0009;
+    --color-on-error: #ffffff;
+    --color-error-container: #ffe1de;
+    --color-on-error-container: #3e0004;
+    --color-inverse-surface: #14151c;
+    --color-on-inverse-surface: #ffffff;
+    --color-inverse-primary: #d3d9ff;
+    --color-success: #184d2b;
+    --color-on-success: #ffffff;
+    --color-success-container: #ddf0e3;
+    --color-on-success-container: #0b2415;
+    --color-warning: #6b3600;
+    --color-warning-container: #ffe8c8;
+    --color-on-warning-container: #2e1700;
+    --color-border-subtle: #2f3140;
+    --color-border-primary: #1f2a7a;
+    --color-border-success: #184d2b;
+    --color-border-warning: #6b3600;
+    --color-border-error: #8c0009;
+  }
+}
+
+/* Yüksek kontrast koyu: açıkça seçildi. */
+[data-theme='hc-dark'] {
+  color-scheme: dark;
+  --line: 2px;
+  --line-control: 2.5px;
+  --focus-width: 4px;
+  --shadow-overlay: none;
+  --color-surface: #000000;
+  --color-surface-lowest: #000000;
+  --color-surface-low: #0b0c12;
+  --color-surface-container: #14161f;
+  --color-surface-high: #1e212d;
+  --color-surface-highest: #292c3a;
+  --color-on-surface: #ffffff;
+  --color-on-surface-variant: #e0e2ee;
+  --color-outline: #d0d3e2;
+  --color-outline-variant: #9a9daf;
+  --color-primary: #d3d9ff;
+  --color-on-primary: #000000;
+  --color-primary-container: #2a3680;
+  --color-on-primary-container: #ffffff;
+  --color-secondary: #ffd29a;
+  --color-on-secondary: #000000;
+  --color-secondary-container: #5a3400;
+  --color-on-secondary-container: #ffffff;
+  --color-tertiary: #c4eacf;
+  --color-on-tertiary: #000000;
+  --color-tertiary-container: #264b35;
+  --color-on-tertiary-container: #ffffff;
+  --color-error: #ffcfc9;
+  --color-on-error: #000000;
+  --color-error-container: #93000a;
+  --color-on-error-container: #ffffff;
+  --color-inverse-surface: #ffffff;
+  --color-on-inverse-surface: #000000;
+  --color-inverse-primary: #1f2a7a;
+  --color-success: #c4eacf;
+  --color-on-success: #000000;
+  --color-success-container: #264b35;
+  --color-on-success-container: #ffffff;
+  --color-warning: #ffd29a;
+  --color-warning-container: #5a3400;
+  --color-on-warning-container: #ffffff;
+  --color-border-subtle: #d0d3e2;
+  --color-border-primary: #d3d9ff;
+  --color-border-success: #c4eacf;
+  --color-border-warning: #ffd29a;
+  --color-border-error: #ffcfc9;
+}
+
+/* Yüksek kontrast koyu: 'hc' seçili ve sistem koyu. */
+@media (prefers-color-scheme: dark) {
+  [data-theme='hc'] {
+    color-scheme: dark;
+    --line: 2px;
+    --line-control: 2.5px;
+    --focus-width: 4px;
+    --shadow-overlay: none;
+    --color-surface: #000000;
+    --color-surface-lowest: #000000;
+    --color-surface-low: #0b0c12;
+    --color-surface-container: #14161f;
+    --color-surface-high: #1e212d;
+    --color-surface-highest: #292c3a;
+    --color-on-surface: #ffffff;
+    --color-on-surface-variant: #e0e2ee;
+    --color-outline: #d0d3e2;
+    --color-outline-variant: #9a9daf;
+    --color-primary: #d3d9ff;
+    --color-on-primary: #000000;
+    --color-primary-container: #2a3680;
+    --color-on-primary-container: #ffffff;
+    --color-secondary: #ffd29a;
+    --color-on-secondary: #000000;
+    --color-secondary-container: #5a3400;
+    --color-on-secondary-container: #ffffff;
+    --color-tertiary: #c4eacf;
+    --color-on-tertiary: #000000;
+    --color-tertiary-container: #264b35;
+    --color-on-tertiary-container: #ffffff;
+    --color-error: #ffcfc9;
+    --color-on-error: #000000;
+    --color-error-container: #93000a;
+    --color-on-error-container: #ffffff;
+    --color-inverse-surface: #ffffff;
+    --color-on-inverse-surface: #000000;
+    --color-inverse-primary: #1f2a7a;
+    --color-success: #c4eacf;
+    --color-on-success: #000000;
+    --color-success-container: #264b35;
+    --color-on-success-container: #ffffff;
+    --color-warning: #ffd29a;
+    --color-warning-container: #5a3400;
+    --color-on-warning-container: #ffffff;
+    --color-border-subtle: #d0d3e2;
+    --color-border-primary: #d3d9ff;
+    --color-border-success: #c4eacf;
+    --color-border-warning: #ffd29a;
+    --color-border-error: #ffcfc9;
+  }
+}
+
+/* Yüksek kontrast koyu: koyu seçili ve sistem yüksek kontrast istiyor. */
+@media (prefers-contrast: more) {
+  [data-theme='dark'] {
+    color-scheme: dark;
+    --line: 2px;
+    --line-control: 2.5px;
+    --focus-width: 4px;
+    --shadow-overlay: none;
+    --color-surface: #000000;
+    --color-surface-lowest: #000000;
+    --color-surface-low: #0b0c12;
+    --color-surface-container: #14161f;
+    --color-surface-high: #1e212d;
+    --color-surface-highest: #292c3a;
+    --color-on-surface: #ffffff;
+    --color-on-surface-variant: #e0e2ee;
+    --color-outline: #d0d3e2;
+    --color-outline-variant: #9a9daf;
+    --color-primary: #d3d9ff;
+    --color-on-primary: #000000;
+    --color-primary-container: #2a3680;
+    --color-on-primary-container: #ffffff;
+    --color-secondary: #ffd29a;
+    --color-on-secondary: #000000;
+    --color-secondary-container: #5a3400;
+    --color-on-secondary-container: #ffffff;
+    --color-tertiary: #c4eacf;
+    --color-on-tertiary: #000000;
+    --color-tertiary-container: #264b35;
+    --color-on-tertiary-container: #ffffff;
+    --color-error: #ffcfc9;
+    --color-on-error: #000000;
+    --color-error-container: #93000a;
+    --color-on-error-container: #ffffff;
+    --color-inverse-surface: #ffffff;
+    --color-on-inverse-surface: #000000;
+    --color-inverse-primary: #1f2a7a;
+    --color-success: #c4eacf;
+    --color-on-success: #000000;
+    --color-success-container: #264b35;
+    --color-on-success-container: #ffffff;
+    --color-warning: #ffd29a;
+    --color-warning-container: #5a3400;
+    --color-on-warning-container: #ffffff;
+    --color-border-subtle: #d0d3e2;
+    --color-border-primary: #d3d9ff;
+    --color-border-success: #c4eacf;
+    --color-border-warning: #ffd29a;
+    --color-border-error: #ffcfc9;
+  }
+}
+
+/* Yüksek kontrast koyu: tema seçilmemiş, sistem hem koyu hem yüksek kontrast. */
+@media (prefers-contrast: more) and (prefers-color-scheme: dark) {
+  :root:not([data-theme]) {
+    color-scheme: dark;
+    --line: 2px;
+    --line-control: 2.5px;
+    --focus-width: 4px;
+    --shadow-overlay: none;
+    --color-surface: #000000;
+    --color-surface-lowest: #000000;
+    --color-surface-low: #0b0c12;
+    --color-surface-container: #14161f;
+    --color-surface-high: #1e212d;
+    --color-surface-highest: #292c3a;
+    --color-on-surface: #ffffff;
+    --color-on-surface-variant: #e0e2ee;
+    --color-outline: #d0d3e2;
+    --color-outline-variant: #9a9daf;
+    --color-primary: #d3d9ff;
+    --color-on-primary: #000000;
+    --color-primary-container: #2a3680;
+    --color-on-primary-container: #ffffff;
+    --color-secondary: #ffd29a;
+    --color-on-secondary: #000000;
+    --color-secondary-container: #5a3400;
+    --color-on-secondary-container: #ffffff;
+    --color-tertiary: #c4eacf;
+    --color-on-tertiary: #000000;
+    --color-tertiary-container: #264b35;
+    --color-on-tertiary-container: #ffffff;
+    --color-error: #ffcfc9;
+    --color-on-error: #000000;
+    --color-error-container: #93000a;
+    --color-on-error-container: #ffffff;
+    --color-inverse-surface: #ffffff;
+    --color-on-inverse-surface: #000000;
+    --color-inverse-primary: #1f2a7a;
+    --color-success: #c4eacf;
+    --color-on-success: #000000;
+    --color-success-container: #264b35;
+    --color-on-success-container: #ffffff;
+    --color-warning: #ffd29a;
+    --color-warning-container: #5a3400;
+    --color-on-warning-container: #ffffff;
+    --color-border-subtle: #d0d3e2;
+    --color-border-primary: #d3d9ff;
+    --color-border-success: #c4eacf;
+    --color-border-warning: #ffd29a;
+    --color-border-error: #ffcfc9;
+  }
+}
+
+/* === END renkler === */
+
+:root {
+  /* Marka işareti: logo gibi her temada AYNI renklerle çizilir (tema renklerine uymaz). */
+  --brand-night: #3b4ba0;
+  --brand-sun: #ffb867;
+  --brand-paper: #fbf8f3;
+  --brand-deck: #28357f;
+
+  /* Anlamsal takma adlar: tema değişince renkler kendiliğinden değişir. */
+  --color-focus-ring: var(--color-on-surface);
+  --color-disabled-bg: var(--color-surface-high);
+  --color-disabled-on: var(--color-on-surface-variant);
+
+  /* Yazı tipi: kendi sunucumuzdan (next/font/local); yüklenene kadar sistem yazı tipi. */
+  --font-sans: var(--font-atkinson, system-ui), system-ui, -apple-system, 'Segoe UI', Roboto, 'Helvetica Neue', sans-serif;
+  --font-weight-regular: 400;
+  --font-weight-semibold: 600;
+  --font-weight-bold: 700;
+
+  /* Uygulama içi yazı boyutu çarpanı: 1, 1.15, 1.3 (html[data-text-scale], aşağıda). */
+  --text-scale: 1;
+
+  /* Tür ölçeği: boyut / satır yüksekliği. Hiçbir stil 0.875rem (14 px) altına inmez. */
+  --text-headline-lg-size: 2rem;
+  --text-headline-lg-line: 2.5rem;
+  --text-headline-md-size: 1.75rem;
+  --text-headline-md-line: 2.25rem;
+  --text-headline-sm-size: 1.5rem;
+  --text-headline-sm-line: 2rem;
+  --text-title-lg-size: 1.375rem;
+  --text-title-lg-line: 1.75rem;
+  --text-title-md-size: 1.125rem;
+  --text-title-md-line: 1.625rem;
+  --text-title-sm-size: 1rem;
+  --text-title-sm-line: 1.5rem;
+  --text-body-lg-size: 1.125rem;
+  --text-body-lg-line: 1.75rem;
+  --text-body-md-size: 1rem;
+  --text-body-md-line: 1.5rem;
+  --text-body-sm-size: 0.875rem;
+  --text-body-sm-line: 1.25rem;
+  --text-label-lg-size: 1rem;
+  --text-label-lg-line: 1.5rem;
+  --text-label-md-size: 0.875rem;
+  --text-label-md-line: 1.25rem;
+
+  /* Boşluk (4 px ızgara) */
+  --space-2xs: 0.125rem;
+  --space-xs: 0.25rem;
+  --space-sm: 0.5rem;
+  --space-md: 0.75rem;
+  --space-lg: 1rem;
+  --space-xl: 1.5rem;
+  --space-2xl: 2rem;
+  --space-3xl: 3rem;
+  --space-4xl: 4rem;
+
+  /* Köşe yuvarlaklığı */
+  --radius-sm: 0.5rem;
+  --radius-md: 0.75rem;
+  --radius-lg: 1rem;
+  --radius-xl: 1.5rem;
+  --radius-full: 62.4375rem;
+
+  /* Boyutlar. Dokunma alanı px olarak da korunur: kullanıcı yazı boyutunu küçültse bile 48 / 56 px altına inmez. */
+  --tap-min: max(48px, 3rem);
+  --tap-primary: max(56px, 3.5rem);
+  --icon-sm: 1.25rem;
+  --icon-md: 1.5rem;
+  --icon-lg: 2rem;
+  --icon-state: 4.5rem;
+  --progress-height: 0.75rem;
+  --nav-height: max(64px, 4rem);
+  --rail-width: 6rem;
+  --sidebar-width: 16rem;
+  --measure-form: 30rem;
+  --measure-content: 45rem;
+  --measure-wide: 70rem;
+
+  /* Alt gezinme etiketleri en fazla bu boyuta kadar büyür (Material kararıyla aynı: yaklaşık %130);
+     sayfa başlığı seçili hedefin adını tam ölçekte yazar. Bkz. docs/tasarim-sistemi.md 4.2. */
+  --nav-label-max: 18px;
+
+  /* Hareket: azaltma açıkken süreler 0 olur (aşağıdaki iki kural). */
+  --duration-short: 150ms;
+  --duration-medium: 250ms;
+  --duration-long: 400ms;
+  --ease: cubic-bezier(0.215, 0.61, 0.355, 1);
+}
+
+/* Uygulama içi yazı boyutu: <html data-text-scale="1.15">. `html { font-size }` global.css'te bu çarpanı kullanır. */
+:root[data-text-scale='1.15'] {
+  --text-scale: 1.15;
+}
+
+:root[data-text-scale='1.3'] {
+  --text-scale: 1.3;
+}
+
+/* "Animasyonları azalt": işletim sistemi ayarı ya da uygulama içi seçim (<html data-motion="reduce">). */
+@media (prefers-reduced-motion: reduce) {
+  :root {
+    --duration-short: 0ms;
+    --duration-medium: 0ms;
+    --duration-long: 0ms;
+  }
+}
+
+:root[data-motion='reduce'] {
+  --duration-short: 0ms;
+  --duration-medium: 0ms;
+  --duration-long: 0ms;
+}
+
+/* Yalnızca galeri ve testler için: %200 yazı boyutu denemesi (kullanıcıya sunulan kademeler 1, 1.15, 1.3'tür). */
+:root[data-text-scale='2'] {
+  --text-scale: 2;
+}

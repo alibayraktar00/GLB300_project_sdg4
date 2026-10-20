@@ -1,0 +1,86 @@
+/* Boş, hata ve yükleniyor görünümleri: sakin, tek eylemli. Taslak (iskelet) bilerek durağandır: parıltı yok. */
+.state {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: var(--space-md);
+  max-inline-size: var(--measure-form);
+  margin-inline: auto;
+  padding: var(--space-2xl) var(--space-lg);
+  text-align: center;
+}
+
+.icon {
+  color: var(--color-primary);
+  margin-block-end: var(--space-sm);
+}
+
+.muted {
+  color: var(--color-on-surface-variant);
+}
+
+.title {
+  composes: headlineSm from '../styles/text.module.css';
+}
+
+.message {
+  composes: bodyLg from '../styles/text.module.css';
+}
+
+.action {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: var(--space-md);
+  margin-block-start: var(--space-md);
+}
+
+.loading {
+  composes: bodyLg from '../styles/text.module.css';
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: var(--space-lg);
+  padding: var(--space-2xl) var(--space-lg);
+}
+
+.loading svg {
+  inline-size: var(--icon-lg);
+  block-size: var(--icon-lg);
+}
+
+.skeleton {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-md);
+}
+
+.skeletonCard {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-sm);
+  padding: var(--space-lg);
+  border: var(--line) solid var(--color-border-subtle);
+  border-radius: var(--radius-lg);
+  background-color: var(--color-surface-low);
+}
+
+.bar {
+  block-size: var(--space-md);
+  border-radius: var(--radius-sm);
+  background-color: var(--color-surface-highest);
+}
+
+.barTitle {
+  inline-size: 60%;
+  block-size: var(--space-lg);
+  margin-block-end: var(--space-xs);
+}
+
+.barFull {
+  inline-size: 100%;
+}
+
+.barMost {
+  inline-size: 80%;
+}

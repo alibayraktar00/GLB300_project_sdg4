@@ -1,0 +1,108 @@
+/*
+ * Seçilebilir kart (yerel radyo düğmesi). "5 dakika / Tam ders" gibi tek seçimlik, az seçenekli sorular için.
+ * Seçili durum üç şekilde belirtilir: dolu daire simgesi, kalın kenarlık ve ekran okuyucuda "seçili".
+ * Yalnızca renkle verilmez.
+ */
+.group {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-md);
+  min-inline-size: 0;
+  margin: 0;
+  padding: 0;
+  border: 0;
+}
+
+.legend {
+  composes: titleMd from '../styles/text.module.css';
+  padding: 0;
+  margin-block-end: var(--space-md);
+}
+
+.item {
+  position: relative;
+  display: block;
+}
+
+/* Gerçek radyo düğmesi görünmez ama kartın tamamını kaplar; klavye ve ekran okuyucuyla kullanılır. */
+.input {
+  position: absolute;
+  inset: 0;
+  inline-size: 100%;
+  block-size: 100%;
+  margin: 0;
+  opacity: 0;
+  cursor: pointer;
+}
+
+.face {
+  display: flex;
+  align-items: flex-start;
+  gap: var(--space-md);
+  min-block-size: var(--tap-primary);
+  padding: var(--space-lg);
+  border: var(--line) solid var(--color-border-subtle);
+  border-radius: var(--radius-lg);
+  background-color: var(--color-surface-low);
+  color: var(--color-on-surface);
+}
+
+.indicatorOff,
+.indicatorOn {
+  flex: none;
+  margin-block-start: var(--space-2xs);
+}
+
+.indicatorOff {
+  color: var(--color-on-surface-variant);
+}
+
+.indicatorOn {
+  display: none;
+  color: var(--color-primary);
+}
+
+.text {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-xs);
+  min-inline-size: 0;
+}
+
+.title {
+  composes: titleMd from '../styles/text.module.css';
+}
+
+.description {
+  composes: bodyMd from '../styles/text.module.css';
+  color: var(--color-on-surface-variant);
+}
+
+/* Seçili: kalın birincil kenarlık (normal kenarlık + 2 px); içerik kaymasın diye iç boşluk aynı oranda azalır. */
+.input:checked + .face {
+  border-color: var(--color-primary);
+  border-width: calc(var(--line) + 2px);
+  padding: calc(var(--space-lg) - 2px);
+}
+
+.input:checked + .face .indicatorOff {
+  display: none;
+}
+
+.input:checked + .face .indicatorOn {
+  display: block;
+}
+
+.input:focus-visible + .face {
+  outline: var(--focus-width) solid var(--color-focus-ring);
+  outline-offset: 0.125rem;
+}
+
+.input:disabled + .face {
+  background-color: var(--color-disabled-bg);
+  color: var(--color-disabled-on);
+}
+
+.input:disabled + .face .description {
+  color: inherit;
+}

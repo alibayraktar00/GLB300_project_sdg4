@@ -1,0 +1,22 @@
+.icon {
+  flex: none;
+  display: inline-block;
+  inline-size: var(--icon-md);
+  block-size: var(--icon-md);
+  fill: currentColor;
+}
+
+.sm {
+  inline-size: var(--icon-sm);
+  block-size: var(--icon-sm);
+}
+
+.lg {
+  inline-size: var(--icon-lg);
+  block-size: var(--icon-lg);
+}
+
+.state {
+  inline-size: var(--icon-state);
+  block-size: var(--icon-state);
+}

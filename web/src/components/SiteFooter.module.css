@@ -1,0 +1,35 @@
+.footer {
+  padding: var(--space-xl) var(--space-lg);
+  border-block-start: var(--line) solid var(--color-border-subtle);
+  background-color: var(--color-surface-container);
+}
+
+.inner {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: space-between;
+  gap: var(--space-md) var(--space-xl);
+  max-inline-size: var(--measure-wide);
+  margin-inline: auto;
+}
+
+.name {
+  composes: labelLg from '../styles/text.module.css';
+  color: var(--color-on-surface-variant);
+}
+
+.list {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--space-xs) var(--space-lg);
+}
+
+/* Bağlantı alanı >= 48 px (dokunma hedefi). */
+.link {
+  composes: bodyMd from '../styles/text.module.css';
+  display: inline-flex;
+  align-items: center;
+  min-block-size: var(--tap-min);
+  color: var(--color-primary);
+}

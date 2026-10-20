@@ -1,0 +1,61 @@
+/* Metin alanı: etiket hep ÜSTTE (kayan etiket yok), yardım ve hata metni yazıyla alanın altında. */
+.field {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-xs);
+}
+
+.label {
+  composes: titleSm from '../styles/text.module.css';
+}
+
+.optional {
+  composes: bodySm from '../styles/text.module.css';
+  color: var(--color-on-surface-variant);
+}
+
+.input {
+  composes: bodyLg from '../styles/text.module.css';
+  inline-size: 100%;
+  min-block-size: var(--tap-primary);
+  padding: var(--space-md) var(--space-lg);
+  border: var(--line-control) solid var(--color-outline);
+  border-radius: var(--radius-md);
+  background-color: var(--color-surface-lowest);
+  color: var(--color-on-surface);
+}
+
+.input::placeholder {
+  color: var(--color-on-surface-variant);
+  opacity: 1;
+}
+
+.input:focus-visible {
+  border-color: var(--color-primary);
+}
+
+.input:disabled {
+  border-color: var(--color-border-subtle);
+  background-color: var(--color-disabled-bg);
+  color: var(--color-disabled-on);
+}
+
+.invalid {
+  /* Hata: kalın kenarlık + alanın altında hata metni. Yalnızca renk değil. */
+  border-color: var(--color-error);
+  border-width: calc(var(--line-control) + 1px);
+}
+
+.help {
+  composes: bodySm from '../styles/text.module.css';
+  color: var(--color-on-surface-variant);
+}
+
+.error {
+  composes: bodySm from '../styles/text.module.css';
+  display: flex;
+  align-items: flex-start;
+  gap: var(--space-xs);
+  color: var(--color-error);
+  font-weight: var(--font-weight-semibold);
+}

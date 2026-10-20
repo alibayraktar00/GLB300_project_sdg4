@@ -1,0 +1,47 @@
+/*
+ * Açılış sayfası. Telefonda tek sütun; geniş alanda iki sütun (solda tanıtım, sağda seçenekler).
+ * Kırılma noktası rem'dir (52.5rem = 840 px): yazı büyüdükçe iki sütun daha geç başlar, taşma olmaz.
+ */
+.layout {
+  display: grid;
+  /* minmax(0, 1fr): sütun, içeriğin en küçük genişliğine zorlanmaz; büyük yazıda içerik taşmak yerine yeniden akar. */
+  grid-template-columns: minmax(0, 1fr);
+  gap: var(--space-2xl);
+  max-inline-size: var(--measure-content);
+  margin-inline: auto;
+}
+
+.intro {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: var(--space-lg);
+}
+
+.title {
+  composes: headlineLg from '../styles/text.module.css';
+}
+
+.description {
+  composes: bodyLg from '../styles/text.module.css';
+}
+
+.choices {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-lg);
+}
+
+.note {
+  composes: bodyMd from '../styles/text.module.css';
+  color: var(--color-on-surface-variant);
+}
+
+@media (min-width: 52.5rem) {
+  .layout {
+    grid-template-columns: minmax(0, 1fr) minmax(0, 1fr);
+    align-items: center;
+    gap: var(--space-4xl);
+    max-inline-size: 60rem;
+  }
+}

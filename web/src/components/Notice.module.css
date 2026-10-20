@@ -1,0 +1,60 @@
+/*
+ * Bildirim çubuğu bölgesi: ekranın altında, gezinmenin hemen üstünde "yapışkan" (sticky) durur.
+ * Sabit (fixed) değildir: AppShell kapsayıcısı konumlandırmayı değiştirdiği için sticky kullanılır.
+ * Boş bölge yer kaplamaz ama DOM'da kalır (ekran okuyucu duyuruları için canlı bölge önceden var olmalı).
+ */
+.region {
+  grid-area: notice;
+  position: sticky;
+  /* AppShell, alt gezinme yüksekliğini --notice-bottom ile verir; bildirim gezinmenin üstünde durur. */
+  inset-block-end: var(--notice-bottom, 0);
+  z-index: 20;
+  display: flex;
+  justify-content: center;
+  padding-inline: var(--space-lg);
+  pointer-events: none;
+}
+
+.region:not(:empty) {
+  padding-block: var(--space-md);
+}
+
+.notice {
+  display: flex;
+  align-items: center;
+  gap: var(--space-md);
+  max-inline-size: var(--measure-form);
+  inline-size: 100%;
+  padding: var(--space-md) var(--space-sm) var(--space-md) var(--space-lg);
+  border: var(--line) solid var(--color-inverse-surface);
+  border-radius: var(--radius-md);
+  background-color: var(--color-inverse-surface);
+  color: var(--color-on-inverse-surface);
+  box-shadow: var(--shadow-overlay);
+  pointer-events: auto;
+}
+
+.message {
+  composes: bodyLg from '../styles/text.module.css';
+  flex: 1;
+  min-inline-size: 0;
+}
+
+/* "Tamam": çubuğun eylemi, çubuğun üzerinde okunur renkte (>= 4.5:1). */
+.ok {
+  composes: labelLg from '../styles/text.module.css';
+  flex: none;
+  min-block-size: var(--tap-min);
+  min-inline-size: var(--tap-min);
+  padding: var(--space-sm) var(--space-lg);
+  border: 0;
+  border-radius: var(--radius-md);
+  background-color: transparent;
+  color: var(--color-inverse-primary);
+  cursor: pointer;
+}
+
+/* Çubuğun koyu zemininde odak halkası yine okunur olmalı: halka çubuğun açık yazı renginde. */
+.ok:focus-visible {
+  outline-color: var(--color-on-inverse-surface);
+}

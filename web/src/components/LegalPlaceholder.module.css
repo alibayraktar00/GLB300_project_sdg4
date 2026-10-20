@@ -1,0 +1,11 @@
+.page {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-lg);
+  max-inline-size: var(--measure-content);
+  margin-inline: auto;
+}
+
+.body {
+  composes: bodyLg from '../styles/text.module.css';
+}

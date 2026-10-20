@@ -1,0 +1,34 @@
+/* Logo her temada aynı renklerle çizilir. Windows yüksek kontrastta da renkleri korunur (logo, süstür). */
+.mark {
+  display: block;
+  flex: none;
+  forced-color-adjust: none;
+  inline-size: 4.5rem;
+  block-size: 4.5rem;
+}
+
+.small {
+  inline-size: 2.5rem;
+  block-size: 2.5rem;
+}
+
+.large {
+  inline-size: 5.5rem;
+  block-size: 5.5rem;
+}
+
+.tile {
+  fill: var(--brand-night);
+}
+
+.sun {
+  fill: var(--brand-sun);
+}
+
+.arch {
+  stroke: var(--brand-paper);
+}
+
+.deck {
+  fill: var(--brand-deck);
+}

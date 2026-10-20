@@ -1,0 +1,80 @@
+/*
+ * Bilgi bandı: ton = zemin rengi + SİMGE + okunan ton etiketi ("Uyarı"). Bilgi yalnızca renkle verilmez.
+ * Yüksek kontrastta kenarlık ton renginde güçlenir. Kendiliğinden kaybolmaz (zaman aşımı yok).
+ */
+.banner {
+  display: flex;
+  align-items: flex-start;
+  gap: var(--space-md);
+  padding: var(--space-lg);
+  border: var(--line) solid var(--color-border-primary);
+  border-radius: var(--radius-md);
+  background-color: var(--color-primary-container);
+  color: var(--color-on-primary-container);
+}
+
+.success {
+  background-color: var(--color-success-container);
+  border-color: var(--color-border-success);
+  color: var(--color-on-success-container);
+}
+
+.warning {
+  background-color: var(--color-warning-container);
+  border-color: var(--color-border-warning);
+  color: var(--color-on-warning-container);
+}
+
+.error {
+  background-color: var(--color-error-container);
+  border-color: var(--color-border-error);
+  color: var(--color-on-error-container);
+}
+
+.icon {
+  flex: none;
+  margin-block-start: var(--space-2xs);
+}
+
+.body {
+  composes: bodyMd from '../styles/text.module.css';
+  flex: 1;
+  min-inline-size: 0;
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: var(--space-xs);
+}
+
+.title {
+  composes: titleSm from '../styles/text.module.css';
+}
+
+.action {
+  margin-block-start: var(--space-xs);
+}
+
+/* Banttaki metin düğmesi/bağlantısı bandın yazı rengini alır, altı çizili kalır. */
+.action a,
+.action button {
+  color: inherit;
+  text-decoration: underline;
+  padding-inline: 0;
+  min-inline-size: 0;
+}
+
+.dismiss {
+  flex: none;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  min-inline-size: var(--tap-min);
+  min-block-size: var(--tap-min);
+  margin: calc(var(--space-sm) * -1);
+  padding: 0;
+  border: 0;
+  border-radius: var(--radius-md);
+  background-color: transparent;
+  color: inherit;
+  cursor: pointer;
+}

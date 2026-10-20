@@ -1,0 +1,24 @@
+/* Herkese açık sayfa çerçevesi: içerik, bildirim bölgesi ve altbilgi; alt bilgi her zaman sayfanın en altında. */
+.frame {
+  display: flex;
+  flex-direction: column;
+  min-block-size: 100dvh;
+}
+
+.main {
+  flex: 1;
+  inline-size: 100%;
+  max-inline-size: var(--measure-wide);
+  margin-inline: auto;
+  padding: var(--space-2xl) var(--space-lg);
+}
+
+.main:focus {
+  outline: none;
+}
+
+@media (min-width: 37.5rem) {
+  .main {
+    padding: var(--space-3xl) var(--space-xl);
+  }
+}

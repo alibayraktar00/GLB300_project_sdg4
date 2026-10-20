@@ -1,0 +1,103 @@
+/*
+ * Genel stiller. Renk, yazı ve boyut değerleri tokens.css'ten gelir.
+ * Kısa kurallar: gerçek HTML, tarayıcı yakınlaştırması ve yazı boyutu ayarına uyum, görünür odak,
+ * Windows yüksek kontrast (forced-colors) ve "animasyonları azalt" uyumu.
+ */
+
+html {
+  /* %100 = kullanıcının tarayıcı yazı boyutu. Uygulama içi kademe (1, 1.15, 1.3) bunun üstüne çarpılır;
+     bütün boyutlar rem olduğu için her şey birlikte ölçeklenir. */
+  font-size: calc(100% * var(--text-scale));
+  /* Alttaki sabit gezinme, klavyeyle odaklanan öğeyi örtmesin (WCAG 2.4.11). */
+  scroll-padding-bottom: calc(var(--nav-height) + var(--space-xl));
+  scroll-padding-top: var(--space-xl);
+}
+
+body {
+  background-color: var(--color-surface);
+  color: var(--color-on-surface);
+  font-family: var(--font-sans);
+  font-size: var(--text-body-md-size);
+  line-height: var(--text-body-md-line);
+  /* Dar ekranda ve %400 yazı büyütmede uzun sözcük yatay kaydırma yaratmasın. `anywhere` (break-word değil):
+     en küçük içerik genişliğini de küçültür, böylece esnek ve ızgara öğeleri kapsayıcıya sığacak kadar daralabilir. */
+  overflow-wrap: anywhere;
+}
+
+h1 {
+  font-size: var(--text-headline-md-size);
+  line-height: var(--text-headline-md-line);
+  font-weight: var(--font-weight-bold);
+}
+
+h2 {
+  font-size: var(--text-title-lg-size);
+  line-height: var(--text-title-lg-line);
+  font-weight: var(--font-weight-semibold);
+}
+
+h3 {
+  font-size: var(--text-title-md-size);
+  line-height: var(--text-title-md-line);
+  font-weight: var(--font-weight-semibold);
+}
+
+a {
+  color: var(--color-primary);
+  text-decoration-thickness: max(1px, 0.0625rem);
+  text-underline-offset: 0.18em;
+}
+
+/* Görünür odak halkası: 3 px, yüksek kontrastta 4 px; halka sayfa metniyle aynı renk (her yüzeyde >= 4.5:1). */
+:focus-visible {
+  outline: var(--focus-width) solid var(--color-focus-ring);
+  outline-offset: 0.125rem;
+}
+
+/* Yalnızca ekran okuyucuya görünen metin. */
+.sr-only {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  margin: -1px;
+  padding: 0;
+  overflow: hidden;
+  clip-path: inset(50%);
+  white-space: nowrap;
+  border: 0;
+}
+
+/* İçeriğe geç bağlantısı: yalnızca odak aldığında görünür. */
+.skip-link {
+  position: absolute;
+  inset-inline-start: var(--space-lg);
+  inset-block-start: var(--space-sm);
+  z-index: 100;
+  padding: var(--space-md) var(--space-lg);
+  border: var(--line-control) solid var(--color-on-primary);
+  border-radius: var(--radius-md);
+  background-color: var(--color-primary);
+  color: var(--color-on-primary);
+  font-weight: var(--font-weight-semibold);
+  text-decoration: none;
+  transform: translateY(-300%);
+}
+
+.skip-link:focus-visible {
+  transform: none;
+}
+
+/*
+ * Windows yüksek kontrast (forced-colors: active): renkleri işletim sistemi yönetir; `color`, `background-color`,
+ * `border-color` ve `outline-color` sistem renklerine çevrilir. Bu yüzden burada renk kuralı yazılmaz, onunla
+ * çatışılmaz. Odak halkası `outline` olduğundan görünür kalır; kenarlıklar saydam bile olsa sistem renginde çizilir
+ * (düğmelerde `border: ... solid transparent` bu yüzden bilerek vardır). Kendi renkleriyle çizilen tek öğe
+ * logodur (`forced-color-adjust: none`, BrandMark).
+ */
+
+/* "Animasyonları azalt": işletim sistemi ayarı ve uygulama içi seçim. */
+@media (prefers-reduced-motion: reduce) {
+  html {
+    scroll-behavior: auto;
+  }
+}

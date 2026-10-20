@@ -1,0 +1,116 @@
+/*
+ * Kart (docs/tasarim-sistemi.md 7). Tıklanabilir kartın TAMAMI tek <a> ya da <button>'dır: tek dokunma alanı,
+ * tek ekran okuyucu öğesi. İçine ayrıca düğme ya da bağlantı konmaz. Ton rengi tek başına anlam taşımaz;
+ * anlam metinde ve ikondadır. Kenarlık yüksek kontrastta tonun güçlü rengine döner.
+ */
+.card {
+  position: relative;
+  display: block;
+  inline-size: 100%;
+  padding: var(--space-lg);
+  border: var(--line) solid var(--color-border-subtle);
+  border-radius: var(--radius-lg);
+  background-color: var(--color-surface-low);
+  color: var(--color-on-surface);
+  font: inherit;
+  text-align: start;
+  text-decoration: none;
+}
+
+.primary {
+  background-color: var(--color-primary-container);
+  border-color: var(--color-border-primary);
+  color: var(--color-on-primary-container);
+}
+
+.warm {
+  background-color: var(--color-warning-container);
+  border-color: var(--color-border-warning);
+  color: var(--color-on-warning-container);
+}
+
+.success {
+  background-color: var(--color-success-container);
+  border-color: var(--color-border-success);
+  color: var(--color-on-success-container);
+}
+
+.interactive {
+  min-block-size: var(--tap-primary);
+  cursor: pointer;
+}
+
+/* Üzerine gelme ve basılı durum: yazı renginde ince katman. */
+.interactive::after {
+  content: '';
+  position: absolute;
+  inset: calc(var(--line) * -1);
+  border-radius: inherit;
+  background-color: currentColor;
+  opacity: 0;
+  transition: opacity var(--duration-short) var(--ease);
+  pointer-events: none;
+}
+
+@media (hover: hover) {
+  .interactive:hover::after {
+    opacity: 0.06;
+  }
+}
+
+.interactive:active::after {
+  opacity: 0.12;
+}
+
+/* Çok büyük yazıda simge ve ok alt satıra iner (yatay taşma yerine yeniden akış, WCAG 1.4.10). */
+.row {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: var(--space-sm) var(--space-lg);
+}
+
+.lead {
+  flex: none;
+  color: var(--color-primary);
+}
+
+.primary .lead,
+.warm .lead,
+.success .lead {
+  color: inherit;
+}
+
+.text {
+  flex: 1 1 10rem;
+  min-inline-size: 0;
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-xs);
+}
+
+.title {
+  composes: titleMd from '../styles/text.module.css';
+}
+
+.description {
+  composes: bodyMd from '../styles/text.module.css';
+  color: var(--color-on-surface-variant);
+}
+
+.primary .description,
+.warm .description,
+.success .description {
+  color: inherit;
+}
+
+.chevron {
+  flex: none;
+  color: var(--color-on-surface-variant);
+}
+
+.primary .chevron,
+.warm .chevron,
+.success .chevron {
+  color: inherit;
+}

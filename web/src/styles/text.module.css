@@ -1,0 +1,66 @@
+/* Tür ölçeği sınıfları. Bileşen modülleri `composes: titleMd from '../styles/text.module.css'` ile kullanır. */
+.headlineLg {
+  font-size: var(--text-headline-lg-size);
+  line-height: var(--text-headline-lg-line);
+  font-weight: var(--font-weight-bold);
+}
+
+.headlineMd {
+  font-size: var(--text-headline-md-size);
+  line-height: var(--text-headline-md-line);
+  font-weight: var(--font-weight-bold);
+}
+
+.headlineSm {
+  font-size: var(--text-headline-sm-size);
+  line-height: var(--text-headline-sm-line);
+  font-weight: var(--font-weight-bold);
+}
+
+.titleLg {
+  font-size: var(--text-title-lg-size);
+  line-height: var(--text-title-lg-line);
+  font-weight: var(--font-weight-semibold);
+}
+
+.titleMd {
+  font-size: var(--text-title-md-size);
+  line-height: var(--text-title-md-line);
+  font-weight: var(--font-weight-semibold);
+}
+
+.titleSm {
+  font-size: var(--text-title-sm-size);
+  line-height: var(--text-title-sm-line);
+  font-weight: var(--font-weight-semibold);
+}
+
+.bodyLg {
+  font-size: var(--text-body-lg-size);
+  line-height: var(--text-body-lg-line);
+  font-weight: var(--font-weight-regular);
+}
+
+.bodyMd {
+  font-size: var(--text-body-md-size);
+  line-height: var(--text-body-md-line);
+  font-weight: var(--font-weight-regular);
+}
+
+.bodySm {
+  font-size: var(--text-body-sm-size);
+  line-height: var(--text-body-sm-line);
+  font-weight: var(--font-weight-regular);
+}
+
+.labelLg {
+  font-size: var(--text-label-lg-size);
+  line-height: var(--text-label-lg-line);
+  font-weight: var(--font-weight-semibold);
+}
+
+.labelMd {
+  font-size: var(--text-label-md-size);
+  line-height: var(--text-label-md-line);
+  font-weight: var(--font-weight-semibold);
+}

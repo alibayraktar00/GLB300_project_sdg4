@@ -1,0 +1,15 @@
+{
+  "name": "db-check",
+  "version": "1.0.0",
+  "private": true,
+  "description": "Docker olmadan Supabase migration'larını ve pgTAP testlerini gömülü Postgres (PGlite) üzerinde çalıştırır.",
+  "type": "commonjs",
+  "scripts": {
+    "test": "node run.mjs",
+    "test:seed": "node run.mjs --seed"
+  },
+  "dependencies": {
+    "@electric-sql/pglite": "^0.5.10",
+    "@electric-sql/pglite-pgtap": "^0.0.11"
+  }
+}

@@ -1,0 +1,43 @@
+/*
+ * Çerez bilgilendirme notu: sayfa akışının en üstünde, sayfayı ENGELLEMEYEN kısa bir not (diyalog ya da örtü değil).
+ * Daha önce kapatıldıysa <html data-cerez="tamam"> (ilk boyamadan önce satır içi betik yazar) onu gizler; böylece
+ * dönen ziyaretçide not hiç görünmez ve içerik kaymaz. Not sunucuda her zaman çizilir (ilk ziyarette düzen kaymaz).
+ */
+.notice {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: space-between;
+  gap: var(--space-sm) var(--space-lg);
+  padding: var(--space-md) var(--space-lg);
+  border-block-end: var(--line) solid var(--color-border-primary);
+  background-color: var(--color-primary-container);
+  color: var(--color-on-primary-container);
+}
+
+:global(html[data-cerez='tamam']) .notice {
+  display: none;
+}
+
+.text {
+  composes: bodyMd from '../styles/text.module.css';
+  flex: 1 1 18rem;
+  min-inline-size: 0;
+}
+
+.text a {
+  color: inherit;
+}
+
+.ok {
+  composes: labelLg from '../styles/text.module.css';
+  flex: none;
+  min-block-size: var(--tap-min);
+  min-inline-size: var(--tap-min);
+  padding: var(--space-sm) var(--space-lg);
+  border: var(--line-control) solid currentColor;
+  border-radius: var(--radius-md);
+  background-color: transparent;
+  color: inherit;
+  cursor: pointer;
+}

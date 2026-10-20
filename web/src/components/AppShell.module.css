@@ -1,0 +1,247 @@
+/*
+ * Rol iskeleti. Yerleşimi EKRAN genişliğine değil iskeletin KENDİ genişliğine (container query) bakar;
+ * böylece galeride 360 px ve 1024 px'lik kutularda gerçek düzeni gösterir ve JavaScript ile genişlik ölçülmez
+ * (hidrasyonda kayma olmaz). Tek <nav> vardır, yalnızca CSS ile yer değiştirir (plan 7.1).
+ *
+ *   < 37.5rem (600 px)   telefon: üstte başlık çubuğu, altta SABİT gezinme (>= 64 px, güvenli alan boşluklu)
+ *   37.5rem - 64rem      dar yan şerit (etiket simgenin altında)
+ *   >= 64rem (1024 px)   geniş yan menü (16rem, etiket simgenin yanında)
+ *
+ * Kırılma noktaları rem'dir: yazı büyüdükçe düzen daha erken telefon düzenine geçer (taşma olmaz).
+ */
+.root {
+  container-type: inline-size;
+  container-name: shell;
+  background-color: var(--color-surface);
+  color: var(--color-on-surface);
+}
+
+.layout {
+  --notice-bottom: calc(var(--nav-height) + env(safe-area-inset-bottom, 0px));
+  display: grid;
+  grid-template-columns: minmax(0, 1fr);
+  grid-template-rows: auto minmax(0, 1fr) auto auto;
+  grid-template-areas:
+    'header'
+    'main'
+    'notice'
+    'nav';
+  min-block-size: 100dvh;
+}
+
+/* Galeri örneği: sabit yükseklikli kutunun içinde kendi kaydırmasıyla çalışır. */
+.embedded {
+  block-size: 100%;
+}
+
+.embedded .layout {
+  min-block-size: 100%;
+}
+
+.header {
+  grid-area: header;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: var(--space-md);
+  padding: var(--space-sm) var(--space-lg);
+  border-block-end: var(--line) solid var(--color-border-subtle);
+  background-color: var(--color-surface-container);
+}
+
+.brand {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--space-md);
+  min-block-size: var(--tap-min);
+  min-inline-size: 0;
+  color: var(--color-on-surface);
+  text-decoration: none;
+}
+
+.brandName {
+  composes: titleMd from '../styles/text.module.css';
+  min-inline-size: 0;
+}
+
+.actions {
+  display: flex;
+  flex: none;
+  gap: var(--space-xs);
+}
+
+.action {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  min-inline-size: var(--tap-min);
+  min-block-size: var(--tap-min);
+  border: var(--line) solid transparent;
+  border-radius: var(--radius-md);
+  color: var(--color-on-surface-variant);
+  text-decoration: none;
+}
+
+@media (hover: hover) {
+  .action:hover {
+    background-color: var(--color-surface-high);
+  }
+}
+
+.nav {
+  grid-area: nav;
+  position: sticky;
+  inset-block-end: 0;
+  z-index: 10;
+  padding-block-end: env(safe-area-inset-bottom, 0px);
+  border-block-start: var(--line) solid var(--color-border-subtle);
+  background-color: var(--color-surface-container);
+}
+
+.list {
+  display: grid;
+  grid-auto-flow: column;
+  grid-auto-columns: minmax(0, 1fr);
+}
+
+.link {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: var(--space-2xs);
+  min-block-size: var(--nav-height);
+  padding: var(--space-sm) var(--space-2xs);
+  color: var(--color-on-surface-variant);
+  text-align: center;
+  text-decoration: none;
+}
+
+/* Etiketler hep görünür (yalnızca simgeyle gezinme çocuklar için zor). Boyutu en çok --nav-label-max'a kadar büyür. */
+.label {
+  composes: labelMd from '../styles/text.module.css';
+  max-inline-size: 100%;
+  font-size: min(var(--text-label-md-size), var(--nav-label-max));
+  line-height: 1.2;
+  overflow-wrap: anywhere;
+}
+
+/* Gösterge: seçili hedefin simgesi arkasında hap. Renk + dolu ikon + kalın etiket birlikte belirtir. */
+.indicator {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  inline-size: 4rem;
+  block-size: 2rem;
+  border: var(--line) solid transparent;
+  border-radius: var(--radius-lg);
+}
+
+.link[aria-current='page'] {
+  color: var(--color-on-surface);
+}
+
+.link[aria-current='page'] .indicator {
+  background-color: var(--color-primary-container);
+  border-color: var(--color-border-primary);
+  color: var(--color-on-primary-container);
+}
+
+.link[aria-current='page'] .label {
+  font-weight: var(--font-weight-bold);
+}
+
+.main {
+  grid-area: main;
+  min-inline-size: 0;
+  padding: var(--space-xl) var(--space-lg);
+}
+
+/* Ana alana "İçeriğe geç" ile programatik odak verilince çerçeve çizilmez; asıl odak içerideki öğededir. */
+.main:focus {
+  outline: none;
+}
+
+.content {
+  max-inline-size: var(--measure-wide);
+  margin-inline: auto;
+}
+
+/* ---------- Dar yan şerit (orta genişlik) ---------- */
+@container shell (min-width: 37.5rem) {
+  .layout {
+    --notice-bottom: 0px;
+    grid-template-columns: var(--rail-width) minmax(0, 1fr);
+    grid-template-rows: auto minmax(0, 1fr) auto;
+    grid-template-areas:
+      'header header'
+      'nav main'
+      'nav notice';
+  }
+
+  .nav {
+    position: sticky;
+    inset-block: 0;
+    align-self: start;
+    max-block-size: 100dvh;
+    overflow-y: auto;
+    padding-block-end: 0;
+    border-block-start: 0;
+    border-inline-end: var(--line) solid var(--color-border-subtle);
+  }
+
+  .list {
+    display: flex;
+    flex-direction: column;
+    padding-block: var(--space-md);
+  }
+
+  .main {
+    padding: var(--space-xl);
+  }
+}
+
+/* ---------- Geniş yan menü ---------- */
+@container shell (min-width: 64rem) {
+  .layout {
+    grid-template-columns: var(--sidebar-width) minmax(0, 1fr);
+  }
+
+  .list {
+    gap: var(--space-xs);
+    padding: var(--space-md);
+  }
+
+  .link {
+    flex-direction: row;
+    justify-content: flex-start;
+    gap: var(--space-md);
+    min-block-size: var(--tap-primary);
+    padding: var(--space-xs) var(--space-md);
+    border: var(--line) solid transparent;
+    border-radius: var(--radius-lg);
+    text-align: start;
+  }
+
+  .link[aria-current='page'] {
+    background-color: var(--color-primary-container);
+    border-color: var(--color-border-primary);
+    color: var(--color-on-primary-container);
+  }
+
+  .indicator {
+    inline-size: auto;
+    block-size: auto;
+    border: 0;
+  }
+
+  .link[aria-current='page'] .indicator {
+    background-color: transparent;
+    border: 0;
+  }
+
+  .label {
+    font-size: var(--text-label-lg-size);
+    line-height: var(--text-label-lg-line);
+  }
+}

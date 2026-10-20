@@ -1,0 +1,98 @@
+/*
+ * Düğme (docs/tasarim-sistemi.md 7). Birincil >= 56 px (--tap-primary), metin düğmesi >= 48 px.
+ * Pasif düğme de okunur kalır (>= 4.5:1: --color-disabled-on / --color-disabled-bg).
+ * Kenarlık hep vardır (saydam olabilir): Windows yüksek kontrastta sistem rengiyle görünür olur.
+ */
+.button {
+  composes: labelLg from '../styles/text.module.css';
+  position: relative;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: var(--space-sm);
+  min-block-size: var(--tap-primary);
+  min-inline-size: var(--tap-min);
+  padding: var(--space-md) var(--space-xl);
+  border: var(--line-control) solid transparent;
+  border-radius: var(--radius-lg);
+  background-color: transparent;
+  color: inherit;
+  font-family: inherit;
+  text-align: center;
+  text-decoration: none;
+  cursor: pointer;
+}
+
+/* Basılı ve üzerine gelme durumu: yazı renginde ince bir katman. */
+.button::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  border-radius: inherit;
+  background-color: currentColor;
+  opacity: 0;
+  transition: opacity var(--duration-short) var(--ease);
+  pointer-events: none;
+}
+
+@media (hover: hover) {
+  .button:hover::after {
+    opacity: 0.08;
+  }
+}
+
+.button:active::after {
+  opacity: 0.14;
+}
+
+.primary {
+  background-color: var(--color-primary);
+  border-color: var(--color-primary);
+  color: var(--color-on-primary);
+}
+
+.secondary {
+  border-color: var(--color-outline);
+  color: var(--color-primary);
+}
+
+.text {
+  min-block-size: var(--tap-min);
+  padding: var(--space-sm) var(--space-lg);
+  border-radius: var(--radius-md);
+  color: var(--color-primary);
+}
+
+.expand {
+  display: flex;
+  inline-size: 100%;
+}
+
+/* Pasif: gerçek `disabled` özniteliği. Neden pasif olduğu yakındaki bir metinle yazılır. */
+.button:disabled {
+  background-color: var(--color-disabled-bg);
+  border-color: transparent;
+  color: var(--color-disabled-on);
+  cursor: not-allowed;
+}
+
+.button:disabled::after {
+  display: none;
+}
+
+/* Yükleniyor: tıklanmaz (aria-disabled) ama pasif görünüme dönmez, dolu kalır. */
+.loading {
+  cursor: progress;
+}
+
+.content {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: var(--space-sm);
+  min-inline-size: 0;
+}
+
+.label {
+  min-inline-size: 0;
+}

@@ -1,0 +1,48 @@
+.wrap {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-sm);
+}
+
+.caption {
+  composes: labelLg from '../styles/text.module.css';
+}
+
+/* Yerel <progress>: ekran okuyucuya değer ve ad doğal olarak bildirilir. */
+.bar {
+  appearance: none;
+  inline-size: 100%;
+  block-size: var(--progress-height);
+  border: 0;
+  border-radius: var(--radius-full);
+  background-color: var(--color-surface-highest);
+  color: var(--color-success);
+  overflow: hidden;
+}
+
+.bar::-webkit-progress-bar {
+  background-color: var(--color-surface-highest);
+}
+
+.bar::-webkit-progress-value {
+  background-color: var(--color-success);
+  border-radius: var(--radius-full);
+}
+
+.bar::-moz-progress-bar {
+  background-color: var(--color-success);
+  border-radius: var(--radius-full);
+}
+
+/* Yüksek kontrastta çubuğun etrafında kenarlık vardır (çubuk ve zemin ayırt edilsin). */
+:global([data-theme='hc']) .bar,
+:global([data-theme='hc-light']) .bar,
+:global([data-theme='hc-dark']) .bar {
+  outline: var(--line) solid var(--color-outline);
+}
+
+@media (prefers-contrast: more) {
+  .bar {
+    outline: var(--line) solid var(--color-outline);
+  }
+}

@@ -1,0 +1,371 @@
+/* Yalnızca geliştirme galerisinin stilleri (üretimde sayfa 404 döner). Renk değeri yazılmaz: tokens.css. */
+.page {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-3xl);
+  max-inline-size: var(--measure-wide);
+  margin-inline: auto;
+}
+
+.title {
+  composes: headlineMd from '../../styles/text.module.css';
+}
+
+.intro {
+  composes: bodyLg from '../../styles/text.module.css';
+  max-inline-size: var(--measure-content);
+}
+
+.section {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-lg);
+  min-inline-size: 0;
+}
+
+.stack {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-md);
+  max-inline-size: var(--measure-content);
+}
+
+.row {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--space-md);
+}
+
+/* ---------- Önizleme ayarları ---------- */
+.controls {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-md);
+  max-inline-size: var(--measure-content);
+  padding: var(--space-lg);
+  border: var(--line) solid var(--color-border-subtle);
+  border-radius: var(--radius-lg);
+  background-color: var(--color-surface-container);
+}
+
+.fieldset {
+  min-inline-size: 0;
+  margin: 0;
+  padding: 0;
+  border: 0;
+}
+
+.legend {
+  composes: titleSm from '../../styles/text.module.css';
+  padding: 0;
+  margin-block-end: var(--space-sm);
+}
+
+.chips {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--space-sm);
+}
+
+.chip {
+  position: relative;
+}
+
+.chipInput {
+  position: absolute;
+  inset: 0;
+  inline-size: 100%;
+  block-size: 100%;
+  margin: 0;
+  opacity: 0;
+  cursor: pointer;
+}
+
+.chipFace {
+  composes: labelLg from '../../styles/text.module.css';
+  display: inline-flex;
+  align-items: center;
+  min-block-size: var(--tap-min);
+  padding: var(--space-sm) var(--space-lg);
+  border: var(--line-control) solid var(--color-outline);
+  border-radius: var(--radius-md);
+  background-color: var(--color-surface-lowest);
+  color: var(--color-on-surface);
+}
+
+.chipInput:checked + .chipFace {
+  border-color: var(--color-primary);
+  background-color: var(--color-secondary-container);
+  color: var(--color-on-secondary-container);
+  box-shadow: inset 0 0 0 var(--line) var(--color-primary);
+}
+
+.chipInput:focus-visible + .chipFace {
+  outline: var(--focus-width) solid var(--color-focus-ring);
+  outline-offset: 0.125rem;
+}
+
+/* ---------- Renkler ---------- */
+.themes {
+  display: grid;
+  gap: var(--space-lg);
+  grid-template-columns: repeat(auto-fit, minmax(min(100%, 22rem), 1fr));
+}
+
+.themeBox {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-sm);
+  min-inline-size: 0;
+  padding: var(--space-lg);
+  border: var(--line) solid var(--color-outline);
+  border-radius: var(--radius-lg);
+  background-color: var(--color-surface);
+  color: var(--color-on-surface);
+}
+
+.themeName {
+  composes: titleMd from '../../styles/text.module.css';
+}
+
+.swatches {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-xs);
+}
+
+.swatch {
+  composes: bodySm from '../../styles/text.module.css';
+  display: flex;
+  justify-content: space-between;
+  gap: var(--space-md);
+  padding: var(--space-sm) var(--space-md);
+  border: var(--line) solid var(--color-border-subtle);
+  border-radius: var(--radius-sm);
+}
+
+.ratio {
+  font-variant-numeric: tabular-nums;
+  font-weight: var(--font-weight-semibold);
+  white-space: nowrap;
+}
+
+/* ---------- Yazı ölçeği ---------- */
+.typeList {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-sm);
+}
+
+.sizeHeadlineLg {
+  composes: headlineLg from '../../styles/text.module.css';
+}
+.sizeHeadlineMd {
+  composes: headlineMd from '../../styles/text.module.css';
+}
+.sizeHeadlineSm {
+  composes: headlineSm from '../../styles/text.module.css';
+}
+.sizeTitleLg {
+  composes: titleLg from '../../styles/text.module.css';
+}
+.sizeTitleMd {
+  composes: titleMd from '../../styles/text.module.css';
+}
+.sizeTitleSm {
+  composes: titleSm from '../../styles/text.module.css';
+}
+.sizeBodyLg {
+  composes: bodyLg from '../../styles/text.module.css';
+}
+.sizeBodyMd {
+  composes: bodyMd from '../../styles/text.module.css';
+}
+.sizeBodySm {
+  composes: bodySm from '../../styles/text.module.css';
+}
+.sizeLabelLg {
+  composes: labelLg from '../../styles/text.module.css';
+}
+.sizeLabelMd {
+  composes: labelMd from '../../styles/text.module.css';
+}
+
+/* ---------- Durumlar ---------- */
+.frame {
+  border: var(--line) solid var(--color-border-subtle);
+  border-radius: var(--radius-lg);
+}
+
+.help {
+  composes: bodyMd from '../../styles/text.module.css';
+  color: var(--color-on-surface-variant);
+}
+
+/* ---------- Gezinme iskeleti örnekleri ---------- */
+.shellRoles {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--space-sm);
+}
+
+.shellLabel {
+  composes: titleSm from '../../styles/text.module.css';
+}
+
+.shellScroll {
+  overflow-x: auto;
+  max-inline-size: 100%;
+}
+
+.shellFrame {
+  block-size: 30rem;
+  overflow: auto;
+  border: var(--line-control) solid var(--color-outline);
+  border-radius: var(--radius-lg);
+}
+
+.shellNarrow {
+  inline-size: 22.5rem;
+  max-inline-size: 100%;
+}
+
+/* content-box: kenarlık hariç iç genişlik tam 64rem olur; iskelet geniş yan menüye geçer. */
+.shellWide {
+  box-sizing: content-box;
+  inline-size: 64rem;
+}
+
+.shellBody {
+  composes: bodyLg from '../../styles/text.module.css';
+}
+
+.shellHeading {
+  composes: headlineMd from '../../styles/text.module.css';
+  margin-block-end: var(--space-md);
+}
+
+/* ---------- Hareket ---------- */
+.motion {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-md);
+  max-inline-size: var(--measure-content);
+}
+
+.track {
+  display: flex;
+  padding: var(--space-sm);
+  border: var(--line) solid var(--color-border-subtle);
+  border-radius: var(--radius-md);
+}
+
+.box {
+  inline-size: 3.5rem;
+  block-size: 3.5rem;
+  border-radius: var(--radius-md);
+  background-color: var(--color-secondary);
+  transition: margin-inline-start var(--duration-long) var(--ease);
+}
+
+.boxEnd {
+  margin-inline-start: calc(100% - 3.5rem);
+}
+
+/* ---------- İkonlar ---------- */
+.icons {
+  display: grid;
+  gap: var(--space-md);
+  grid-template-columns: repeat(auto-fill, minmax(8.5rem, 1fr));
+}
+
+.iconCell {
+  composes: bodySm from '../../styles/text.module.css';
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: var(--space-xs);
+  padding: var(--space-md);
+  border: var(--line) solid var(--color-border-subtle);
+  border-radius: var(--radius-md);
+  text-align: center;
+  overflow-wrap: anywhere;
+}
+
+.iconPair {
+  display: flex;
+  gap: var(--space-sm);
+}
+
+/* Renk çifti örnekleri: her satır çiftin gerçek yazı ve zemin rengini kullanır (color-pairs.ts ile aynı sıra). */
+.pair0 {
+  background-color: var(--color-surface);
+  color: var(--color-on-surface);
+}
+
+.pair1 {
+  background-color: var(--color-surface);
+  color: var(--color-on-surface-variant);
+}
+
+.pair2 {
+  background-color: var(--color-surface);
+  color: var(--color-primary);
+}
+
+.pair3 {
+  background-color: var(--color-primary);
+  color: var(--color-on-primary);
+}
+
+.pair4 {
+  background-color: var(--color-primary-container);
+  color: var(--color-on-primary-container);
+}
+
+.pair5 {
+  background-color: var(--color-secondary-container);
+  color: var(--color-on-secondary-container);
+}
+
+.pair6 {
+  background-color: var(--color-tertiary-container);
+  color: var(--color-on-tertiary-container);
+}
+
+.pair7 {
+  background-color: var(--color-success-container);
+  color: var(--color-on-success-container);
+}
+
+.pair8 {
+  background-color: var(--color-warning-container);
+  color: var(--color-on-warning-container);
+}
+
+.pair9 {
+  background-color: var(--color-error-container);
+  color: var(--color-on-error-container);
+}
+
+.pair10 {
+  background-color: var(--color-surface);
+  color: var(--color-error);
+}
+
+.pair11 {
+  background-color: var(--color-inverse-surface);
+  color: var(--color-on-inverse-surface);
+}
+
+/* Rol seçimi (galeri bağlantıları): seçili olan belirgin kenarlıkla ayrışır. */
+.chipFace[href] {
+  text-decoration: none;
+}
+
+.chipFace[aria-current='true'] {
+  border-color: var(--color-primary);
+  background-color: var(--color-secondary-container);
+  color: var(--color-on-secondary-container);
+  box-shadow: inset 0 0 0 var(--line) var(--color-primary);
+}

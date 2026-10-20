@@ -1,0 +1,13 @@
+# Satır sonları her yerde LF (Windows'ta da); CI Linux'ta çalışıyor.
+* text=auto eol=lf
+
+# İkili dosyalar
+*.png binary
+*.jpg binary
+*.jpeg binary
+*.ico binary
+*.ttf binary
+*.otf binary
+*.woff binary
+*.woff2 binary
+*.jar binary

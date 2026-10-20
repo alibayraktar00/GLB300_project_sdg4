@@ -1,0 +1,113 @@
+/*
+ * Anahtar (yerel onay kutusu + role="switch"). Açık/kapalı yalnızca renkle değil, düğme üzerindeki
+ * onay işareti ve konumla da verilir. Dokunma alanı tüm satırdır.
+ */
+.row {
+  position: relative;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: var(--space-lg);
+  min-block-size: var(--tap-primary);
+  padding-block: var(--space-sm);
+}
+
+.text {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-2xs);
+  min-inline-size: 0;
+}
+
+.label {
+  composes: bodyLg from '../styles/text.module.css';
+}
+
+.help {
+  composes: bodySm from '../styles/text.module.css';
+  color: var(--color-on-surface-variant);
+}
+
+/* Gerçek onay kutusu satırın tamamını kaplar (görünmez); klavye ve ekran okuyucu bunu kullanır. */
+.input {
+  position: absolute;
+  inset: 0;
+  inline-size: 100%;
+  block-size: 100%;
+  margin: 0;
+  opacity: 0;
+  cursor: pointer;
+}
+
+.track {
+  flex: none;
+  position: relative;
+  inline-size: 3.25rem;
+  block-size: 2rem;
+  border: var(--line-control) solid var(--color-outline);
+  border-radius: var(--radius-full);
+  background-color: var(--color-surface-highest);
+}
+
+.thumb {
+  position: absolute;
+  inset-block-start: 50%;
+  inset-inline-start: 0.25rem;
+  display: grid;
+  place-items: center;
+  inline-size: 1.25rem;
+  block-size: 1.25rem;
+  border-radius: var(--radius-full);
+  background-color: var(--color-outline);
+  color: var(--color-surface);
+  transform: translateY(-50%);
+  transition:
+    inset-inline-start var(--duration-short) var(--ease),
+    background-color var(--duration-short) var(--ease);
+}
+
+.off,
+.on {
+  inline-size: 0.875rem;
+  block-size: 0.875rem;
+}
+
+.on {
+  display: none;
+}
+
+.input:checked ~ .track {
+  background-color: var(--color-primary);
+  border-color: var(--color-primary);
+}
+
+.input:checked ~ .track .thumb {
+  inset-inline-start: 1.5rem;
+  inline-size: 1.5rem;
+  block-size: 1.5rem;
+  background-color: var(--color-on-primary);
+  color: var(--color-primary);
+}
+
+.input:checked ~ .track .off {
+  display: none;
+}
+
+.input:checked ~ .track .on {
+  display: block;
+}
+
+.input:focus-visible ~ .track {
+  outline: var(--focus-width) solid var(--color-focus-ring);
+  outline-offset: 0.125rem;
+}
+
+.input:disabled ~ .track {
+  border-color: transparent;
+  background-color: var(--color-disabled-bg);
+}
+
+.input:disabled ~ .track .thumb {
+  background-color: var(--color-disabled-on);
+  color: var(--color-disabled-bg);
+}

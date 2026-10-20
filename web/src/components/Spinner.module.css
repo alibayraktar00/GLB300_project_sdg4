@@ -1,0 +1,40 @@
+.spinner {
+  display: inline-flex;
+  flex: none;
+}
+
+.ring {
+  inline-size: var(--icon-md);
+  block-size: var(--icon-md);
+  animation: dondur calc(var(--duration-long) * 2.5) linear infinite;
+}
+
+/* Durağan kum saati: yalnızca "animasyonları azalt" açıkken görünür. Seçici, Icon'un kendi sınıfından güçlüdür. */
+.spinner .static {
+  display: none;
+}
+
+/* "Animasyonları azalt": dönen halka yerine durağan kum saati (süreler zaten 0 ms'dir). */
+@media (prefers-reduced-motion: reduce) {
+  .spinner .ring {
+    display: none;
+  }
+
+  .spinner .static {
+    display: inline-block;
+  }
+}
+
+:global(html[data-motion='reduce']) .spinner .ring {
+  display: none;
+}
+
+:global(html[data-motion='reduce']) .spinner .static {
+  display: inline-block;
+}
+
+@keyframes dondur {
+  to {
+    transform: rotate(360deg);
+  }
+}

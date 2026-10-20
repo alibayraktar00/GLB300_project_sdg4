@@ -1,0 +1,146 @@
+# Sürekli bütünleştirme (CI): her push ve pull request'te çalışır.
+#
+# Üç iş vardır ve birbirinden bağımsız (paralel) koşar:
+#   1. web      : bağımlılık denetimi, ESLint + Stylelint, tip denetimi, Vitest, üretim derlemesi
+#                 (derleme sırasında gizli anahtar ve dış CDN denetimleri de çalışır)
+#   2. e2e      : Playwright kısa seti (Android Chrome, iPhone/WebKit, masaüstü Chrome ve Firefox)
+#   3. db-check : veritabanı migration'ları ve pgTAP testleri (Docker'sız, PGlite)
+#
+# Güvenlik notları:
+#   - Bu dosyada hiçbir gizli anahtar yok ve gerekmiyor. Web testleri Supabase'siz çalışır.
+#   - Üçüncü taraf action'lar sürüm etiketiyle DEĞİL, commit SHA'sıyla sabitlenmiştir (etiket sonradan
+#     başka koda taşınabilir). Güncellerken SHA'yı ve yanındaki yorumu birlikte değiştir.
+#   - `pull_request_target` KULLANILMAZ: fork'tan gelen kod gizli anahtarlarla çalışmasın.
+#   - GITHUB_TOKEN yalnızca depoyu okuyabilir.
+
+name: CI
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+
+permissions:
+  contents: read
+
+# Aynı dal için yeni bir koşu başlarsa eskisi iptal edilir.
+concurrency:
+  group: ci-${{ github.workflow }}-${{ github.ref }}
+  cancel-in-progress: true
+
+env:
+  # Next.js'in anonim kullanım verisi göndermesini kapat.
+  NEXT_TELEMETRY_DISABLED: "1"
+
+jobs:
+  web:
+    name: Web (lint, tip, test, derleme)
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    defaults:
+      run:
+        working-directory: web
+    steps:
+      - name: Depoyu al
+        uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+        with:
+          persist-credentials: false
+
+      - name: Node 24 kur
+        uses: actions/setup-node@949feb2413d6458794dcd2491c4babbbce0c15c1 # v7.1.0
+        with:
+          node-version: 24
+          cache: npm
+          cache-dependency-path: web/package-lock.json
+
+      - name: Bağımlılıkları kur
+        run: npm ci
+
+      # Yalnızca üretim bağımlılıkları denetlenir. Geliştirme araçlarındaki (stylelint, eslint-config-next)
+      # `braces` uyarısı için düzeltme sürümü yoktur ve uygulama paketine girmez.
+      - name: Bağımlılık güvenlik denetimi (npm audit)
+        run: npm audit --omit=dev --audit-level=high
+
+      - name: ESLint ve Stylelint
+        run: npm run lint
+
+      - name: Tip denetimi (tsc)
+        run: npm run typecheck
+
+      - name: Birim ve bileşen testleri (Vitest)
+        run: npm test
+
+      # `npm run build` önce scripts/check-env.mjs (NEXT_PUBLIC_ ile anahtar yok mu?), sonra next build,
+      # en son scripts/check-client-bundle.mjs (istemci paketinde sb_secret, Google, CDN yok mu?) çalıştırır.
+      - name: Üretim derlemesi ve paket denetimi
+        run: npm run build
+
+  e2e:
+    name: Web (Playwright kısa set)
+    runs-on: ubuntu-latest
+    timeout-minutes: 20
+    defaults:
+      run:
+        working-directory: web
+    steps:
+      - name: Depoyu al
+        uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+        with:
+          persist-credentials: false
+
+      - name: Node 24 kur
+        uses: actions/setup-node@949feb2413d6458794dcd2491c4babbbce0c15c1 # v7.1.0
+        with:
+          node-version: 24
+          cache: npm
+          cache-dependency-path: web/package-lock.json
+
+      - name: Bağımlılıkları kur
+        run: npm ci
+
+      - name: Tarayıcıları kur (Chromium, WebKit, Firefox)
+        run: npx playwright install --with-deps chromium webkit firefox
+
+      - name: Üretim derlemesi
+        run: npm run build
+
+      # Playwright, `next start` ile sunucuyu kendisi başlatır (playwright.config.ts). CI=true GitHub tarafından verilir.
+      - name: Playwright kısa seti
+        run: npm run test:e2e:kisa
+
+      - name: Hata raporunu sakla
+        if: failure()
+        uses: actions/upload-artifact@cf430e030ddbb5b0abf93d22962f4752f3646cd9 # v7.0.2
+        with:
+          name: playwright-raporu
+          path: |
+            web/playwright-report/
+            web/test-results/
+          if-no-files-found: ignore
+          retention-days: 7
+
+  db-check:
+    name: Veritabanı testleri (pgTAP, db-check)
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    defaults:
+      run:
+        working-directory: tools/db-check
+    steps:
+      - name: Depoyu al
+        uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+        with:
+          persist-credentials: false
+
+      - name: Node 24 kur
+        uses: actions/setup-node@949feb2413d6458794dcd2491c4babbbce0c15c1 # v7.1.0
+        with:
+          node-version: 24
+          cache: npm
+          cache-dependency-path: tools/db-check/package-lock.json
+
+      - name: Bağımlılıkları kur
+        run: npm ci
+
+      - name: Migration'ları uygula ve pgTAP testlerini çalıştır
+        run: npm test

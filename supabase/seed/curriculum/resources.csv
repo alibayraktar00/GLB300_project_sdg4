@@ -1,0 +1,5 @@
+ornek,topic_code,kind,title,url,provider,mode,est_minutes,requires_login,offline_ok,is_active
+TRUE,ORNEK-MAT6-K1,baglanti,ÖRNEK EBA kaynağı: doğal sayılar,https://example.org/eba/ornek-mat6-k1,EBA,ikisi,15,TRUE,FALSE,TRUE
+TRUE,ORNEK-MAT6-K1,ozet,ÖRNEK kısa özet: doğal sayılar,,Eğitim Köprüsü,kisa,5,FALSE,TRUE,TRUE
+TRUE,ORNEK-MAT6-K2,baglanti,ÖRNEK OGM Materyal: çarpanlar,https://example.org/ogm/ornek-mat6-k2,OGM Materyal,tam,20,FALSE,FALSE,TRUE
+TRUE,ORNEK-FEN6-K1,baglanti,ÖRNEK EBA kaynağı: Güneş ve Ay,https://example.org/eba/ornek-fen6-k1,EBA,ikisi,15,TRUE,FALSE,TRUE
