@@ -86,11 +86,15 @@ test.describe('tema tetikleyicileri: sistem ayarı ve uygulama içi seçim', { t
   ];
 
   for (const scenario of scenarios) {
-    test(scenario.name, async ({ page }) => {
+    test(scenario.name, async ({ page, browserName }) => {
+      // Playwright'ın Firefox'u `prefers-contrast` taklidini desteklemiyor ve `contrast` ayarı gönderilince
+      // koyu şema isteğini de bozuyor. Bu yüzden ayar yalnızca gerektiğinde gönderilir ve "sistem yüksek
+      // kontrast istiyor" senaryoları Firefox'ta atlanır (Chromium ve WebKit'te sınanıyor).
+      test.skip(browserName === 'firefox' && scenario.system?.contrast === 'more', 'Firefox prefers-contrast taklidini desteklemiyor.');
       if (scenario.stored) await storeAppearance(page, scenario.stored);
       await page.emulateMedia({
         colorScheme: scenario.system?.colorScheme ?? 'light',
-        contrast: scenario.system?.contrast ?? 'no-preference',
+        ...(scenario.system?.contrast ? { contrast: scenario.system.contrast } : {}),
       });
       await page.goto('/');
       expect(await currentSurface(page)).toBe(expectedSurface(scenario.expected));
