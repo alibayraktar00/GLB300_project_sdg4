@@ -42,7 +42,8 @@ test.describe('giriş sayfaları', { tag: '@kisa' }, () => {
     await page.getByLabel('Kullanıcı adı').fill('mavikus');
     await page.getByLabel('Şifre').fill('x');
     await page.getByRole('button', { name: 'Giriş yap' }).click();
-    await expect(page.getByRole('alert')).toBeVisible();
+    // Next.js'in sayfa geçişi duyuru alanı da role=alert taşır; yalnızca bizim hata bandını seç.
+    await expect(page.getByRole('alert').filter({ hasText: 'Giriş şu anda yapılamıyor' })).toBeVisible();
     await expect(page.getByText(/SUPABASE|sb_/)).toHaveCount(0);
   });
 
