@@ -25,6 +25,9 @@ export default async function LoginPage({ searchParams }: PageProps) {
         <p className={styles.intro}>{tr.auth.loginIntro}</p>
         <LoginForm mode="email" action={loginWithEmail} next={next} />
         <div className={styles.links}>
+          <ButtonLink href="/kayit/veli" variant="text" icon="family_restroom">
+            {tr.auth.signupPrompt}
+          </ButtonLink>
           <ButtonLink href="/giris/ogrenci" variant="text" icon="backpack">
             {tr.auth.studentLink}
           </ButtonLink>

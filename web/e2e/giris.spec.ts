@@ -52,3 +52,35 @@ test.describe('giriş sayfaları', { tag: '@kisa' }, () => {
     await expect(page).toHaveURL(/\/giris/);
   });
 });
+
+test.describe('veli kaydı', { tag: '@kisa' }, () => {
+  test('/kayit/veli: tek başlık, erişilebilirlik ihlali yok, yatay kaydırma yok', async ({ page }) => {
+    await dismissCookieNotice(page);
+    await page.goto('/kayit/veli');
+    await expect(page.getByRole('heading', { level: 1, name: 'Veli hesabı aç' })).toBeVisible();
+    await expectNoAxeViolations(page);
+    expect(await horizontalOverflow(page)).toBeLessThanOrEqual(0);
+  });
+
+  test('iki onay işaretlenmeden devam edilemez; onaylar varsayılan olarak kapalıdır', async ({ page }) => {
+    await dismissCookieNotice(page);
+    await page.goto('/kayit/veli');
+    await expect(page.getByRole('switch', { name: 'Aydınlatma metnini okudum, anladım' })).not.toBeChecked();
+    await expect(page.getByRole('switch', { name: 'Kullanım koşullarını okudum' })).not.toBeChecked();
+    await page.getByLabel('Adın').fill('Ayşe Yılmaz');
+    await page.getByLabel('E-posta adresi').fill('veli@example.com');
+    await page.getByLabel('Şifre', { exact: true }).fill('sifre12345');
+    await page.getByRole('button', { name: 'Devam et' }).click();
+    await expect(page.getByText('Devam etmek için metni okuduğunu işaretlemelisin.').first()).toBeVisible();
+  });
+
+  test('ad alanına telefon numarası yazılamaz', async ({ page }) => {
+    await dismissCookieNotice(page);
+    await page.goto('/kayit/veli');
+    await page.getByLabel('Adın').fill('Ali 0555 123 45 67');
+    await page.getByLabel('E-posta adresi').fill('veli@example.com');
+    await page.getByLabel('Şifre', { exact: true }).fill('sifre12345');
+    await page.getByRole('button', { name: 'Devam et' }).click();
+    await expect(page.getByText('Ad yalnızca harf, boşluk, kesme işareti ve tire içerebilir.')).toBeVisible();
+  });
+});
