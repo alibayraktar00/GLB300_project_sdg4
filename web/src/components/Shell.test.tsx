@@ -229,32 +229,13 @@ describe('Notice (bildirim: kendiliğinden kaybolmaz, aria-live)', () => {
 });
 
 describe('WelcomeChoices (açılış seçenekleri)', () => {
-  function setup() {
-    render(
-      <NoticeProvider>
-        <WelcomeChoices />
-        <NoticeRegion />
-      </NoticeProvider>,
-    );
-  }
-
-  it('üç seçenek, her biri tamamı tıklanabilir tek düğme (başlık + açıklama birlikte)', () => {
-    setup();
-    expect(screen.getAllByRole('button')).toHaveLength(3);
-    expect(screen.getByRole('button', { name: /Veliyim Hesap açar/ })).toBeInTheDocument();
-    expect(screen.getByRole('button', { name: /Gönüllüyüm Üniversite/ })).toBeInTheDocument();
-    expect(screen.getByRole('button', { name: /Öğrenciyim Velimin verdiği kullanıcı adıyla giriş yaparım/ })).toBeInTheDocument();
-  });
-
-  it('seçeneğe dokunmak kalıcı "yakında" bildirimini gösterir', () => {
-    vi.useFakeTimers();
-    setup();
-    fireEvent.click(screen.getByRole('button', { name: /Veliyim/ }));
-    expect(within(screen.getByRole('status')).getByText('Giriş çok yakında açılacak.')).toBeInTheDocument();
-    act(() => {
-      vi.advanceTimersByTime(60_000);
-    });
-    expect(screen.getByText('Giriş çok yakında açılacak.')).toBeInTheDocument();
-    vi.useRealTimers();
+  it('üç seçenek, her biri tamamı tıklanabilir tek bağlantı (başlık + açıklama birlikte)', () => {
+    render(<WelcomeChoices />);
+    expect(screen.getAllByRole('link')).toHaveLength(3);
+    expect(screen.getByRole('link', { name: /Veliyim Hesap açar/ })).toHaveAttribute('href', '/giris');
+    expect(screen.getByRole('link', { name: /Gönüllüyüm Üniversite/ })).toHaveAttribute('href', '/giris');
+    expect(
+      screen.getByRole('link', { name: /Öğrenciyim Velimin verdiği kullanıcı adıyla giriş yaparım/ }),
+    ).toHaveAttribute('href', '/giris/ogrenci');
   });
 });

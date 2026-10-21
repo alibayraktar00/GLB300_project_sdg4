@@ -1,54 +1,47 @@
-'use client';
-
-import { CardButton, CardContent } from '@/components/Card';
-import { useNotice } from '@/components/Notice';
+import { CardContent, CardLink } from '@/components/Card';
 import { tr } from '@/strings/tr';
 
 import styles from './WelcomeChoices.module.css';
 
 /**
  * Açılış ekranının üç giriş seçeneği: Veliyim / Gönüllüyüm / Öğrenciyim. Her biri tamamı tıklanabilir tek bir
- * düğme kartıdır (tek dokunma alanı, tek ekran okuyucu öğesi: başlık + açıklama birlikte okunur).
+ * bağlantı kartıdır (tek dokunma alanı, tek ekran okuyucu öğesi: başlık + açıklama birlikte okunur).
  *
- * Giriş akışı Faz A'da yazılacak; şimdilik her seçenek kalıcı bir "yakında" bildirimi gösterir.
- * TODO(Faz A): seçenekleri `/giris`, `/kayit/veli`, `/basvuru` ve `/giris/ogrenci` adreslerine bağlayan
- * `CardLink`'lere çevir (bağlantılar JavaScript'siz de çalışır).
+ * Veli ve gönüllü e-posta ile (/giris), öğrenci kullanıcı adıyla (/giris/ogrenci) girer. Veli kaydı ve
+ * gönüllü başvurusu sayfaları sonraki adımda eklenecek.
  */
 export function WelcomeChoices() {
-  const notice = useNotice();
-  const comingSoon = () => notice.show(tr.home.comingSoon);
-
   return (
     <ul className={styles.list}>
       <li>
-        <CardButton onClick={comingSoon}>
+        <CardLink href="/giris">
           <CardContent
             icon="family_restroom"
             title={tr.home.guardian.title}
             description={tr.home.guardian.subtitle}
             chevron
           />
-        </CardButton>
+        </CardLink>
       </li>
       <li>
-        <CardButton onClick={comingSoon}>
+        <CardLink href="/giris">
           <CardContent
             icon="volunteer_activism"
             title={tr.home.volunteer.title}
             description={tr.home.volunteer.subtitle}
             chevron
           />
-        </CardButton>
+        </CardLink>
       </li>
       <li>
-        <CardButton onClick={comingSoon}>
+        <CardLink href="/giris/ogrenci">
           <CardContent
             icon="backpack"
             title={tr.home.student.title}
             description={tr.home.student.subtitle}
             chevron
           />
-        </CardButton>
+        </CardLink>
       </li>
     </ul>
   );

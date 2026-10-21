@@ -159,8 +159,8 @@ test.describe('çerez bilgilendirme notu', { tag: '@kisa' }, () => {
     await page.goto('/');
     await expect(page.getByRole('region', { name: 'Çerez bilgilendirmesi' })).toBeVisible();
     await expect(page.getByRole('dialog')).toHaveCount(0);
-    await page.getByRole('button', { name: /Veliyim/ }).click();
-    await expect(page.getByRole('status').getByText('Giriş çok yakında açılacak.')).toBeVisible();
+    await page.getByRole('link', { name: /Veliyim/ }).click();
+    await expect(page).toHaveURL(/\/giris$/);
   });
 
   test('ilk yüklemede düzen kayması (CLS) küçüktür (yalnızca Chromium ölçer)', async ({ page }) => {
@@ -226,7 +226,7 @@ test.describe('yazı büyütme: %200 ve %400', { tag: '@kisa' }, () => {
       expect(await horizontalOverflow(page)).toBeLessThanOrEqual(0);
       expect(await overflowingElements(page)).toEqual([]);
       // Düğme kartları metni kesmez: kartın yüksekliği içeriğine uyar (sabit yükseklik yok).
-      const cards = page.getByRole('button', { name: /Veliyim|Gönüllüyüm|Öğrenciyim/ });
+      const cards = page.getByRole('link', { name: /Veliyim|Gönüllüyüm|Öğrenciyim/ });
       for (let i = 0; i < 3; i += 1) {
         const handle = await cards.nth(i).elementHandle();
         const clipped = await handle?.evaluate((el) => el.scrollHeight > el.clientHeight + 1);
@@ -307,32 +307,13 @@ test.describe('klavye: odak görünür ve mantıklı sırada', { tag: '@kisa' },
     expect(width).toBeGreaterThanOrEqual(4);
   });
 
-  test('Enter ve Boşluk ile kart düğmeleri çalışır (klavye tek başına yeterli)', async ({ page }) => {
+  test('Enter ile kart bağlantısı çalışır (klavye tek başına yeterli)', async ({ page }) => {
     await dismissCookieNotice(page);
     await page.goto('/');
-    const card = page.getByRole('button', { name: /Öğrenciyim/ });
-    await card.focus();
+    await page.getByRole('link', { name: /Öğrenciyim/ }).focus();
     await page.keyboard.press('Enter');
-    await expect(page.getByRole('status').getByText('Giriş çok yakında açılacak.')).toBeVisible();
-    // "Tamam" ile kapanır (bildirim kendiliğinden kaybolmaz).
-    await page.getByRole('status').getByRole('button', { name: 'Tamam' }).click();
-    await expect(page.getByRole('status').getByText('Giriş çok yakında açılacak.')).toHaveCount(0);
-    await page.getByRole('button', { name: /Veliyim/ }).focus();
-    await page.keyboard.press('Space');
-    await expect(page.getByRole('status').getByText('Giriş çok yakında açılacak.')).toBeVisible();
-  });
-});
-
-test.describe('bildirim kendiliğinden kaybolmaz ve canlı bölgededir', { tag: '@kisa' }, () => {
-  test('bildirim 6 sn sonra da durur (zaman aşımı yok)', async ({ page }) => {
-    await dismissCookieNotice(page);
-    await page.goto('/');
-    const region = page.getByRole('status');
-    await expect(region).toHaveAttribute('aria-live', 'polite');
-    await page.getByRole('button', { name: /Gönüllüyüm/ }).click();
-    await expect(region.getByText('Giriş çok yakında açılacak.')).toBeVisible();
-    await page.waitForTimeout(6000);
-    await expect(region.getByText('Giriş çok yakında açılacak.')).toBeVisible();
+    await expect(page).toHaveURL(/\/giris\/ogrenci$/);
+    await expect(page.getByRole('heading', { level: 1, name: 'Öğrenci girişi' })).toBeVisible();
   });
 });
 
@@ -345,14 +326,14 @@ test.describe('Windows yüksek kontrast (forced-colors)', () => {
     expect(await page.evaluate(() => matchMedia('(forced-colors: active)').matches)).toBe(true);
 
     // Kart düğmesinin kenarlığı vardır (saydam bile olsa sistem renginde çizilir).
-    const border = await page.getByRole('button', { name: /Veliyim/ }).evaluate((el) => {
+    const border = await page.getByRole('link', { name: /Veliyim/ }).evaluate((el) => {
       const style = getComputedStyle(el);
       return { width: parseFloat(style.borderTopWidth), style: style.borderTopStyle };
     });
     expect(border.style).not.toBe('none');
     expect(border.width).toBeGreaterThan(0);
 
-    await page.getByRole('button', { name: /Veliyim/ }).focus();
+    await page.getByRole('link', { name: /Veliyim/ }).focus();
     await page.keyboard.press('Tab');
     const outline = await page.evaluate(() => {
       const style = getComputedStyle(document.activeElement as HTMLElement);

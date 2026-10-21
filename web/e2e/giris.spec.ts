@@ -1,0 +1,53 @@
+import { expect, test } from '@playwright/test';
+
+import { dismissCookieNotice, expectNoAxeViolations, horizontalOverflow } from './yardimcilar';
+
+/**
+ * Giriş sayfaları (Faz A). Supabase projesi yokken de çalışır: eksik ayar uygulamayı çökertmez,
+ * kullanıcıya genel bir hata gösterilir; ham ayar adı ya da ayrıntı sızmaz.
+ */
+test.describe('giriş sayfaları', { tag: '@kisa' }, () => {
+  for (const { path, title } of [
+    { path: '/giris', title: 'Giriş yap' },
+    { path: '/giris/ogrenci', title: 'Öğrenci girişi' },
+  ]) {
+    test(`${path}: tek başlık, erişilebilirlik ihlali yok, yatay kaydırma yok`, async ({ page }) => {
+      await dismissCookieNotice(page);
+      await page.goto(path);
+      await expect(page.getByRole('heading', { level: 1, name: title })).toBeVisible();
+      await expectNoAxeViolations(page);
+      expect(await horizontalOverflow(page)).toBeLessThanOrEqual(0);
+    });
+  }
+
+  test('"Bu cihazda oturumum açık kalsın" varsayılan olarak kapalıdır', async ({ page }) => {
+    await page.goto('/giris');
+    await expect(page.getByRole('switch', { name: 'Bu cihazda oturumum açık kalsın' })).not.toBeChecked();
+  });
+
+  test('geçersiz e-posta alan hatası verir ve hatayı alana bağlar', async ({ page }) => {
+    await dismissCookieNotice(page);
+    await page.goto('/giris');
+    await page.getByLabel('E-posta adresi').fill('yanlis');
+    await page.getByLabel('Şifre').fill('x');
+    await page.getByRole('button', { name: 'Giriş yap' }).click();
+    const email = page.getByLabel('E-posta adresi');
+    await expect(email).toHaveAttribute('aria-invalid', 'true');
+    await expect(page.getByText('E-posta adresi geçerli görünmüyor.')).toBeVisible();
+  });
+
+  test('Supabase ayarı yokken giriş denemesi çökmez ve ayar ayrıntısı göstermez', async ({ page }) => {
+    await dismissCookieNotice(page);
+    await page.goto('/giris/ogrenci');
+    await page.getByLabel('Kullanıcı adı').fill('mavikus');
+    await page.getByLabel('Şifre').fill('x');
+    await page.getByRole('button', { name: 'Giriş yap' }).click();
+    await expect(page.getByRole('alert')).toBeVisible();
+    await expect(page.getByText(/SUPABASE|sb_/)).toHaveCount(0);
+  });
+
+  test('oturum yokken korumalı alan girişe yönlendirir', async ({ page }) => {
+    await page.goto('/ogrenci/bugun');
+    await expect(page).toHaveURL(/\/giris/);
+  });
+});

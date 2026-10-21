@@ -1,0 +1,23 @@
+/* Giriş sayfaları: dar, ortalanmış tek sütun. */
+.layout {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-xl);
+  max-inline-size: var(--measure-form);
+  margin-inline: auto;
+}
+
+.title {
+  composes: headlineLg from '../../styles/text.module.css';
+}
+
+.intro {
+  composes: bodyLg from '../../styles/text.module.css';
+}
+
+.links {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-sm);
+  align-items: flex-start;
+}

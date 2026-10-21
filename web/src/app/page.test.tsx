@@ -40,9 +40,9 @@ describe('Ana sayfa', () => {
 
   it('Veliyim / Gönüllüyüm / Öğrenciyim seçenekleri ve öğrenci notu görünür', () => {
     renderHome();
-    expect(screen.getByRole('button', { name: /Veliyim/ })).toBeInTheDocument();
-    expect(screen.getByRole('button', { name: /Gönüllüyüm/ })).toBeInTheDocument();
-    expect(screen.getByRole('button', { name: /Öğrenciyim/ })).toBeInTheDocument();
+    expect(screen.getByRole('link', { name: /Veliyim/ })).toBeInTheDocument();
+    expect(screen.getByRole('link', { name: /Gönüllüyüm/ })).toBeInTheDocument();
+    expect(screen.getByRole('link', { name: /Öğrenciyim/ })).toBeInTheDocument();
     expect(screen.getByText(tr.home.studentNote)).toBeInTheDocument();
   });
 
