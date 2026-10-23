@@ -81,6 +81,61 @@ export const tr = {
     },
   },
 
+  child: {
+    title: 'Çocuk hesabı ekle',
+    intro: 'Çocuğun giriş yapacağı hesabı sen oluşturursun. Önce bilgileri yaz, sonra bir onay ekranı gelir.',
+    nickname: 'Rumuz',
+    nicknameHelp: 'Gönüllü bu adı görür. Gerçek ad yazmak gerekmez.',
+    grade: 'Sınıf',
+    gradeOption: (grade: number) => `${grade}. sınıf`,
+    username: 'Kullanıcı adı',
+    usernameHelp: 'Çocuk bununla giriş yapar. 3-30 karakter; küçük harf, rakam, nokta, tire ve alt çizgi.',
+    password: 'Şifre',
+    passwordHelp: 'En az 10 karakter; harf ve rakam içermeli. Çocuğa sen verirsin.',
+    next: 'Devam et',
+    back: 'Geri dön',
+    submit: 'Hesabı oluştur',
+    consentChoiceLabel: 'Seçimin',
+    consentGive: 'Açık rıza veriyorum',
+    consentRefuse: 'Açık rıza vermiyorum',
+    refuseTitle: 'Bu rıza olmadan hesap açılamıyor',
+    refuseBody:
+      'Bu rıza olmadan çocuk hesabı açılamıyor, çünkü platformu kullanmak bu veriler üzerinde işlem yapılmasını gerektiriyor. İstersen geri dönüp fikrini değiştirebilirsin.',
+    success: 'Çocuk hesabı oluşturuldu.',
+    errors: {
+      nicknameRequired: 'Rumuz yazılmalı.',
+      nicknameInvalid: 'Rumuz yalnızca harf, boşluk, kesme işareti ve tire içerebilir.',
+      gradeInvalid: 'Sınıf 5 ile 8 arasında seçilmeli.',
+      usernameRequired: 'Kullanıcı adı yazılmalı.',
+      usernameInvalid: 'Kullanıcı adı 3-30 karakter olmalı; yalnızca küçük harf (ç, ş gibi harfler olmadan), rakam, nokta, tire ve alt çizgi.',
+      consentRequired: 'Devam etmek için bir seçim yapılmalı.',
+      usernameTaken: 'Bu kullanıcı adı kullanılamıyor. Başka bir ad denenebilir.',
+      limit: 'Bu hesapla daha fazla çocuk eklenemiyor.',
+      unavailable: 'Hesap şu anda oluşturulamıyor. Biraz sonra tekrar denenebilir.',
+    },
+  },
+
+  /**
+   * Yasal metinler (hukuk belgesi docs/hukuk/acik-riza-veli.md §3). `legal` öneki: sağlık sözcüğü kuralının
+   * bilinçli istisnasıdır; yalnızca velinin ayrı rıza ekranında gösterilir.
+   */
+  legal: {
+    ar1Title: 'Açık rıza beyanı',
+    ar1Intro: (nickname: string) =>
+      `Çocuğun dolaylı olarak sağlık durumuna işaret edebilecek verileri (${nickname})`,
+    ar1Points: [
+      'Platform, derslere ara vermek zorunda kalan öğrencilere yöneliktir. Çocuğunun platformu kullanması, derslere ara verdiği tarih aralığı ve soru-cevaplarında kendiliğinden yazabileceği ya da fotoğraflarında görünebilecek bilgiler, dolaylı olarak bir sağlık durumuna işaret edebilir.',
+      'Platform hastalık, tanı veya engel bilgisi sormaz ve toplamaz. Arayüzde sağlık bilgisi paylaşılmaması önerilir.',
+      'Bu veriler yalnızca telafi planı, soru-cevap ve gönüllü desteği sunmak için işlenir. Çocuğunla eşleşen gönüllü yalnızca rumuzunu, sınıfını ve sorularını görür; derslere ara verdiği tarihleri görmez.',
+      'Bu rıza olmadan çocuğun için hesap açılamaz, çünkü bu işleme hizmetten ayrılamaz.',
+      'Rızanı istediğin zaman Ayarlar bölümünden geri alabilirsin. Geri aldığında çocuğunun hesabı kapatılır ve verileri en geç 30 gün içinde silinir. Güvenlik kayıtları gizlilik politikasında belirtilen süre boyunca saklanabilir.',
+    ],
+    ar1Representative: (nickname: string) =>
+      `${nickname} adlı çocuğun velisi veya vasisi (yasal temsilcisi) olduğumu beyan ederim.`,
+    ar1Question: (nickname: string) =>
+      `Bu bilgiler ışığında ${nickname} adlı çocuğumun yukarıda açıklanan verilerinin, belirtilen amaçla sınırlı olarak işlenmesine:`,
+  },
+
   common: {
     ok: 'Tamam',
     close: 'Kapat',

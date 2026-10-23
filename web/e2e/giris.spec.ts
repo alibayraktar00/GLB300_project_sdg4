@@ -50,6 +50,8 @@ test.describe('giriş sayfaları', { tag: '@kisa' }, () => {
   test('oturum yokken korumalı alan girişe yönlendirir', async ({ page }) => {
     await page.goto('/ogrenci/bugun');
     await expect(page).toHaveURL(/\/giris/);
+    await page.goto('/veli/cocuk-ekle');
+    await expect(page).toHaveURL(/\/giris/);
   });
 });
 

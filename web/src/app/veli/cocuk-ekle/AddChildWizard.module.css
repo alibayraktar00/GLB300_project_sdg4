@@ -1,0 +1,55 @@
+.form {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-lg);
+  inline-size: 100%;
+}
+
+.subtitle {
+  composes: titleLg from '../../../styles/text.module.css';
+}
+
+.text {
+  composes: bodyLg from '../../../styles/text.module.css';
+}
+
+.points {
+  composes: bodyMd from '../../../styles/text.module.css';
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-sm);
+  margin: 0;
+  padding-inline-start: var(--space-xl);
+}
+
+.field {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-xs);
+}
+
+.label {
+  composes: labelLg from '../../../styles/text.module.css';
+}
+
+.select {
+  min-block-size: 3.5rem;
+  padding-inline: var(--space-md);
+  border: var(--line-control) solid var(--color-outline);
+  border-radius: var(--radius-md);
+  background: var(--color-surface);
+  color: var(--color-on-surface);
+  font: inherit;
+}
+
+.error {
+  composes: bodyMd from '../../../styles/text.module.css';
+  color: var(--color-error);
+  margin: 0;
+}
+
+.actions {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-md);
+}
