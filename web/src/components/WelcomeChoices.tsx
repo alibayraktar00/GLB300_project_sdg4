@@ -24,7 +24,7 @@ export function WelcomeChoices() {
         </CardLink>
       </li>
       <li>
-        <CardLink href="/giris">
+        <CardLink href="/basvuru">
           <CardContent
             icon="volunteer_activism"
             title={tr.home.volunteer.title}

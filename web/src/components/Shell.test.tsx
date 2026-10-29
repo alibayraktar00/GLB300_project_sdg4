@@ -233,7 +233,7 @@ describe('WelcomeChoices (açılış seçenekleri)', () => {
     render(<WelcomeChoices />);
     expect(screen.getAllByRole('link')).toHaveLength(3);
     expect(screen.getByRole('link', { name: /Veliyim Hesap açar/ })).toHaveAttribute('href', '/giris');
-    expect(screen.getByRole('link', { name: /Gönüllüyüm Üniversite/ })).toHaveAttribute('href', '/giris');
+    expect(screen.getByRole('link', { name: /Gönüllüyüm Üniversite/ })).toHaveAttribute('href', '/basvuru');
     expect(
       screen.getByRole('link', { name: /Öğrenciyim Velimin verdiği kullanıcı adıyla giriş yaparım/ }),
     ).toHaveAttribute('href', '/giris/ogrenci');

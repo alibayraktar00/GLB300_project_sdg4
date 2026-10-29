@@ -86,3 +86,26 @@ test.describe('veli kaydı', { tag: '@kisa' }, () => {
     await expect(page.getByText('Ad yalnızca harf, boşluk, kesme işareti ve tire içerebilir.')).toBeVisible();
   });
 });
+
+test.describe('gönüllü başvurusu', { tag: '@kisa' }, () => {
+  test('/basvuru: tek başlık, erişilebilirlik ihlali yok, yatay kaydırma yok', async ({ page }) => {
+    await dismissCookieNotice(page);
+    await page.goto('/basvuru');
+    await expect(page.getByRole('heading', { level: 1, name: 'Gönüllü başvurusu' })).toBeVisible();
+    await expectNoAxeViolations(page);
+    expect(await horizontalOverflow(page)).toBeLessThanOrEqual(0);
+  });
+
+  test('edu.tr olmayan e-posta reddedilir', async ({ page }) => {
+    await dismissCookieNotice(page);
+    await page.goto('/basvuru');
+    await page.getByLabel('Adın', { exact: true }).fill('Ayşe');
+    await page.getByLabel('Soyadın', { exact: true }).fill('Kaya');
+    await page.getByLabel('Üniversite e-posta adresi').fill('ayse@gmail.com');
+    await page.getByLabel('Şifre', { exact: true }).fill('sifre12345');
+    await page.getByLabel('Üniversite', { exact: true }).fill('Ankara Üniversitesi');
+    await page.getByLabel('Sınıf', { exact: true }).selectOption('3');
+    await page.getByRole('button', { name: 'Devam et' }).click();
+    await expect(page.getByText('Gönüllü olmak için edu.tr uzantılı üniversite e-postası gerekli.')).toBeVisible();
+  });
+});

@@ -7,7 +7,7 @@ import type { SupabaseClient } from '@supabase/supabase-js';
  * istemci yalnızca tür, sürüm ve seçimi gönderir (supabase/migrations: consents).
  */
 
-export type ConsentType = 'aydinlatma_veli' | 'kullanim_kosullari';
+export type ConsentType = 'aydinlatma_veli' | 'aydinlatma_gonullu' | 'kullanim_kosullari';
 
 /** Bir metin türünün en güncel yayımlanmış sürümü; yayımlanmış metin yoksa null. */
 async function latestVersion(supabase: SupabaseClient, docType: string): Promise<string | null> {

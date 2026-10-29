@@ -81,6 +81,38 @@ export const tr = {
     },
   },
 
+  volunteer: {
+    title: 'Gönüllü başvurusu',
+    intro:
+      'Üniversite öğrencisi olarak ders desteği vermek için başvurabilirsin. Başvuru birkaç adımdır; ilk adımda hesabını açıyoruz.',
+    givenName: 'Adın',
+    familyName: 'Soyadın',
+    nameHelp: 'Öğrencilere yalnızca adın ve soyadının baş harfi gösterilir.',
+    email: 'Üniversite e-posta adresi',
+    emailHelp: 'Adres edu.tr ile bitmeli.',
+    university: 'Üniversite',
+    department: 'Bölüm',
+    classYear: 'Sınıf',
+    classYearOption: (year: number) => `${year}. sınıf`,
+    readNotice: 'Gönüllü aydınlatma metnini okudum, anladım',
+    readTerms: 'Kullanım koşullarını okudum',
+    submit: 'Devam et',
+    otpTitle: 'E-postanı doğrula',
+    otpIntro: 'Üniversite e-posta adresine 6 haneli bir kod gönderildi. Kodu yazınca başvurun kaydedilir.',
+    otpSubmit: 'Başvuruyu kaydet',
+    errors: {
+      givenNameRequired: 'Adın yazılmalı.',
+      familyNameRequired: 'Soyadın yazılmalı.',
+      nameInvalid: 'Yalnızca harf, boşluk, kesme işareti ve tire yazılabilir.',
+      emailNotEdu: 'Gönüllü olmak için edu.tr uzantılı üniversite e-postası gerekli.',
+      universityRequired: 'Üniversite yazılmalı.',
+      universityInvalid: 'Üniversite adı yalnızca harf, boşluk, kesme işareti ve tire içerebilir.',
+      departmentInvalid: 'Bölüm adı yalnızca harf, boşluk, kesme işareti ve tire içerebilir.',
+      classYearInvalid: 'Sınıf seçilmeli.',
+      profileFailed: 'Başvurun kaydedilemedi. Biraz sonra tekrar denenebilir.',
+    },
+  },
+
   child: {
     title: 'Çocuk hesabı ekle',
     intro: 'Çocuğun giriş yapacağı hesabı sen oluşturursun. Önce bilgileri yaz, sonra bir onay ekranı gelir.',
