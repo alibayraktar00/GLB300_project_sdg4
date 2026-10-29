@@ -378,3 +378,15 @@ Hata önekleri: `OZELLIK_KAPALI:` (veli özelliği kapattı), `ENGELLI:` (engell
 - **`students.prefs` sütununun kaldırılması** (Ş3): Aşama 2; o zamana dek sütun "kullanılmıyor" (§5).
 
 **Ertelenenler** (pilot öncesine; hukuk kararlarına bağlı): `legal_holds`, `deletion_log`, `data_requests`, `blocked_identities` tabloları; `auth.audit_log_entries` / `auth.sessions` IP temizliği.
+
+## 13. Uygulanan plan işlevleri (`20261016100700_plan_islevleri.sql`)
+
+§12'deki sözleşmenin plan bölümü yazıldı ve `supabase/tests/database/080_plan_islevleri.test.sql` ile sınandı (37 test). Parametre adları `p_` önekiyle başlar (PostgREST adlandırılmış argümanlar için; sütun adlarıyla çakışmaz).
+
+| İşlev | Çağıran | Davranış |
+|---|---|---|
+| `create_recovery_plan(p_grade, p_subject_codes[], p_absence_start, p_absence_end, p_daily_goal)` | aktif öğrenci | Kayıtlı sınıfla aynı sınıf şart. Başlangıç tarihini içeren öğretim yılı bulunur; aralık yıl içinde, ≤ 366 gün. Tatil haftaları atlanır; hafta kesişimindeki haftalık konular **hafta, hafta içi sıra, ders sırası** ile dizilir (MAT/FEN dönüşümlü), aynı konu bir kez. Eski aktif plan aynı işlemde `arsiv` olur. Konu yoksa `KONU_YOK` ile **hata verir ve hiçbir şey değişmez**. |
+| `get_today_tasks()` | aktif öğrenci | Aktif planın sıradaki `daily_goal` bekleyen görevi + toplam/tamamlanan sayısı (jsonb). Tarihe bağlı değil. Plan yoksa `null`; öğrenci olmayan için `null`. |
+| `complete_plan_item(p_item_id, p_mode)` | aktif öğrenci | Kendi aktif planındaki bekleyen görevi `kisa`/`tam` modunda tamamlar; bitince plan `tamamlandi` olur. |
+
+Hata kodları ileti başında sabit önektir (`SINIF_UYUMSUZ`, `TARIH_SIRA`, `TARIH_UZUN`, `TARIH_YIL`, `HEDEF_GECERSIZ`, `DERS_GECERSIZ`, `KONU_YOK`, `MOD_GECERSIZ`, `GOREV_YOK`); yetki hatası SQLSTATE `42501`. Henüz uygulanmayanlar: plan listesi (Planım) için okuma işlevi, veli adına plan oluşturma.

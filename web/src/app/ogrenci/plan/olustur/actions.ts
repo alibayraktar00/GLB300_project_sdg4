@@ -11,8 +11,8 @@ export type CreatePlanState = { fieldErrors?: PlanFieldErrors; formError?: strin
 
 /**
  * Telafi planı oluşturur (`create_recovery_plan` RPC'si). Derslere ara verme nedeni sorulmaz ve saklanmaz.
- * RPC henüz yazılmadı (Faz B, `backend`): o zamana kadar çağrı hata döner ve kullanıcıya girdilerinin
- * korunduğu söylenir. Asıl yetki ve doğrulama RPC'de ve veritabanındadır; burada yalnızca erken doğrulama yapılır.
+ * RPC `supabase/migrations/..._plan_islevleri.sql` içindedir. Hata durumunda (ör. konu bilgisi yok, veritabanı
+ * ulaşılamıyor) kullanıcıya girdilerinin korunduğu söylenir. Asıl yetki ve doğrulama RPC'de ve veritabanındadır; burada yalnızca erken doğrulama yapılır.
  */
 export async function createPlan(_previous: CreatePlanState, formData: FormData): Promise<CreatePlanState> {
   await requireRole('ogrenci');
@@ -29,11 +29,11 @@ export async function createPlan(_previous: CreatePlanState, formData: FormData)
   try {
     const supabase = await createSupabaseServerClient();
     const { error } = await supabase.rpc('create_recovery_plan', {
-      grade: parsed.data.grade,
-      subject_codes: parsed.data.subjects,
-      absence_start: parsed.data.start,
-      absence_end: parsed.data.end,
-      daily_goal: parsed.data.dailyGoal,
+      p_grade: parsed.data.grade,
+      p_subject_codes: parsed.data.subjects,
+      p_absence_start: parsed.data.start,
+      p_absence_end: parsed.data.end,
+      p_daily_goal: parsed.data.dailyGoal,
     });
     if (error) return { formError: tr.plan.errors.unavailable };
   } catch {

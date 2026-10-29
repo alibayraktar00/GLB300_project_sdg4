@@ -138,7 +138,10 @@ select is_empty(
          'private.storage_kota_uygun(text)', 'private.has_guardian_link(uuid)', 'private.message_hidden_from_me(uuid,uuid)',
          'private.embargoed_volunteers()',
          'register_push_subscription(text,text,text,text)', 'public.register_push_subscription(text,text,text,text)',
-         'remove_push_subscription(text)', 'public.remove_push_subscription(text)']) $$,
+         'remove_push_subscription(text)', 'public.remove_push_subscription(text)',
+         'create_recovery_plan(smallint,text[],date,date,smallint)', 'public.create_recovery_plan(smallint,text[],date,date,smallint)',
+         'get_today_tasks()', 'public.get_today_tasks()',
+         'complete_plan_item(uuid,text)', 'public.complete_plan_item(uuid,text)']) $$,
   'authenticated: izin listesi dışında hiçbir public/private fonksiyonunu çalıştıramaz');
 -- Servis rolü RLS'yi atlar ama volunteers CHECK kısıtları is_safe_name'i çağırır (N1): yalnızca o açıktır.
 select is_empty(
