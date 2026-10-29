@@ -7,6 +7,8 @@
 begin;
 select plan(44);
 select tests.make_fixture();
+-- Migration 08 demo için TASLAK yasal metin kayıtları (v0.1-taslak) yayımlar; bu test kendi sürümlerini kuruyor.
+delete from public.legal_documents where version = 'v0.1-taslak';
 
 -- ====================== Çerez politikası: belge var, rıza türü yok ======================
 select lives_ok($$ insert into public.legal_documents (doc_type, version, sha256, published_at, body_md)
