@@ -1,5 +1,6 @@
 import { BrandMark } from '@/components/BrandMark';
 import { ButtonLink } from '@/components/Button';
+import { HomeSections } from '@/components/HomeSections';
 import { PublicPage } from '@/components/PublicPage';
 import { SectionHeader } from '@/components/SectionHeader';
 import { WelcomeChoices } from '@/components/WelcomeChoices';
@@ -37,6 +38,7 @@ export default function HomePage() {
           ) : null}
         </section>
       </div>
+      <HomeSections />
     </PublicPage>
   );
 }

@@ -20,6 +20,20 @@ export const tr = {
     volunteer: { title: 'Gönüllüyüm', subtitle: 'Üniversite öğrencisi olarak destek vermek isterim.' },
     student: { title: 'Öğrenciyim', subtitle: 'Velimin verdiği kullanıcı adıyla giriş yaparım.' },
     studentNote: 'Öğrenci hesabını veli açar. Kullanıcı adı ve şifre veliden alınır.',
+    howTitle: 'Nasıl çalışır',
+    steps: [
+      { icon: 'family_restroom', title: 'Veli hesap açar', text: 'Çocuğun hesabını veli oluşturur. Çocuğun yaptığı her şeyi görebilir.' },
+      { icon: 'wb_twilight', title: 'Kişisel telafi planı', text: 'Derslere ara verilen haftalarda işlenen konulardan, çocuğa özel kısa günlük hedefler çıkar.' },
+      { icon: 'info', title: 'Soru sor, cevap al', text: 'Anlaşılmayan soru fotoğrafla gönderilir; gönüllü adım adım açıklar.' },
+      { icon: 'play_arrow', title: 'Birebir ders', text: 'Aynı gönüllüyle, velinin onayıyla planlanan kısa görüntülü dersler.' },
+    ],
+    safetyTitle: 'Güvenli ve ücretsiz',
+    safety: [
+      { icon: 'check_circle', title: 'Onaylı gönüllüler', text: 'Gönüllüler üniversite öğrencisidir. Başvurular yönetici tarafından incelenir.' },
+      { icon: 'check_circle', title: 'Her şey platformun içinde', text: 'Yazışmalar ve dersler platformun dışına taşınmaz. Telefon numarası ya da sosyal medya adresi paylaşılamaz.' },
+      { icon: 'family_restroom', title: 'Velinin gözü üzerinde', text: 'Veli soruları, cevapları ve ders geçmişini görür; derse istediği an katılabilir.' },
+      { icon: 'volunteer_activism', title: 'Ücretsiz, reklamsız', text: 'Platform ücretsizdir. Reklam ve izleme yoktur.' },
+    ],
         galleryLink: 'Bileşen galerisi (geliştirici)',
   },
 
