@@ -15,7 +15,7 @@ export const dynamic = 'force-dynamic';
 /** Gönüllünün dersleri: yeni ders planla (Meet/Zoom bağlantısıyla) ve planlıları gör/iptal et. */
 export default async function VolunteerSessionsPage() {
   const user = await requireRole('gonullu');
-  const [{ upcoming, past }, matches] = await Promise.all([loadSessions(), loadActiveMatches(user.id)]);
+  const [{ upcoming, past, answered }, matches] = await Promise.all([loadSessions(), loadActiveMatches(user.id)]);
   return (
     <div className={pageStyles.page}>
       <h1 className={pageStyles.title}>{tr.sessions.title}</h1>
@@ -27,7 +27,7 @@ export default async function VolunteerSessionsPage() {
           <ScheduleForm matches={matches} action={scheduleSession} />
         )}
       </section>
-      <SessionsView upcoming={upcoming} past={past} returnTo="/gonullu/dersler" emptyHelp="" />
+      <SessionsView upcoming={upcoming} past={past} answered={answered} returnTo="/gonullu/dersler" emptyHelp="" />
     </div>
   );
 }

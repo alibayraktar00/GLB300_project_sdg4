@@ -57,3 +57,9 @@
   color: var(--color-on-surface);
   font: inherit;
 }
+
+.feedback {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-md);
+}

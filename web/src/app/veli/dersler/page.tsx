@@ -12,13 +12,13 @@ export const dynamic = 'force-dynamic';
 
 /** Velinin görünümü: çocuğunun dersleri. Veli iptal edebilir (RPC yetkiyi denetler). */
 export default async function GuardianSessionsPage() {
-  const [{ upcoming, past }, proposals] = await Promise.all([loadSessions(), loadPendingProposals()]);
+  const [{ upcoming, past, answered }, proposals] = await Promise.all([loadSessions(), loadPendingProposals()]);
   return (
     <div className={pageStyles.page}>
       <h1 className={pageStyles.title}>{tr.sessions.title}</h1>
       <PendingMatches items={proposals} />
       <p className={pageStyles.note}>{tr.sessions.parentNote}</p>
-      <SessionsView upcoming={upcoming} past={past} returnTo="/veli/dersler" />
+      <SessionsView upcoming={upcoming} past={past} answered={answered} returnTo="/veli/dersler" />
     </div>
   );
 }

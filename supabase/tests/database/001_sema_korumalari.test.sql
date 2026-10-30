@@ -151,7 +151,9 @@ select is_empty(
          'cancel_session(uuid,text)', 'public.cancel_session(uuid,text)',
          'review_volunteer(uuid,text,text)', 'public.review_volunteer(uuid,text,text)',
          'propose_match(uuid,uuid,smallint)', 'public.propose_match(uuid,uuid,smallint)',
-         'decide_match(uuid,boolean)', 'public.decide_match(uuid,boolean)']) $$,
+         'decide_match(uuid,boolean)', 'public.decide_match(uuid,boolean)',
+         'submit_feedback(uuid,smallint,boolean)', 'public.submit_feedback(uuid,smallint,boolean)',
+         'get_feedback_summary()', 'public.get_feedback_summary()']) $$,
   'authenticated: izin listesi dışında hiçbir public/private fonksiyonunu çalıştıramaz');
 -- Servis rolü RLS'yi atlar ama volunteers CHECK kısıtları is_safe_name'i çağırır (N1): yalnızca o açıktır.
 select is_empty(

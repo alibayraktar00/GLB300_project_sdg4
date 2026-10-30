@@ -3,6 +3,7 @@
 import { redirect } from 'next/navigation';
 
 import type { ScheduleState } from '@/features/sessions/types';
+import { feedbackSchema } from '@/lib/feedback';
 import { cancelSchema, istanbulToIso, messageForSessionError, scheduleFieldErrors, scheduleSchema } from '@/lib/sessions';
 import { requireRole, requireUser } from '@/server/session';
 import { createSupabaseServerClient } from '@/server/supabase';
@@ -36,6 +37,31 @@ export async function scheduleSession(_previous: ScheduleState, formData: FormDa
     return { formError: tr.sessions.errors.unavailable };
   }
   redirect('/gonullu/dersler');
+}
+
+/** Bitmiş ders için puan ve devam isteği. Yetki ve tek cevap kuralı `submit_feedback` RPC'sindedir. */
+export async function submitFeedbackAction(formData: FormData): Promise<void> {
+  await requireUser();
+  const returnTo = String(formData.get('returnTo') ?? '');
+  const back = RETURN_PATHS.has(returnTo) ? returnTo : '/uygulama';
+  const parsed = feedbackSchema.safeParse({
+    sessionId: String(formData.get('sessionId') ?? ''),
+    rating: String(formData.get('rating') ?? ''),
+    wouldContinue: String(formData.get('wouldContinue') ?? ''),
+  });
+  if (parsed.success) {
+    try {
+      const supabase = await createSupabaseServerClient();
+      await supabase.rpc('submit_feedback', {
+        p_session_id: parsed.data.sessionId,
+        p_rating: parsed.data.rating,
+        p_would_continue: parsed.data.wouldContinue,
+      });
+    } catch {
+      // Sayfa yeniden yüklenir; form hâlâ görünüyorsa cevap kaydedilmemiştir.
+    }
+  }
+  redirect(back);
 }
 
 const RETURN_PATHS = new Set(['/gonullu/dersler', '/ogrenci/dersler', '/veli/dersler']);

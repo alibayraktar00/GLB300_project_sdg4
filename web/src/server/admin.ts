@@ -1,6 +1,7 @@
 import 'server-only';
 
 import type { ApplicationItem, MatchingData, MatchProposal } from '@/features/admin/types';
+import { parseFeedbackSummary, type FeedbackSummary } from '@/lib/feedback';
 import { parseApplications, parseMatchingData, parseProposals } from '@/lib/admin-data';
 import { MVP_GRADES, MVP_SUBJECTS } from '@/lib/scope';
 
@@ -77,5 +78,16 @@ export async function loadPendingProposals(): Promise<MatchProposal[]> {
     return parseProposals(matches.error ? [] : matches.data, volunteers.error ? [] : volunteers.data);
   } catch {
     return [];
+  }
+}
+
+/** Geri bildirim özeti (yalnızca yönetici, MFA). Hata ya da yetki yoksa boş özet döner. */
+export async function loadFeedbackSummary(): Promise<FeedbackSummary> {
+  try {
+    const supabase = await createSupabaseServerClient();
+    const { data, error } = await supabase.rpc('get_feedback_summary');
+    return error ? parseFeedbackSummary(null) : parseFeedbackSummary(data);
+  } catch {
+    return parseFeedbackSummary(null);
   }
 }

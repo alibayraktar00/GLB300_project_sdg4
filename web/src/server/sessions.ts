@@ -10,13 +10,15 @@ import { createSupabaseServerClient } from './supabase';
 
 const COLUMNS = 'id, starts_at, duration_min, status, meeting_url, matches(subjects(name))';
 
-export async function loadSessions(): Promise<{ upcoming: SessionItem[]; past: SessionItem[] }> {
+export async function loadSessions(): Promise<{ upcoming: SessionItem[]; past: SessionItem[]; answered: string[] }> {
   try {
     const supabase = await createSupabaseServerClient();
     const { data, error } = await supabase.from('sessions').select(COLUMNS).order('starts_at', { ascending: true }).limit(100);
-    return splitSessions(error ? [] : parseSessions(data), Date.now());
+    const feedback = await supabase.from('session_feedback').select('session_id').limit(200);
+    const answered = feedback.error || !Array.isArray(feedback.data) ? [] : feedback.data.map((row) => String(row.session_id));
+    return { ...splitSessions(error ? [] : parseSessions(data), Date.now()), answered };
   } catch {
-    return { upcoming: [], past: [] };
+    return { upcoming: [], past: [], answered: [] };
   }
 }
 

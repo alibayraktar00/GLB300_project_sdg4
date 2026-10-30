@@ -10,11 +10,11 @@ export const dynamic = 'force-dynamic';
 
 /** Öğrencinin dersleri: Meet/Zoom bağlantısı ve iptal. */
 export default async function StudentSessionsPage() {
-  const { upcoming, past } = await loadSessions();
+  const { upcoming, past, answered } = await loadSessions();
   return (
     <div className={pageStyles.page}>
       <h1 className={pageStyles.title}>{tr.sessions.title}</h1>
-      <SessionsView upcoming={upcoming} past={past} returnTo="/ogrenci/dersler" />
+      <SessionsView upcoming={upcoming} past={past} answered={answered} returnTo="/ogrenci/dersler" />
     </div>
   );
 }

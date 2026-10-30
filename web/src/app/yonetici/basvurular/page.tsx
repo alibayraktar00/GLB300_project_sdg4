@@ -1,6 +1,6 @@
 import type { Metadata } from 'next';
 
-import { Button } from '@/components/Button';
+import { Button, ButtonLink } from '@/components/Button';
 import { Card, CardContent } from '@/components/Card';
 import { EmptyState } from '@/components/StateViews';
 import { reviewVolunteerAction } from '@/features/admin/actions';
@@ -19,6 +19,11 @@ export default async function ApplicationsPage() {
   return (
     <div className={styles.page}>
       <h1 className={styles.title}>{tr.admin.applicationsTitle}</h1>
+      <div>
+        <ButtonLink href="/yonetici/olcum" variant="secondary">
+          {tr.feedback.summaryLink}
+        </ButtonLink>
+      </div>
       {items.length === 0 ? (
         <EmptyState title={tr.admin.applicationsEmpty} message="" />
       ) : (
