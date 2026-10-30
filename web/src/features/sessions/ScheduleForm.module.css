@@ -1,0 +1,32 @@
+.form {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-lg);
+  max-inline-size: var(--measure-form);
+}
+
+.help {
+  composes: bodyMd from '../../styles/text.module.css';
+  margin: 0;
+  color: var(--color-on-surface-variant);
+}
+
+.field {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-xs);
+}
+
+.label {
+  composes: labelLg from '../../styles/text.module.css';
+}
+
+.select {
+  min-block-size: 3rem;
+  padding-inline: var(--space-md);
+  border: 1px solid var(--color-outline);
+  border-radius: var(--radius-md);
+  background: var(--color-surface);
+  color: var(--color-on-surface);
+  font: inherit;
+}

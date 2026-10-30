@@ -48,7 +48,7 @@ testle doğrulanmış kısımlar içindir. Gerçek bir Supabase projesinde uçta
 ## 5. Sırada ne var (öncelik sırasıyla)
 
 1. (Yapıldı) Fotoğraflı soru-cevap ekranları.
-2. Gönüllü paneli: havuz ve atanan sorular, ders planlama formu (Meet/Zoom bağlantısı).
+2. (Yapıldı) Gönüllü panosu ve ders planlama formu (Meet/Zoom); öğrenci ve veli ders listesi, iptal.
 3. Yönetici ekranı: gönüllü başvurusu onayı, eşleştirme.
 4. Geri bildirim formu ve basit ölçüm raporu (hafta 7 için).
 5. Supabase üzerinde uçtan uca deneme (hesap açıldı; yeni migration'lar 09-11 henüz uzak projeye uygulanmadı).
