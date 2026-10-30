@@ -141,7 +141,14 @@ select is_empty(
          'remove_push_subscription(text)', 'public.remove_push_subscription(text)',
          'create_recovery_plan(smallint,text[],date,date,smallint)', 'public.create_recovery_plan(smallint,text[],date,date,smallint)',
          'get_today_tasks()', 'public.get_today_tasks()',
-         'complete_plan_item(uuid,text)', 'public.complete_plan_item(uuid,text)']) $$,
+         'complete_plan_item(uuid,text)', 'public.complete_plan_item(uuid,text)',
+         'ask_question(uuid,text,text,text[])', 'public.ask_question(uuid,text,text,text[])',
+         'post_message(uuid,text,text[])', 'public.post_message(uuid,text,text[])',
+         'claim_question(uuid)', 'public.claim_question(uuid)',
+         'close_question(uuid)', 'public.close_question(uuid)',
+         'schedule_session(uuid,timestamp with time zone,smallint,text)', 'public.schedule_session(uuid,timestamp with time zone,smallint,text)',
+         'set_session_link(uuid,text)', 'public.set_session_link(uuid,text)',
+         'cancel_session(uuid,text)', 'public.cancel_session(uuid,text)']) $$,
   'authenticated: izin listesi dışında hiçbir public/private fonksiyonunu çalıştıramaz');
 -- Servis rolü RLS'yi atlar ama volunteers CHECK kısıtları is_safe_name'i çağırır (N1): yalnızca o açıktır.
 select is_empty(

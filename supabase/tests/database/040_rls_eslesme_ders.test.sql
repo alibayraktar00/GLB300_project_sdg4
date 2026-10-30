@@ -230,8 +230,8 @@ select throws_ok(
   $$ insert into public.sessions (match_id, starts_at, duration_min) values (tests.id('m1'), '2099-01-10 05:00:00+00', 20) $$,
   '23505', null, 'aynı eşleşmede aynı saate ikinci planlı ders eklenemez');
 select throws_ok(
-  $$ insert into public.sessions (match_id, starts_at, duration_min) values (tests.id('m1'), '2099-01-11 08:00:00+00', 30) $$,
-  '23514', null, 'ders süresi yalnızca 20 veya 40 dk');
+  $$ insert into public.sessions (match_id, starts_at, duration_min) values (tests.id('m1'), '2099-01-11 08:00:00+00', 25) $$,
+  '23514', null, 'ders süresi yalnızca 20, 30 veya 40 dk (25 reddedilir)');
 select throws_ok(
   $$ insert into public.sessions (match_id, starts_at, duration_min, status) values (tests.id('m1'), '2099-01-12 08:00:00+00', 20, 'iptal') $$,
   '23514', null, 'iptal edilen derste iptal zamanı zorunlu');
