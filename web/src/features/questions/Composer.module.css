@@ -1,0 +1,51 @@
+.form {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-lg);
+  inline-size: 100%;
+}
+
+.photos {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: var(--space-md);
+  margin: 0;
+  padding: 0;
+  border: 0;
+}
+
+.legend {
+  composes: titleSm from '../../styles/text.module.css';
+  padding: 0;
+}
+
+.help {
+  composes: bodySm from '../../styles/text.module.css';
+  color: var(--color-on-surface-variant);
+  margin: 0;
+}
+
+.list {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-sm);
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+.item {
+  composes: bodyMd from '../../styles/text.module.css';
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: var(--space-md);
+}
+
+.error {
+  composes: bodySm from '../../styles/text.module.css';
+  color: var(--color-error);
+  font-weight: var(--font-weight-semibold);
+  margin: 0;
+}

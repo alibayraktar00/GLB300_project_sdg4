@@ -11,7 +11,7 @@ testle doğrulanmış kısımlar içindir. Gerçek bir Supabase projesinde uçta
 | Yalnızca **8. sınıf Matematik** | **Uygulandı** (arayüz kapsamı) | `web/src/lib/scope.ts`; plan sihirbazı ve çocuk ekleme yalnızca 8. sınıf Matematik sunar |
 | **Kişisel telafi planı:** öğrenci kaçırdığı haftaları seçer, küçük günlük hedefler | **Uygulandı** | `create_recovery_plan`, `get_today_tasks`, `complete_plan_item` (37 test); plan sihirbazı ve "Bugün" ekranı |
 | Yorgun günler için **5 dakikalık kolay tekrar** | **Uygulandı** | "Bugün" ekranı: 5 dakika / Tam ders |
-| **Fotoğraflı soru desteği:** öğrenci fotoğraf gönderir, gönüllü adım adım açıklar | **Sunucu tarafı uygulandı; ekran YOK** | `ask_question`, `post_message`, `claim_question`, `close_question` (48 test). Arayüz (kamera/yükleme, gönüllü cevap ekranı) sırada |
+| **Fotoğraflı soru desteği:** öğrenci fotoğraf gönderir, gönüllü adım adım açıklar | **Uygulandı** (sunucu + ekranlar; gerçek Supabase ile uçtan uca deneme sırada) | `ask_question`, `post_message`, `claim_question`, `close_question` (48 test). Ekranlar: öğrenci soru sor/sorularım/ayrıntı, gönüllü pano/cevap, veli salt okunur; fotoğraf tarayıcıda küçültülür, EXIF silinir |
 | **Birebir çevrimiçi ders, 30-40 dk, Google Meet / Zoom bağlantısı** | **Sunucu tarafı uygulandı; ekran YOK** | `schedule_session`, `set_session_link`, `cancel_session`; bağlantı yalnızca Meet/Zoom adres biçimi (44 test). Ders süreleri 20/30/40 dk. Arayüz sırada |
 | Gönüllü öğrenci kartı yükler | **Şema hazır; yükleme ve yönetici ekranı YOK** | `volunteer_documents` + Storage kuralları; ekranlar yapılmadı |
 | Gönüllü eğitimi, sonunda gönüllülük belgesi | **YOK** | Eğitim metni `docs/hukuk/gonullu-davranis-kurallari.md` içinde; belge üretimi yapılmadı |
@@ -47,7 +47,7 @@ testle doğrulanmış kısımlar içindir. Gerçek bir Supabase projesinde uçta
 
 ## 5. Sırada ne var (öncelik sırasıyla)
 
-1. Fotoğraflı soru-cevap ekranları (öğrenci: soru sor; gönüllü: cevapla).
+1. (Yapıldı) Fotoğraflı soru-cevap ekranları.
 2. Gönüllü paneli: havuz ve atanan sorular, ders planlama formu (Meet/Zoom bağlantısı).
 3. Yönetici ekranı: gönüllü başvurusu onayı, eşleştirme.
 4. Geri bildirim formu ve basit ölçüm raporu (hafta 7 için).

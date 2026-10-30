@@ -1,0 +1,70 @@
+.thread {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-lg);
+  max-inline-size: var(--measure-content);
+}
+
+.status {
+  composes: labelLg from '../../styles/text.module.css';
+  color: var(--color-on-surface-variant);
+  margin: 0;
+}
+
+.messages {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-md);
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+.mine,
+.theirs {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-sm);
+  padding: var(--space-md) var(--space-lg);
+  border: var(--line) solid var(--color-border-subtle);
+  border-radius: var(--radius-md);
+}
+
+.mine {
+  background-color: var(--color-border-primary);
+}
+
+.theirs {
+  background-color: var(--color-surface-lowest);
+}
+
+.author {
+  composes: labelMd from '../../styles/text.module.css';
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: space-between;
+  gap: var(--space-sm);
+  margin: 0;
+  color: var(--color-on-surface-variant);
+}
+
+.body {
+  composes: bodyLg from '../../styles/text.module.css';
+  margin: 0;
+  /* Satır sonları korunur (denklemler, adımlar); çok uzun sözcük taşmaz. */
+  white-space: pre-wrap;
+  overflow-wrap: anywhere;
+}
+
+.hidden {
+  composes: bodyMd from '../../styles/text.module.css';
+  margin: 0;
+  font-style: italic;
+  color: var(--color-on-surface-variant);
+}
+
+.photo {
+  max-inline-size: 100%;
+  block-size: auto;
+  border-radius: var(--radius-sm);
+}
