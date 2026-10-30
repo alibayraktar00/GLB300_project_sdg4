@@ -31,7 +31,13 @@
 }
 
 .mine {
-  background-color: var(--color-border-primary);
+  background-color: var(--color-primary-container);
+  color: var(--color-on-primary-container);
+}
+
+.mine .author,
+.mine .hidden {
+  color: var(--color-on-primary-container);
 }
 
 .theirs {

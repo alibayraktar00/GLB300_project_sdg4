@@ -49,7 +49,7 @@ export function SessionList({
           {!answered && item.status === 'planlandi' ? (
             <div className={styles.actions}>
               {item.meetingUrl ? (
-                <ButtonLink href={item.meetingUrl} external icon="play_arrow">
+                <ButtonLink href={item.meetingUrl} external target="_blank" icon="play_arrow">
                   {tr.sessions.join}
                 </ButtonLink>
               ) : null}
