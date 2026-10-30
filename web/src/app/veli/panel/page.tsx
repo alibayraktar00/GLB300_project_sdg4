@@ -11,6 +11,9 @@ export default function GuardianPanelPage() {
       <ButtonLink href="/veli/cocuk-ekle" icon="family_restroom">
         {tr.child.title}
       </ButtonLink>
+      <ButtonLink href="/veli/ozet" variant="secondary" icon="check_circle">
+        {tr.childProgress.summaryLink}
+      </ButtonLink>
       <SignOutButton />
     </>
   );

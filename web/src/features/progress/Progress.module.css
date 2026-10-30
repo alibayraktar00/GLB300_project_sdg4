@@ -1,0 +1,42 @@
+.child {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-md);
+  padding: var(--space-lg);
+  border: var(--line) solid var(--color-border-subtle);
+  border-radius: var(--radius-lg);
+  break-inside: avoid;
+}
+
+.name {
+  composes: headlineSm from '../../styles/text.module.css';
+  margin: 0;
+}
+
+.heading {
+  composes: titleMd from '../../styles/text.module.css';
+  margin: 0;
+}
+
+.line {
+  composes: bodyLg from '../../styles/text.module.css';
+  margin: 0;
+}
+
+.topics {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-xs);
+  margin: 0;
+  padding-inline-start: var(--space-xl);
+}
+
+.noPrint {
+  display: block;
+}
+
+@media print {
+  .noPrint {
+    display: none;
+  }
+}

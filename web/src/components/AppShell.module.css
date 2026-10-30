@@ -245,3 +245,15 @@
     line-height: var(--text-label-lg-line);
   }
 }
+
+/* Yazdırma: gezinme ve üst çubuk kâğıda basılmaz; içerik tüm sayfayı kullanır. */
+@media print {
+  .header,
+  .nav {
+    display: none;
+  }
+
+  .layout {
+    display: block;
+  }
+}

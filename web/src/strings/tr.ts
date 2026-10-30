@@ -203,6 +203,23 @@ export const tr = {
     subjectLine: (subject: string, grade: number) => `${subject} · ${grade}. sınıf`,
   },
 
+  childProgress: {
+    title: 'İlerleme özeti',
+    intro: 'Çocuğunun telafi planı, soruları ve dersleri bir bakışta. Bu sayfa yazdırılabilir.',
+    print: 'Yazdır',
+    summaryLink: 'İlerleme özeti',
+    noChildren: 'Henüz bağlı çocuk yok.',
+    planTitle: 'Telafi planı',
+    noPlan: 'Aktif plan yok.',
+    planRange: (start: string, end: string) => `Derslere ara verilen tarihler: ${start} - ${end}`,
+    topicsDone: (done: number, total: number) => `${total} konudan ${done} tanesi tamamlandı`,
+    topicStatus: { bekliyor: 'Bekliyor', tamamlandi: 'Tamamlandı', atlandi: 'Atlandı' },
+    questionsTitle: 'Sorular',
+    questionsLine: (total: number, answered: number) => `${total} soru soruldu, ${answered} tanesine cevap geldi`,
+    sessionsTitle: 'Dersler',
+    sessionsLine: (done: number, upcoming: number) => `${done} ders tamamlandı, ${upcoming} ders planlı`,
+    printedOn: (date: string) => `Hazırlanma tarihi: ${date}`,
+  },
   feedback: {
     title: 'Ders nasıl geçti?',
     rating: 'Bu ders işine yaradı mı?',
