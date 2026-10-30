@@ -148,7 +148,10 @@ select is_empty(
          'close_question(uuid)', 'public.close_question(uuid)',
          'schedule_session(uuid,timestamp with time zone,smallint,text)', 'public.schedule_session(uuid,timestamp with time zone,smallint,text)',
          'set_session_link(uuid,text)', 'public.set_session_link(uuid,text)',
-         'cancel_session(uuid,text)', 'public.cancel_session(uuid,text)']) $$,
+         'cancel_session(uuid,text)', 'public.cancel_session(uuid,text)',
+         'review_volunteer(uuid,text,text)', 'public.review_volunteer(uuid,text,text)',
+         'propose_match(uuid,uuid,smallint)', 'public.propose_match(uuid,uuid,smallint)',
+         'decide_match(uuid,boolean)', 'public.decide_match(uuid,boolean)']) $$,
   'authenticated: izin listesi dışında hiçbir public/private fonksiyonunu çalıştıramaz');
 -- Servis rolü RLS'yi atlar ama volunteers CHECK kısıtları is_safe_name'i çağırır (N1): yalnızca o açıktır.
 select is_empty(
