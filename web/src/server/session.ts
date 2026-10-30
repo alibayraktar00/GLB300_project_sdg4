@@ -49,6 +49,14 @@ export async function requireUser(returnTo?: string): Promise<SessionUser> {
   return user;
 }
 
+/** İki adımlı doğrulama ekranı için: aktif veli ya da yönetici (veli, yönetici yapılmadan önce TOTP kurar). */
+export async function requireMfaUser(): Promise<SessionUser> {
+  const user = await requireUser('/mfa');
+  if (user.status !== 'aktif') redirect('/durum');
+  if (user.role !== 'veli' && user.role !== 'yonetici') redirect('/uygulama');
+  return user;
+}
+
 /**
  * Yönetici sayfaları için: yönetici rolü + iki adımlı doğrulama (aal2). Veritabanı da aynısını ister
  * (private.is_admin); bu yalnızca kullanıcıyı boş sayfa yerine doğrulama ekranına yönlendirir.
@@ -63,7 +71,7 @@ export async function requireAdminMfa(): Promise<SessionUser> {
   } catch {
     level = null;
   }
-  if (level !== 'aal2') redirect('/yonetici/mfa');
+  if (level !== 'aal2') redirect('/mfa');
   return user;
 }
 

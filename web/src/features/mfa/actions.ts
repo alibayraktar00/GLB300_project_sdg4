@@ -3,7 +3,7 @@
 import { redirect } from 'next/navigation';
 
 import { MFA_CODE_PATTERN } from '@/lib/mfa';
-import { requireRole } from '@/server/session';
+import { requireMfaUser } from '@/server/session';
 import { createSupabaseServerClient } from '@/server/supabase';
 import { tr } from '@/strings/tr';
 
@@ -14,7 +14,7 @@ export type MfaState = { factorId?: string; qr?: string; secret?: string; formEr
  * Anahtar yalnızca bu yanıtta görünür ve saklanmaz.
  */
 export async function startEnrollment(): Promise<MfaState> {
-  await requireRole('yonetici');
+  await requireMfaUser();
   try {
     const supabase = await createSupabaseServerClient();
     const { data: factors } = await supabase.auth.mfa.listFactors();
@@ -31,7 +31,7 @@ export async function startEnrollment(): Promise<MfaState> {
 
 /** Kodu doğrular; başarıda oturum aal2'ye çıkar (yeni JWT çerezi yazılır) ve yönetici sayfasına gidilir. */
 export async function verifyMfa(previous: MfaState, formData: FormData): Promise<MfaState> {
-  await requireRole('yonetici');
+  const user = await requireMfaUser();
   const factorId = String(formData.get('factorId') ?? '');
   const code = String(formData.get('code') ?? '').replace(/\s/g, '');
   const keep = previous?.qr ? { factorId: previous.factorId, qr: previous.qr, secret: previous.secret } : { factorId };
@@ -46,5 +46,5 @@ export async function verifyMfa(previous: MfaState, formData: FormData): Promise
   } catch {
     return { ...keep, formError: tr.mfa.errors.unavailable };
   }
-  redirect('/yonetici/basvurular');
+  redirect(user.role === 'yonetici' ? '/yonetici/basvurular' : '/veli/panel');
 }
