@@ -50,6 +50,24 @@ export async function requireUser(returnTo?: string): Promise<SessionUser> {
 }
 
 /**
+ * Yönetici sayfaları için: yönetici rolü + iki adımlı doğrulama (aal2). Veritabanı da aynısını ister
+ * (private.is_admin); bu yalnızca kullanıcıyı boş sayfa yerine doğrulama ekranına yönlendirir.
+ */
+export async function requireAdminMfa(): Promise<SessionUser> {
+  const user = await requireRole('yonetici');
+  let level: string | null | undefined;
+  try {
+    const supabase = await createSupabaseServerClient();
+    const { data } = await supabase.auth.mfa.getAuthenticatorAssuranceLevel();
+    level = data?.currentLevel;
+  } catch {
+    level = null;
+  }
+  if (level !== 'aal2') redirect('/yonetici/mfa');
+  return user;
+}
+
+/**
  * Belirli bir rolü şart koşar. Hesap aktif değilse `/durum`, başka rolse kendi ana sayfasına gönderir.
  * (Gerçek erişim denetimi RLS'tedir; bu yalnızca kullanıcıyı yanlış sayfada bırakmamak içindir.)
  */

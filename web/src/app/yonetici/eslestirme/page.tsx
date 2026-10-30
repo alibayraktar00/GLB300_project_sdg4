@@ -5,6 +5,7 @@ import { SectionHeader } from '@/components/SectionHeader';
 import { proposeMatchAction } from '@/features/admin/actions';
 import styles from '@/features/questions/page.module.css';
 import { loadMatching } from '@/server/admin';
+import { requireAdminMfa } from '@/server/session';
 import { tr } from '@/strings/tr';
 
 export const metadata: Metadata = { title: tr.admin.matchingTitle };
@@ -12,6 +13,7 @@ export const dynamic = 'force-dynamic';
 
 /** Eşleştirme: eşleşmesi olmayan öğrenciye onaylı gönüllü öner. Öneri velinin kararını bekler. */
 export default async function MatchingPage() {
+  await requireAdminMfa();
   const data = await loadMatching();
   const ready = data.subjectId !== null && data.students.length > 0 && data.volunteers.length > 0;
   return (

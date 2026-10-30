@@ -6,6 +6,7 @@ import { EmptyState } from '@/components/StateViews';
 import { reviewVolunteerAction } from '@/features/admin/actions';
 import styles from '@/features/questions/page.module.css';
 import { loadApplications } from '@/server/admin';
+import { requireAdminMfa } from '@/server/session';
 import { tr } from '@/strings/tr';
 
 export const metadata: Metadata = { title: tr.admin.applicationsTitle };
@@ -13,6 +14,7 @@ export const dynamic = 'force-dynamic';
 
 /** Gönüllü başvuruları: onay ya da gerekçeli ret. Yönetici rolü MFA ister (RLS). */
 export default async function ApplicationsPage() {
+  await requireAdminMfa();
   const items = await loadApplications();
   return (
     <div className={styles.page}>

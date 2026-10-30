@@ -203,6 +203,20 @@ export const tr = {
     subjectLine: (subject: string, grade: number) => `${subject} · ${grade}. sınıf`,
   },
 
+  mfa: {
+    title: 'İki adımlı doğrulama',
+    enrollIntro: 'Yönetici işlemleri için iki adımlı doğrulama gerekir. Telefonundaki bir doğrulayıcı uygulamayla (Google Authenticator, Microsoft Authenticator vb.) QR kodunu tara.',
+    start: 'Kurulumu başlat',
+    qrAlt: 'Doğrulayıcı uygulama için QR kodu',
+    secretHelp: 'QR kodu okutamıyorsan bu anahtarı uygulamaya elle gir:',
+    verifyIntro: 'Doğrulayıcı uygulamandaki 6 haneli kodu gir.',
+    code: 'Doğrulama kodu',
+    submit: 'Doğrula',
+    errors: {
+      invalidCode: 'Kod doğru değil ya da süresi doldu. Uygulamadaki güncel kodu gir.',
+      unavailable: 'Şu anda yapılamıyor. Biraz sonra tekrar denenebilir.',
+    },
+  },
   admin: {
     applicationsTitle: 'Gönüllü başvuruları',
     applicationsEmpty: 'Bekleyen başvuru yok',
