@@ -8,7 +8,8 @@ import { ProgressBar } from '@/components/ProgressBar';
 import { RadioCard, RadioCardGroup } from '@/components/RadioCard';
 import { Switch } from '@/components/Switch';
 import { TextField } from '@/components/TextField';
-import { formatShortDate, planFieldErrors, planSchema, SUBJECT_CODES, type PlanFieldErrors, type SubjectCode } from '@/lib/plan';
+import { formatShortDate, planFieldErrors, planSchema, type PlanFieldErrors, type SubjectCode } from '@/lib/plan';
+import { MVP_GRADES, MVP_SUBJECTS } from '@/lib/scope';
 import { tr } from '@/strings/tr';
 
 import styles from './PlanWizard.module.css';
@@ -35,7 +36,14 @@ const STEP_FIELDS: Record<1 | 2 | 3, ReadonlyArray<keyof PlanFieldErrors>> = {
 export function PlanWizard({ action }: { action: CreatePlanAction }) {
   const [state, formAction, pending] = useActionState(action, null);
   const [step, setStep] = useState<1 | 2 | 3 | 4>(1);
-  const [values, setValues] = useState<Values>({ grade: '', subjects: [], start: '', end: '', dailyGoal: '' });
+  const [values, setValues] = useState<Values>({
+    // Tek seçenek varsa önceden seçili gelir (kapsam: 8. sınıf Matematik).
+    grade: MVP_GRADES.length === 1 ? String(MVP_GRADES[0]) : '',
+    subjects: MVP_SUBJECTS.length === 1 ? [...MVP_SUBJECTS] : [],
+    start: '',
+    end: '',
+    dailyGoal: '',
+  });
   const [errors, setErrors] = useState<PlanFieldErrors>({});
 
   const merged = { ...state?.fieldErrors, ...errors };
@@ -76,7 +84,7 @@ export function PlanWizard({ action }: { action: CreatePlanAction }) {
         <>
           <h2 className={styles.stepTitle}>{tr.plan.step1Title}</h2>
           <RadioCardGroup legend={tr.plan.gradeLegend}>
-            {[5, 6, 7, 8].map((grade) => (
+            {MVP_GRADES.map((grade) => (
               <RadioCard
                 key={grade}
                 name="gradeChoice"
@@ -91,7 +99,7 @@ export function PlanWizard({ action }: { action: CreatePlanAction }) {
 
           <fieldset className={styles.group}>
             <legend className={styles.legend}>{tr.plan.subjectsLegend}</legend>
-            {SUBJECT_CODES.map((code) => (
+            {MVP_SUBJECTS.map((code) => (
               <Switch
                 key={code}
                 name="subjectChoice"

@@ -14,7 +14,7 @@ export const tr = {
   home: {
     title: 'Eğitim Köprüsü',
     description:
-      'Derslere ara vermek zorunda kalan öğrenciler için kişisel telafi planı ve birebir gönüllü desteği.',
+      'Derslere ara vermek zorunda kalan 8. sınıf öğrencileri için kişisel telafi planı ve birebir gönüllü desteği (şimdilik Matematik).',
     chooseTitle: 'Başlayalım',
     guardian: { title: 'Veliyim', subtitle: 'Hesap açar, çocuğumun hesabını oluştururum.' },
     volunteer: { title: 'Gönüllüyüm', subtitle: 'Üniversite öğrencisi olarak destek vermek isterim.' },
@@ -205,7 +205,7 @@ export const tr = {
 
   child: {
     title: 'Çocuk hesabı ekle',
-    intro: 'Çocuğun giriş yapacağı hesabı sen oluşturursun. Önce bilgileri yaz, sonra bir onay ekranı gelir.',
+    intro: 'Çocuğun giriş yapacağı hesabı sen oluşturursun. Şimdilik yalnızca 8. sınıf öğrencileri için hesap açılır. Önce bilgileri yaz, sonra bir onay ekranı gelir.',
     nickname: 'Rumuz',
     nicknameHelp: 'Gönüllü bu adı görür. Gerçek ad yazmak gerekmez.',
     grade: 'Sınıf',

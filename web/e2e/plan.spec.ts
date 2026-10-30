@@ -60,10 +60,12 @@ test.describe('Plan ekranları', { tag: '@kisa' }, () => {
     test('sihirbaz: 3 adım ve özet; hatalı tarih aralığı ilerletmez', async ({ page }) => {
       await dismissCookieNotice(page);
       await page.goto('/galeri/plan/olustur');
+      // Kapsam: 8. sınıf ve Matematik tek seçenek, önceden seçili.
+      await expect(page.getByRole('radio', { name: '8. sınıf' })).toBeChecked();
+      await expect(page.getByRole('switch', { name: 'Matematik' })).toBeChecked();
+      await page.getByRole('switch', { name: 'Matematik' }).click();
       await page.getByRole('button', { name: 'Devam' }).click();
-      await expect(page.getByText('Sınıf seçilmeli.')).toBeVisible();
-
-      await page.getByRole('radio', { name: '6. sınıf' }).click();
+      await expect(page.getByText('En az bir ders seçilmeli.')).toBeVisible();
       await page.getByRole('switch', { name: 'Matematik' }).click();
       await page.getByRole('button', { name: 'Devam' }).click();
       await expect(page.getByText('Adım 2 / 3')).toBeVisible();
@@ -78,7 +80,7 @@ test.describe('Plan ekranları', { tag: '@kisa' }, () => {
       await expect(page.getByText('Adım 3 / 3')).toBeVisible();
       await page.getByRole('radio', { name: 'Günde 2 konu' }).click();
       await page.getByRole('button', { name: 'Devam' }).click();
-      await expect(page.getByText(/6\. sınıf · Matematik · 2 Kas 2026 - 9 Kas 2026 · günde 2 konu/)).toBeVisible();
+      await expect(page.getByText(/8. sınıf · Matematik · 2 Kas 2026 - 9 Kas 2026 · günde 2 konu/)).toBeVisible();
       await page.getByRole('button', { name: 'Geri' }).click();
       await expect(page.getByText('Adım 3 / 3')).toBeVisible();
     });

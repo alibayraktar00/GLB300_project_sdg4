@@ -50,7 +50,7 @@ describe('TodayView (öğrenci Bugün)', () => {
     expect(start[0]).toHaveAttribute('href', '/ogrenci/plan/ornek-1');
     const later = screen.getByRole('heading', { name: 'Sonraki görevler' }).closest('section');
     expect(later).not.toBeNull();
-    expect(within(later as HTMLElement).getByRole('link', { name: /Eğim ve yüzde/ })).toBeInTheDocument();
+    expect(within(later as HTMLElement).getByRole('link', { name: /Kareköklü ifadeler/ })).toBeInTheDocument();
   });
 
   it('ilerleme çubuğu adlı ve sayısal değerlidir', () => {

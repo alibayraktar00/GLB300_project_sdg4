@@ -7,8 +7,8 @@ import type { TodayData } from './types';
 export const SAMPLE_TODAY: TodayData = {
   nickname: 'Ela',
   tasks: [
-    { id: 'ornek-1', title: 'Kesirleri karşılaştırma', subject: 'Matematik', grade: 5, shortMinutes: 5, fullMinutes: 25 },
-    { id: 'ornek-2', title: 'Eğim ve yüzde', subject: 'Matematik', grade: 5, shortMinutes: 5, fullMinutes: 20 },
+    { id: 'ornek-1', title: 'Üslü ifadeler', subject: 'Matematik', grade: 8, shortMinutes: 5, fullMinutes: 25 },
+    { id: 'ornek-2', title: 'Kareköklü ifadeler', subject: 'Matematik', grade: 8, shortMinutes: 5, fullMinutes: 20 },
   ],
   completed: 3,
   total: 10,

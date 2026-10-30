@@ -25,7 +25,7 @@ describe('PlanView (Planım)', () => {
 
   it('satırlar konu detayına bağlanır; "Konulara göz at" ve "Yeni plan oluştur" bağlantıları vardır', () => {
     render(<PlanView data={SAMPLE_PLAN} />);
-    expect(screen.getByRole('link', { name: /Kesirleri karşılaştırma/ })).toHaveAttribute(
+    expect(screen.getByRole('link', { name: /Üslü ifadeler/ })).toHaveAttribute(
       'href',
       '/ogrenci/plan/ornek-1',
     );

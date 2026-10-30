@@ -7,6 +7,7 @@ import { Button } from '@/components/Button';
 import { RadioCard, RadioCardGroup } from '@/components/RadioCard';
 import { TextField } from '@/components/TextField';
 import { childFieldErrors, childSchema } from '@/lib/child';
+import { MVP_GRADES } from '@/lib/scope';
 import { tr } from '@/strings/tr';
 
 import { addChild, type AddChildState } from './actions';
@@ -22,7 +23,13 @@ type Choice = 'verdi' | 'vermedi' | null;
 export function AddChildWizard() {
   const [state, formAction, pending] = useActionState(addChild, null as AddChildState);
   const [step, setStep] = useState<'info' | 'consent'>('info');
-  const [values, setValues] = useState({ nickname: '', grade: '', username: '', password: '' });
+  const [values, setValues] = useState({
+    nickname: '',
+    // Kapsam: yalnızca 8. sınıf; tek seçenek önceden seçili gelir.
+    grade: MVP_GRADES.length === 1 ? String(MVP_GRADES[0]) : '',
+    username: '',
+    password: '',
+  });
   const [localErrors, setLocalErrors] = useState<ReturnType<typeof childFieldErrors>>({});
   const [choice, setChoice] = useState<Choice>(null);
 
@@ -68,7 +75,7 @@ export function AddChildWizard() {
             <option value="" disabled>
               {tr.child.grade}
             </option>
-            {[5, 6, 7, 8].map((grade) => (
+            {MVP_GRADES.map((grade) => (
               <option key={grade} value={grade}>
                 {tr.child.gradeOption(grade)}
               </option>
