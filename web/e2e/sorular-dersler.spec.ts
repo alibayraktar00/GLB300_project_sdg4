@@ -21,7 +21,7 @@ test.describe('Soru ve ders ekranları', { tag: '@kisa' }, () => {
     });
   }
 
-  for (const path of ['/ogrenci/sorular', '/ogrenci/dersler', '/gonullu/dersler', '/veli/dersler', '/veli/ozet', '/gonullu/taahhut', '/yonetici/sikayetler', '/ogrenci/ayarlar', '/yonetici/denetim', '/gonullu/ogrenciler', '/veli/panel', '/yonetici/basvurular']) {
+  for (const path of ['/ogrenci/sorular', '/ogrenci/dersler', '/gonullu/dersler', '/veli/dersler', '/veli/ozet', '/gonullu/taahhut', '/yonetici/sikayetler', '/ogrenci/bildirimler', '/veli/bildirimler', '/yonetici/kullanicilar', '/veli/hesap', '/gonullu/takvim', '/ogrenci/ayarlar', '/yonetici/denetim', '/gonullu/ogrenciler', '/veli/panel', '/yonetici/basvurular']) {
     test(`oturumsuz ${path} girişe yönlendirir`, async ({ page }) => {
       await page.goto(path);
       await expect(page).toHaveURL(/\/giris/);

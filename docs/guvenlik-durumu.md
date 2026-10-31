@@ -16,6 +16,9 @@ Bu belge, son geliştirme turunda yapılan güvenlik işlerini ve bilinçli kara
 
 | Gönüllü onayı | Migration 15: taahhüt + davranış kuralları onayı olmadan `review_volunteer('onayla')` reddedilir (`RIZA_EKSIK`); ekranda onay düğmesi de kapalı. Gönüllü için `/gonullu/taahhut` (11 madde, tek tek işaret). |
 | Engel ve şikayet | Migration 17: `block_volunteer` RPC (öğrenci/veli engelleyebilir; eşleşme biter, planlı dersler iptal olur). Öğrenci/veli ekranında "Gönüllüyü engelle", her mesajda "Bildir" (neden listeden). Yönetici `/yonetici/sikayetler` kuyruğu: şikayeti incelemeye al/kapat, engeli incelendi işaretle. |
+| Hesap durumu | Migration 18: `set_account_status` (yönetici, MFA): hesabı askıya alır/açar; yönetici hesabı ve kendi hesabı değiştirilemez; denetim kaydına düşer. `/yonetici/kullanicilar`. |
+| Bildirimler | Migration 19: olay tetikleyicileri uygulama içi bildirim üretir (başlıklar genel, kişisel veri yok); yönlendirme yolu izin listesinden geçer. |
+| Veli rızası | `/veli/hesap`: verilen onaylar listelenir, geri çekilebilir (açık rıza geri çekilirse çocuk hesabı askıya alınır, uyarı gösterilir). |
 
 ## Güvenlik danışmanı çıktısı (supabase db advisors, bilinçli kararlar)
 - **5 × `security_definer_view`** (matched_students, matched_volunteers_for_student/guardian, matched_student_plan_items, my_pending_consents): **bilerek**.
@@ -25,7 +28,7 @@ Bu belge, son geliştirme turunda yapılan güvenlik işlerini ve bilinçli kara
   `anon` hiçbirini çalıştıramaz. İzin listesi `001_sema_korumalari.test.sql` ile korunur: yeni bir RPC listeye eklenmeden testi geçemez.
 
 ## Hâlâ açık / insan kararı gerektirenler
-- Migration 14-17 uzak veritabanına uygulandı (31 Ekim 2026).
+- Migration 14-17 uzak veritabanına uygulandı (31 Ekim 2026); **18 ve 19 henüz uygulanmadı**.
 - Gerçek e-posta ve MFA akışı canlıda denenmedi (`docs/deneme-adimlari.md`).
 - Yasal metinler taslak; avukat incelemesi şart (`docs/hukuk/`).
 - Sızma testi / dış güvenlik incelemesi yapılmadı.
