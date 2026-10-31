@@ -154,7 +154,8 @@ select is_empty(
          'decide_match(uuid,boolean)', 'public.decide_match(uuid,boolean)',
          'submit_feedback(uuid,smallint,boolean)', 'public.submit_feedback(uuid,smallint,boolean)',
          'get_feedback_summary()', 'public.get_feedback_summary()',
-         'mark_session(uuid,text)', 'public.mark_session(uuid,text)']) $$,
+         'mark_session(uuid,text)', 'public.mark_session(uuid,text)',
+         'block_volunteer(uuid,uuid,text)', 'public.block_volunteer(uuid,uuid,text)']) $$,
   'authenticated: izin listesi dışında hiçbir public/private fonksiyonunu çalıştıramaz');
 -- Servis rolü RLS'yi atlar ama volunteers CHECK kısıtları is_safe_name'i çağırır (N1): yalnızca o açıktır.
 select is_empty(

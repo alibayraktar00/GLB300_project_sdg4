@@ -19,7 +19,7 @@ export default function QuestionsPreviewPage() {
       <div className={styles.page}>
         <h1 className={styles.title}>{tr.questions.mine}</h1>
         <QuestionList items={SAMPLE_QUESTIONS} hrefBase="/galeri/sorular" />
-        <ThreadView thread={SAMPLE_THREAD} />
+        <ThreadView thread={SAMPLE_THREAD} reportReturnTo={`/ogrenci/sorular/${SAMPLE_THREAD.id}`} />
       </div>
     </AppShell>
   );

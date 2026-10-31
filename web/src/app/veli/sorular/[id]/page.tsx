@@ -20,7 +20,7 @@ export default async function GuardianQuestionPage({ params }: { params: Promise
     <div className={styles.page}>
       <h1 className={styles.title}>{tr.questions.parentTitle}</h1>
       <p className={styles.note}>{tr.questions.parentNote}</p>
-      <ThreadView thread={thread} />
+      <ThreadView thread={thread} reportReturnTo={`/veli/sorular/${thread.id}`} />
     </div>
   );
 }

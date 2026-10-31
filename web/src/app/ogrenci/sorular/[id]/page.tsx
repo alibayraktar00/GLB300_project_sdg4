@@ -25,7 +25,7 @@ export default async function StudentQuestionPage({ params }: { params: Promise<
   return (
     <div className={styles.page}>
       <h1 className={styles.title}>{tr.questions.title}</h1>
-      <ThreadView thread={thread} />
+      <ThreadView thread={thread} reportReturnTo={`/ogrenci/sorular/${thread.id}`} />
       {closed ? (
         <p className={styles.note}>{tr.questions.closedNote}</p>
       ) : (

@@ -1,4 +1,5 @@
 import { Banner } from '@/components/Banner';
+import { ReportMessage } from '@/features/safety/ReportMessage';
 import { tr } from '@/strings/tr';
 
 import styles from './ThreadView.module.css';
@@ -21,7 +22,7 @@ function formatTime(iso: string): string {
  * imzalı adreslerdir (sunucuda üretilir). Gizlenmiş mesajın metni hiç gelmez, yalnızca bir not gösterilir.
  * Etkileşim (cevap yazma, kapatma) sayfa tarafından bu bileşenin altına konur.
  */
-export function ThreadView({ thread }: { thread: ThreadData }) {
+export function ThreadView({ thread, reportReturnTo }: { thread: ThreadData; reportReturnTo?: string }) {
   return (
     <div className={styles.thread}>
       <p className={styles.status}>
@@ -46,6 +47,7 @@ export function ThreadView({ thread }: { thread: ThreadData }) {
                   // eslint-disable-next-line @next/next/no-img-element
                   <img key={url} src={url} alt={tr.questions.photoAlt(index + 1)} className={styles.photo} loading="lazy" />
                 ))}
+                {reportReturnTo && !message.mine ? <ReportMessage messageId={message.id} returnTo={reportReturnTo} /> : null}
               </>
             )}
           </li>

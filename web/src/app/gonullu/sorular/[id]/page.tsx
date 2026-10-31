@@ -24,7 +24,7 @@ export default async function VolunteerQuestionPage({ params }: { params: Promis
   return (
     <div className={styles.page}>
       <h1 className={styles.title}>{tr.questions.title}</h1>
-      <ThreadView thread={thread} />
+      <ThreadView thread={thread} reportReturnTo={`/gonullu/sorular/${thread.id}`} />
       {closed ? (
         <p className={styles.note}>{tr.questions.closedNote}</p>
       ) : (
