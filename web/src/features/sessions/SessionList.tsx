@@ -3,7 +3,7 @@ import { safeMeetingUrl } from '@/lib/meeting-url';
 import { CANCEL_REASONS } from '@/lib/sessions';
 import { tr } from '@/strings/tr';
 
-import { cancelSessionAction } from './actions';
+import { cancelSessionAction, markSessionAction } from './actions';
 import { FeedbackForm } from './FeedbackForm';
 import styles from './SessionList.module.css';
 import type { SessionItem } from './types';
@@ -23,12 +23,15 @@ export function SessionList({
   returnTo,
   cancel = true,
   answered,
+  markable = false,
 }: {
   items: readonly SessionItem[];
   returnTo: string;
   cancel?: boolean;
   /** Verilirse geçmiş dersler listesidir: iptal edilmemiş derslerde geri bildirim formu (cevaplandıysa teşekkür) gösterilir. */
   answered?: readonly string[];
+  /** Gönüllü görünümü: biten, işaretlenmemiş derse "yapıldı" / "öğrenci gelmedi" düğmeleri. */
+  markable?: boolean;
 }) {
   return (
     <ul className={styles.list}>
@@ -40,7 +43,21 @@ export function SessionList({
           <p className={styles.meta}>
             {[item.subject, tr.sessions.minutes(item.durationMin), tr.sessions.statuses[item.status]].filter(Boolean).join(' · ')}
           </p>
-          {answered && item.status !== 'iptal' ? (
+          {markable && item.status === 'planlandi' ? (
+            <div className={styles.actions}>
+              <p className={styles.meta}>{tr.sessions.markHelp}</p>
+              {(['tamamlandi', 'gelinmedi'] as const).map((status) => (
+                <form key={status} action={markSessionAction}>
+                  <input type="hidden" name="sessionId" value={item.id} />
+                  <input type="hidden" name="status" value={status} />
+                  <Button type="submit" variant={status === 'tamamlandi' ? 'primary' : 'secondary'}>
+                    {status === 'tamamlandi' ? tr.sessions.markDone : tr.sessions.markMissed}
+                  </Button>
+                </form>
+              ))}
+            </div>
+          ) : null}
+          {answered && (item.status === 'tamamlandi' || (item.status === 'planlandi' && !markable)) ? (
             answered.includes(item.id) ? (
               <p className={styles.meta}>{tr.feedback.thanks}</p>
             ) : (

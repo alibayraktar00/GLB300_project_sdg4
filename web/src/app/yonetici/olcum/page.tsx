@@ -24,6 +24,9 @@ export default async function MeasurementPage() {
       <h1 className={styles.title}>{tr.feedback.summaryTitle}</h1>
       <p className={styles.note}>{tr.feedback.summaryIntro}</p>
       <p className={styles.intro}>{tr.feedback.sessionsDone(summary.completedSessions)}</p>
+      <p className={styles.intro}>
+        {tr.feedback.attendance}: {tr.feedback.attendanceLine(summary.attendance.attended, summary.attendance.missed, summary.attendance.pct)}
+      </p>
       {rows.length === 0 ? (
         <p className={styles.note}>{tr.feedback.noData}</p>
       ) : (

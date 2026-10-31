@@ -12,7 +12,8 @@ export const feedbackSchema = z.object({
 });
 
 export type RoleSummary = { responses: number; avgRating: number; satisfiedPct: number; continuePct: number };
-export type FeedbackSummary = { completedSessions: number; byRole: Partial<Record<'ogrenci' | 'veli' | 'gonullu', RoleSummary>> };
+export type Attendance = { attended: number; missed: number; pct: number | null };
+export type FeedbackSummary = { completedSessions: number; attendance: Attendance; byRole: Partial<Record<'ogrenci' | 'veli' | 'gonullu', RoleSummary>> };
 
 const roleSummary = z.object({
   responses: z.number(),
@@ -23,8 +24,14 @@ const roleSummary = z.object({
 
 /** `get_feedback_summary` yanıtını ekran verisine çevirir; beklenmeyen biçimde boş özet döner. */
 export function parseFeedbackSummary(raw: unknown): FeedbackSummary {
-  const empty: FeedbackSummary = { completedSessions: 0, byRole: {} };
-  const parsed = z.object({ completed_sessions: z.number(), by_role: z.record(z.string(), z.unknown()) }).safeParse(raw);
+  const empty: FeedbackSummary = { completedSessions: 0, attendance: { attended: 0, missed: 0, pct: null }, byRole: {} };
+  const parsed = z
+    .object({
+      completed_sessions: z.number(),
+      by_role: z.record(z.string(), z.unknown()),
+      attendance: z.object({ attended: z.number(), missed: z.number(), attendance_pct: z.number().nullable() }).optional(),
+    })
+    .safeParse(raw);
   if (!parsed.success) return empty;
   const byRole: FeedbackSummary['byRole'] = {};
   for (const role of ['ogrenci', 'veli', 'gonullu'] as const) {
@@ -38,5 +45,12 @@ export function parseFeedbackSummary(raw: unknown): FeedbackSummary {
       };
     }
   }
-  return { completedSessions: parsed.data.completed_sessions, byRole };
+  const attendance = parsed.data.attendance;
+  return {
+    completedSessions: parsed.data.completed_sessions,
+    attendance: attendance
+      ? { attended: attendance.attended, missed: attendance.missed, pct: attendance.attendance_pct }
+      : empty.attendance,
+    byRole,
+  };
 }

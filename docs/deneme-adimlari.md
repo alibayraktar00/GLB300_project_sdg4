@@ -46,7 +46,7 @@ gerçek e-posta kodu gerektiği için bu adımlar otomatikleştirilemez. Sahte (
 ## 6. Ders ve geri bildirim
 1. Gönüllü: `/gonullu/dersler` → yarın 17:00 için Meet bağlantısıyla ders planlayın (geçersiz bağlantı ve 21:00 sonrası reddedilmeli).
 2. Öğrenci ve veli: dersi görür, "Derse katıl" bağlantısı yeni sekmede açılır; iptal deneyin.
-3. Geçmiş bir ders için (SQL ile başlangıç zamanını geçmişe alarak) geri bildirim formu görünür; gönderin.
+3. Geçmiş bir ders için (SQL ile başlangıç zamanını geçmişe alarak): gönüllü dersi **Ders yapıldı / Öğrenci gelmedi** diye işaretler; öğrenci ve veli için geri bildirim formu görünür; gönderin.
 4. Yönetici: `/yonetici/olcum` özetini görün.
 
 ## 7. Veli özeti

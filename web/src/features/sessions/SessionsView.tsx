@@ -13,6 +13,7 @@ export function SessionsView({
   returnTo,
   emptyHelp = tr.sessions.emptyHelp,
   answered = [],
+  markable = false,
 }: {
   upcoming: readonly SessionItem[];
   past: readonly SessionItem[];
@@ -20,6 +21,7 @@ export function SessionsView({
   emptyHelp?: string;
   /** Geri bildirim verilmiş derslerin kimlikleri. */
   answered?: readonly string[];
+  markable?: boolean;
 }) {
   return (
     <>
@@ -34,7 +36,7 @@ export function SessionsView({
       {past.length > 0 ? (
         <section className={pageStyles.section} aria-labelledby="gecmis">
           <SectionHeader id="gecmis" title={tr.sessions.past} />
-          <SessionList items={past} returnTo={returnTo} answered={answered} />
+          <SessionList items={past} returnTo={returnTo} answered={answered} markable={markable} />
         </section>
       ) : null}
     </>

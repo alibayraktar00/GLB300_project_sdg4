@@ -27,7 +27,7 @@ export default async function VolunteerSessionsPage() {
           <ScheduleForm matches={matches} action={scheduleSession} />
         )}
       </section>
-      <SessionsView upcoming={upcoming} past={past} answered={answered} returnTo="/gonullu/dersler" emptyHelp="" />
+      <SessionsView upcoming={upcoming} past={past} answered={answered} markable returnTo="/gonullu/dersler" emptyHelp="" />
     </div>
   );
 }

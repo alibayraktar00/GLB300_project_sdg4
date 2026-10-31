@@ -4,6 +4,7 @@ import { redirect } from 'next/navigation';
 
 import type { ScheduleState } from '@/features/sessions/types';
 import { feedbackSchema } from '@/lib/feedback';
+import { UUID_PATTERN } from '@/lib/questions';
 import { cancelSchema, istanbulToIso, messageForSessionError, scheduleFieldErrors, scheduleSchema } from '@/lib/sessions';
 import { requireRole, requireUser } from '@/server/session';
 import { createSupabaseServerClient } from '@/server/supabase';
@@ -62,6 +63,22 @@ export async function submitFeedbackAction(formData: FormData): Promise<void> {
     }
   }
   redirect(back);
+}
+
+/** Gönüllü, biten dersi "yapıldı" ya da "öğrenci gelmedi" olarak işaretler. Kurallar `mark_session` RPC'sindedir. */
+export async function markSessionAction(formData: FormData): Promise<void> {
+  await requireRole('gonullu');
+  const sessionId = String(formData.get('sessionId') ?? '');
+  const status = String(formData.get('status') ?? '');
+  if (UUID_PATTERN.test(sessionId) && (status === 'tamamlandi' || status === 'gelinmedi')) {
+    try {
+      const supabase = await createSupabaseServerClient();
+      await supabase.rpc('mark_session', { p_session_id: sessionId, p_status: status });
+    } catch {
+      // Sayfa yeniden yüklenir; ders hâlâ işaretsizse kayıt yapılamamıştır.
+    }
+  }
+  redirect('/gonullu/dersler');
 }
 
 const RETURN_PATHS = new Set(['/gonullu/dersler', '/ogrenci/dersler', '/veli/dersler']);

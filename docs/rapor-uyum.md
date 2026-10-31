@@ -32,7 +32,7 @@ testle doğrulanmış kısımlar içindir. Gerçek bir Supabase projesinde uçta
 |---|---|
 | Tamamlanan eksik konu yüzdesi | Veri toplanıyor (`plan_items`); **toplu rapor ekranı yok** |
 | Memnuniyet > %80 (hafta 7 testi) | **Anket mekanizması YOK**. Hafta 7'den önce kısa bir geri bildirim formu gerekir |
-| Haftalık oturum katılımı > %85 | Şemada `sessions.status` (tamamlandı / gelinmedi) var; **işaretleme ekranı ve rapor YOK** |
+| Haftalık oturum katılımı > %85 | Şemada `sessions.status` (tamamlandı / gelinmedi) var; **Yapıldı:** gönüllü biten dersi "yapıldı / öğrenci gelmedi" işaretler (`mark_session`), yönetici özetinde katılım oranı görünür |
 
 ## 4. Raporda düzeltmenizi önerdiğim ifadeler
 

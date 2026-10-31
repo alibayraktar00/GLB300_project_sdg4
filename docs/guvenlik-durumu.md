@@ -24,7 +24,7 @@ Bu belge, son geliştirme turunda yapılan güvenlik işlerini ve bilinçli kara
   `anon` hiçbirini çalıştıramaz. İzin listesi `001_sema_korumalari.test.sql` ile korunur: yeni bir RPC listeye eklenmeden testi geçemez.
 
 ## Hâlâ açık / insan kararı gerektirenler
-- Migration 14 ve 15 uzak veritabanına henüz uygulanmadı (`supabase db push`).
+- Migration 14, 15 ve 16 uzak veritabanına henüz uygulanmadı (`supabase db push`).
 - Gerçek e-posta ve MFA akışı canlıda denenmedi (`docs/deneme-adimlari.md`).
 - Yasal metinler taslak; avukat incelemesi şart (`docs/hukuk/`).
 - Sızma testi / dış güvenlik incelemesi yapılmadı.
