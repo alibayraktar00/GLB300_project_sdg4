@@ -46,14 +46,14 @@ export default defineConfig({
       reuseExistingServer: !isCI,
       timeout: 60_000,
       // Sunucuya Supabase anahtarı verilmez: uygulama bu durumda da çökmemelidir.
-      env: { NEXT_TELEMETRY_DISABLED: '1' },
+      env: { NEXT_TELEMETRY_DISABLED: '1', SUPABASE_URL: '', SUPABASE_PUBLISHABLE_KEY: '' },
     },
     {
       command: `npm run start -- --port ${GALLERY_PORT}`,
       url: `${GALLERY_URL}/api/health`,
       reuseExistingServer: !isCI,
       timeout: 60_000,
-      env: { NEXT_TELEMETRY_DISABLED: '1', GALLERY: 'on' },
+      env: { NEXT_TELEMETRY_DISABLED: '1', GALLERY: 'on', SUPABASE_URL: '', SUPABASE_PUBLISHABLE_KEY: '' },
     },
   ],
 });

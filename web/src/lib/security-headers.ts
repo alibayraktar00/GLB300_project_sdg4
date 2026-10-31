@@ -10,7 +10,7 @@
  *   - başlık adı `Content-Security-Policy` olur (ihlaller engellenir),
  *   - `upgrade-insecure-requests` eklenir (rapor modunda zaten yok sayılır).
  */
-export const CSP_ENFORCED = false;
+export const CSP_ENFORCED = true;
 
 /** CSP ihlal raporlarının gönderildiği adres (`src/app/api/csp-report/route.ts`). */
 export const CSP_REPORT_PATH = '/api/csp-report';
@@ -72,10 +72,12 @@ export type CspOptions = {
   /** Supabase Storage'dan imzalı URL ile gelen foto ve ses için izin verilen köken. Yoksa yalnızca 'self'. */
   supabaseOrigin?: string | null;
   enforce?: boolean;
+  /** `upgrade-insecure-requests` eklensin mi? Yalnızca zorunlu modda ve istek HTTPS ise. Verilmezse eklenir (güvenli varsayılan). */
+  upgradeInsecure?: boolean;
 };
 
 /** Content-Security-Policy değerini üretir (plan 9.1 tablosu). */
-export function buildCspValue({ nonce, pathname, isDev, supabaseOrigin, enforce = CSP_ENFORCED }: CspOptions): string {
+export function buildCspValue({ nonce, pathname, isDev, supabaseOrigin, enforce = CSP_ENFORCED, upgradeInsecure = true }: CspOptions): string {
   const storage = supabaseOrigin ? [supabaseOrigin] : [];
   const nonceSource = `'nonce-${nonce}'`;
 
@@ -100,7 +102,7 @@ export function buildCspValue({ nonce, pathname, isDev, supabaseOrigin, enforce 
     ['form-action', ["'self'"]],
     ['frame-ancestors', ["'none'"]],
     // `upgrade-insecure-requests` rapor modunda tarayıcı tarafından yok sayılır ve konsola uyarı yazar.
-    ...(enforce ? ([['upgrade-insecure-requests', []]] as Array<[string, string[]]>) : []),
+    ...(enforce && upgradeInsecure ? ([['upgrade-insecure-requests', []]] as Array<[string, string[]]>) : []),
     // `report-to` Chromium için, `report-uri` Firefox ve Safari için (onlar henüz report-to desteklemiyor).
     ['report-uri', [CSP_REPORT_PATH]],
     ['report-to', ['csp']],

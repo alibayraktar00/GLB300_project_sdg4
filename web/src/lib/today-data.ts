@@ -1,5 +1,7 @@
 import { z } from 'zod';
 
+import '@/lib/zod-config';
+
 import type { TodayData, TodayTask } from '@/features/today/types';
 
 /**

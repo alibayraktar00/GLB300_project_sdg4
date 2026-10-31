@@ -1,5 +1,7 @@
 import { z } from 'zod';
 
+import '@/lib/zod-config';
+
 import type { QuestionStatus, QuestionSummary, ThreadData, ThreadMessage } from '@/features/questions/types';
 
 /**

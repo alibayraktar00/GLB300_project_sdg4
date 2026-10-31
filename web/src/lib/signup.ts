@@ -1,5 +1,7 @@
 import { z } from 'zod';
 
+import '@/lib/zod-config';
+
 import { tr } from '@/strings/tr';
 
 /**

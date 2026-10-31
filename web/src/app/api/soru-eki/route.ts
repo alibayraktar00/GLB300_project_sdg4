@@ -1,5 +1,6 @@
 import { inspectJpeg, MAX_PHOTO_BYTES } from '@/lib/jpeg';
 import { UUID_PATTERN } from '@/lib/questions';
+import { createRateLimiter } from '@/lib/rate-limit';
 import { isSameOrigin } from '@/lib/same-origin';
 import { getSessionUser } from '@/server/session';
 import { createSupabaseServerClient } from '@/server/supabase';
@@ -16,6 +17,11 @@ import { createSupabaseServerClient } from '@/server/supabase';
 
 type ErrorCode = 'bicim' | 'boyut' | 'ustveri' | 'yuklenemedi' | 'yetki';
 
+/** Oturum başına dakikada en çok 20 yükleme (soru başına en çok 3 fotoğraf; fazlası kötüye kullanım ya da hatadır). */
+const uploadLimiter = createRateLimiter(20, 60_000);
+/** Gövde sınırı: 2 MB dosya + çok parçalı form başlıkları için pay. Bundan büyük istek okunmadan reddedilir. */
+const MAX_BODY_BYTES = MAX_PHOTO_BYTES + 64 * 1024;
+
 const json = (body: { path: string } | { error: ErrorCode }, status: number) =>
   Response.json(body, { status, headers: { 'Cache-Control': 'no-store' } });
 
@@ -26,6 +32,11 @@ export async function POST(request: Request) {
   if (!user || user.status !== 'aktif' || (user.role !== 'ogrenci' && user.role !== 'gonullu')) {
     return json({ error: 'yetki' }, 401);
   }
+
+  if (!uploadLimiter.allow(user.id)) return json({ error: 'yuklenemedi' }, 429);
+  // Gövde belleğe okunmadan önce bildirilen boyuta bakılır (yalan söyleyen istemci formData() sonrası yine reddedilir).
+  const declared = Number(request.headers.get('content-length'));
+  if (!Number.isFinite(declared) || declared <= 0 || declared > MAX_BODY_BYTES) return json({ error: 'boyut' }, 413);
 
   let form: FormData;
   try {

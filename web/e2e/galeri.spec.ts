@@ -276,8 +276,11 @@ test.describe('kanarya: axe gerçekten ihlal yakalıyor mu?', { tag: '@kisa' }, 
     await dismissCookieNotice(page);
     await page.goto('/');
     const temiz = await new AxeBuilder({ page }).withTags(WCAG_TAGS).analyze();
-    await page.setContent(bozuk);
-    const kirli = await new AxeBuilder({ page }).withTags(WCAG_TAGS).analyze();
+    // Zorunlu CSP bu belgeye bağlıdır; bozuk örnek (satır içi stil) yeni, boş bir sayfada denenmeli.
+    const bos = await page.context().newPage();
+    await bos.setContent(bozuk);
+    const kirli = await new AxeBuilder({ page: bos }).withTags(WCAG_TAGS).analyze();
+    await bos.close();
     expect(temiz.violations).toHaveLength(0);
     expect(kirli.violations.length).toBeGreaterThanOrEqual(4);
   });

@@ -18,7 +18,7 @@ function request(path = '/', cookies?: string) {
 }
 
 function nonceOf(response: Response): string {
-  const csp = response.headers.get('content-security-policy-report-only') ?? '';
+  const csp = response.headers.get('content-security-policy') ?? '';
   return /'nonce-([^']+)'/.exec(csp)?.[1] ?? '';
 }
 
@@ -56,10 +56,10 @@ beforeEach(() => {
 afterEach(() => resetSupabaseConfigReportForTests());
 
 describe('proxy: güvenlik başlıkları', () => {
-  it('her istek için nonce\'lu Report-Only CSP ve diğer başlıkları ekler', async () => {
+  it('her istek için nonce\'lu zorunlu CSP ve diğer başlıkları ekler', async () => {
     const response = await proxy(request('/'));
     expect(nonceOf(response)).not.toBe('');
-    expect(response.headers.get('content-security-policy')).toBeNull();
+    expect(response.headers.get('content-security-policy-report-only')).toBeNull();
     expect(response.headers.get('referrer-policy')).toBe('no-referrer');
     expect(response.headers.get('x-content-type-options')).toBe('nosniff');
     expect(response.headers.get('permissions-policy')).toContain('camera=()');
@@ -74,7 +74,7 @@ describe('proxy: güvenlik başlıkları', () => {
     const response = await proxy(request('/'));
     const nonce = nonceOf(response);
     expect(response.headers.get('x-middleware-request-x-nonce')).toBe(nonce);
-    expect(response.headers.get('x-middleware-request-content-security-policy-report-only')).toContain(`'nonce-${nonce}'`);
+    expect(response.headers.get('x-middleware-request-content-security-policy')).toContain(`'nonce-${nonce}'`);
   });
 
   it('ders sayfasında Permissions-Policy kamera/mikrofon açar', async () => {
@@ -171,6 +171,6 @@ describe('proxy: oturum yenileme', () => {
 
   it('CSP img-src içine Supabase kökenini ekler', async () => {
     const response = await proxy(request('/'));
-    expect(response.headers.get('content-security-policy-report-only')).toContain('img-src \'self\' blob: data: https://abcdefgh.supabase.co');
+    expect(response.headers.get('content-security-policy')).toContain('img-src \'self\' blob: data: https://abcdefgh.supabase.co');
   });
 });

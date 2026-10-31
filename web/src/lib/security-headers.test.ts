@@ -148,8 +148,8 @@ describe('applySecurityHeaders', () => {
   it('plan 9.1 başlıklarını yazar', () => {
     const headers = new Headers();
     applySecurityHeaders(headers, options);
-    expect(headers.get('Content-Security-Policy-Report-Only')).toContain(`'nonce-${NONCE}'`);
-    expect(headers.get('Content-Security-Policy')).toBeNull(); // henüz zorunlu değil
+    expect(headers.get('Content-Security-Policy')).toContain(`'nonce-${NONCE}'`);
+    expect(headers.get('Content-Security-Policy-Report-Only')).toBeNull(); // artık zorunlu
     expect(headers.get('Reporting-Endpoints')).toBe('csp="/api/csp-report"');
     expect(headers.get('Referrer-Policy')).toBe('no-referrer');
     expect(headers.get('X-Content-Type-Options')).toBe('nosniff');

@@ -1,4 +1,5 @@
 import { Button, ButtonLink } from '@/components/Button';
+import { safeMeetingUrl } from '@/lib/meeting-url';
 import { CANCEL_REASONS } from '@/lib/sessions';
 import { tr } from '@/strings/tr';
 
@@ -48,8 +49,8 @@ export function SessionList({
           ) : null}
           {!answered && item.status === 'planlandi' ? (
             <div className={styles.actions}>
-              {item.meetingUrl ? (
-                <ButtonLink href={item.meetingUrl} external target="_blank" icon="play_arrow">
+              {safeMeetingUrl(item.meetingUrl) ? (
+                <ButtonLink href={safeMeetingUrl(item.meetingUrl) ?? ''} external target="_blank" icon="play_arrow">
                   {tr.sessions.join}
                 </ButtonLink>
               ) : null}

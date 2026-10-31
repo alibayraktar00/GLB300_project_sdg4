@@ -1,5 +1,7 @@
 import { z } from 'zod';
 
+import '@/lib/zod-config';
+
 import type { ApplicationItem, MatchProposal, MatchingData } from '@/features/admin/types';
 import { shortPublicName } from '@/lib/public-name';
 

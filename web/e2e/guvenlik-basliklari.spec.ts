@@ -7,9 +7,9 @@ test.describe('güvenlik başlıkları', { tag: '@kisa' }, () => {
     const response = await request.get('/');
     const headers = response.headers();
 
-    // CSP şimdilik yalnızca RAPOR modunda (H9'a kadar). Zorunlu başlık henüz olmamalı.
-    expect(headers['content-security-policy-report-only']).toContain("script-src 'self' 'nonce-");
-    expect(headers['content-security-policy']).toBeUndefined();
+    // CSP ZORUNLU modda; rapor modu başlığı artık gönderilmez.
+    expect(headers['content-security-policy']).toContain("script-src 'self' 'nonce-");
+    expect(headers['content-security-policy-report-only']).toBeUndefined();
     expect(headers['reporting-endpoints']).toBe('csp="/api/csp-report"');
 
     expect(headers['referrer-policy']).toBe('no-referrer');
@@ -27,8 +27,8 @@ test.describe('güvenlik başlıkları', { tag: '@kisa' }, () => {
 
     const first = await request.get('/');
     const second = await request.get('/');
-    const nonce1 = nonceOf(first.headers()['content-security-policy-report-only'] ?? '');
-    const nonce2 = nonceOf(second.headers()['content-security-policy-report-only'] ?? '');
+    const nonce1 = nonceOf(first.headers()['content-security-policy'] ?? '');
+    const nonce2 = nonceOf(second.headers()['content-security-policy'] ?? '');
 
     expect(nonce1).toBeTruthy();
     expect(nonce2).toBeTruthy();

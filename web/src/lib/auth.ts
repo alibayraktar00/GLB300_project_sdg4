@@ -1,5 +1,7 @@
 import { z } from 'zod';
 
+import '@/lib/zod-config';
+
 import { APP_ROLES, roleDestinations, type AppRole } from '@/lib/role-navigation';
 import { tr } from '@/strings/tr';
 

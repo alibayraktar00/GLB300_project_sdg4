@@ -1,5 +1,7 @@
 import { z } from 'zod';
 
+import '@/lib/zod-config';
+
 import { UUID_PATTERN } from '@/lib/questions';
 
 /** Geri bildirim girdisi: 1-5 puan ve "devam etmek ister misin" (evet/hayır). Serbest metin bilerek yoktur. */

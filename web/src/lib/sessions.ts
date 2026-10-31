@@ -1,5 +1,7 @@
 import { z } from 'zod';
 
+import '@/lib/zod-config';
+
 import type { SessionItem, SessionStatus } from '@/features/sessions/types';
 import { UUID_PATTERN } from '@/lib/questions';
 import { tr } from '@/strings/tr';

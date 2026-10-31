@@ -1,5 +1,7 @@
 import { z } from 'zod';
 
+import '@/lib/zod-config';
+
 import { MVP_SUBJECTS } from '@/lib/scope';
 import { tr } from '@/strings/tr';
 

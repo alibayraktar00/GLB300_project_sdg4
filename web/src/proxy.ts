@@ -48,6 +48,9 @@ export async function proxy(request: NextRequest) {
     isDev,
     isProduction,
     hasSession,
+    // HTTPS'e yükseltme yalnızca istek zaten HTTPS ise anlamlıdır; düz HTTP ile denenen yerel üretim derlemesinde
+    // (WebKit localhost'u da yükseltir) sayfa hiç açılmazdı.
+    upgradeInsecure: request.nextUrl.protocol === 'https:' || request.headers.get('x-forwarded-proto') === 'https',
     supabaseOrigin: config.ok ? originOf(config.config.url, { allowHttp: !isProduction }) : null,
   };
 
