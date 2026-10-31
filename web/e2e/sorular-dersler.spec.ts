@@ -11,6 +11,7 @@ const PAGES = [
   { path: '/galeri/sorular', heading: 'Sorularım' },
   { path: '/galeri/dersler', heading: 'Dersler' },
   { path: '/galeri/ayarlar', heading: 'Ayarlar' },
+  { path: '/galeri/ekranlar', heading: 'Ekranlar' },
 ];
 
 test.describe('Soru ve ders ekranları', { tag: '@kisa' }, () => {
@@ -35,7 +36,8 @@ test.describe('Soru ve ders ekranları', { tag: '@kisa' }, () => {
       for (const theme of STORED_THEMES) {
         test(`${path} · ${theme.name} tema: WCAG A/AA ihlali yok`, async ({ page }) => {
           const width = page.viewportSize()?.width ?? 412;
-          await page.setViewportSize({ width, height: 2400 });
+          // Uzun sayfada alttaki sabit gezinme içerikle çakışmasın diye pencere sayfayı tamamen kapsayacak kadar yüksek tutulur.
+          await page.setViewportSize({ width, height: path === '/galeri/ekranlar' ? 9000 : 2400 });
           await storeAppearance(page, theme.stored);
           await dismissCookieNotice(page);
           await page.goto(path);

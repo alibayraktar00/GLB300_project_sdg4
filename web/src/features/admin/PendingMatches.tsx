@@ -1,5 +1,6 @@
 import { Button } from '@/components/Button';
 import { Card, CardContent } from '@/components/Card';
+import { SectionHeader } from '@/components/SectionHeader';
 import styles from '@/features/questions/page.module.css';
 import { tr } from '@/strings/tr';
 
@@ -11,9 +12,7 @@ export function PendingMatches({ items }: { items: readonly MatchProposal[] }) {
   if (items.length === 0) return null;
   return (
     <section className={styles.section} aria-labelledby="oneri">
-      <h2 id="oneri" className={styles.title}>
-        {tr.matches.pendingTitle}
-      </h2>
+      <SectionHeader id="oneri" title={tr.matches.pendingTitle} />
       <p className={styles.note}>{tr.matches.pendingHelp}</p>
       <ul className={styles.pool}>
         {items.map((item) => (
