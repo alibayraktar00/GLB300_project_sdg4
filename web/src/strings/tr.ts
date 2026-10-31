@@ -62,6 +62,7 @@ export const tr = {
       emailInvalid: 'E-posta adresi geçerli görünmüyor.',
       usernameRequired: 'Kullanıcı adı yazılmalı.',
       passwordRequired: 'Şifre yazılmalı.',
+      tooManyAttempts: 'Çok fazla deneme yapıldı. Biraz bekleyip tekrar denenebilir.',
       wrongCredentials: 'Giriş bilgileri doğru değil. Kontrol edip tekrar denenebilir.',
       unavailable: 'Giriş şu anda yapılamıyor. Biraz sonra tekrar denenebilir.',
     },

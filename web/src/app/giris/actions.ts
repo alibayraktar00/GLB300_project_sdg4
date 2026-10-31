@@ -1,5 +1,6 @@
 'use server';
 
+import { headers } from 'next/headers';
 import { redirect } from 'next/navigation';
 
 import {
@@ -11,6 +12,8 @@ import {
   studentLoginSchema,
   type FieldErrors,
 } from '@/lib/auth';
+import { createRateLimiter } from '@/lib/rate-limit';
+import { lowerAscii } from '@/lib/turkish';
 import { createSupabaseServerClient, setRememberChoice } from '@/server/supabase';
 import { tr } from '@/strings/tr';
 
@@ -19,7 +22,19 @@ export type LoginState = { fieldErrors?: FieldErrors; formError?: string } | nul
 
 type Credentials = { email: string; password: string; remember: boolean };
 
+/**
+ * Giriş denemesi sınırı (en iyi çaba, bellekte): hesap başına 10 dakikada 10, istemci adresi başına 40 deneme.
+ * Asıl şifre denemesi sınırı Supabase Auth'tadır; bu, ona ulaşmadan kaba kaba deneme yapanı ucuza keser.
+ */
+const emailLimiter = createRateLimiter(10, 10 * 60_000);
+const addressLimiter = createRateLimiter(40, 10 * 60_000);
+
 async function signIn({ email, password, remember }: Credentials, next: FormDataEntryValue | null): Promise<LoginState> {
+  const forwarded = (await headers()).get('x-forwarded-for')?.split(',')[0]?.trim() || 'bilinmiyor';
+  if (!emailLimiter.allow(lowerAscii(email)) || !addressLimiter.allow(forwarded)) {
+    return { formError: tr.auth.errors.tooManyAttempts };
+  }
+
   let destination: string;
   try {
     const supabase = await createSupabaseServerClient({ remember });
