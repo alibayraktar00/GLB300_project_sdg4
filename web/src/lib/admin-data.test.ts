@@ -10,7 +10,7 @@ describe('parseApplications', () => {
       { nope: 1 },
     ];
     expect(parseApplications(rows)).toEqual([
-      { id: 'a', name: 'Ayşe I.', university: 'U', department: '', classYear: 3, status: 'basvuru' },
+      { id: 'a', name: 'Ayşe I.', university: 'U', department: '', classYear: 3, status: 'basvuru', pledgeOk: false },
     ]);
   });
   it('dizi değilse boş döner', () => {

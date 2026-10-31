@@ -3,7 +3,7 @@
 -- Fixture: gon_z başvuruda; ogr_b1 (6. sınıf, veli_b) MAT için eşleşmemiş; gon_x MAT 6-7 onaylı.
 -- =====================================================================
 begin;
-select plan(22);
+select plan(24);
 select tests.make_fixture();
 
 -- ====================== review_volunteer: yetki ======================
@@ -19,6 +19,16 @@ select tests.login('admin', 'aal2');
 select throws_ok($$ select public.review_volunteer(tests.id('gon_z'), 'sil', null) $$, '22023', null, 'bilinmeyen karar reddedilir');
 select throws_ok($$ select public.review_volunteer(tests.id('gon_z'), 'reddet', 'serbest metin') $$, '22023', null, 'ret gerekçesi koddur; serbest metin reddedilir');
 select throws_ok($$ select public.review_volunteer(tests.id('gon_x'), 'reddet', 'diger') $$, '22023', null, 'onaylı gönüllü reddedilemez');
+select throws_ok($$ select public.review_volunteer(tests.id('gon_z'), 'onayla', null) $$, '22023',
+  'RIZA_EKSIK: taahhütname ve davranış kuralları onayı yok', 'taahhüt onayı olmadan gönüllü onaylanamaz');
+select tests.logout();
+-- Yalnızca taahhüt var, davranış kuralları yok: yine reddedilir
+insert into public.consents (user_id, type, doc_version, granted) values (tests.id('gon_z'), 'gonullu_taahhut', 'v9', true);
+select tests.login('admin', 'aal2');
+select throws_ok($$ select public.review_volunteer(tests.id('gon_z'), 'onayla', null) $$, '22023', null, 'tek onay yetmez; ikisi de gerekir');
+select tests.logout();
+insert into public.consents (user_id, type, doc_version, granted) values (tests.id('gon_z'), 'gonullu_davranis_kurallari', 'v9', true);
+select tests.login('admin', 'aal2');
 select lives_ok($$ select public.review_volunteer(tests.id('gon_z'), 'onayla', null) $$, 'başvuru onaylandı');
 select tests.logout();
 select is((select status from public.volunteers where profile_id = tests.id('gon_z')), 'onayli', 'durum onaylı oldu');

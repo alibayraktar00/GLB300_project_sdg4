@@ -19,6 +19,11 @@ gerçek e-posta kodu gerektiği için bu adımlar otomatikleştirilemez. Sahte (
 ## 2. Gönüllü başvurusu
 1. `/basvuru` → .edu.tr e-postayla başvurun. Beklenen: durum "başvuru".
 
+## 2b. Gönüllü taahhütnamesi
+1. Gönüllü olarak giriş yapın → `/gonullu/pano` üstündeki uyarıdan **Taahhütnameyi oku ve onayla** (`/gonullu/taahhut`).
+2. 11 maddeyi tek tek işaretleyin (eksik bırakırsanız o madde altında uyarı çıkar) → "Taahhüt ediyorum".
+3. Bu yapılmadan yönetici başvuruyu **onaylayamaz** (ekranda "onayı eksik" yazar; veritabanı da reddeder).
+
 ## 3. Yönetici (sıra önemli)
 1. Üçüncü e-postayla `/kayit/veli` ile hesap açın (çocuk eklemeyin).
 2. Giriş yapıp **`/mfa`** adresine gidin: QR'ı bir doğrulayıcı uygulamayla okutun, 6 haneli kodu girin.

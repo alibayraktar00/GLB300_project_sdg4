@@ -21,7 +21,22 @@ export async function loadApplications(): Promise<ApplicationItem[]> {
       .in('status', ['basvuru', 'egitim', 'inceleme'])
       .order('created_at', { ascending: true })
       .limit(100);
-    return error ? [] : parseApplications(data);
+    const items = error ? [] : parseApplications(data);
+    if (items.length === 0) return items;
+    const consents = await supabase
+      .from('consents')
+      .select('user_id, type')
+      .in('user_id', items.map((item) => item.id))
+      .in('type', ['gonullu_taahhut', 'gonullu_davranis_kurallari'])
+      .eq('granted', true)
+      .is('withdrawn_at', null);
+    const held = new Map<string, Set<string>>();
+    for (const row of consents.error || !Array.isArray(consents.data) ? [] : consents.data) {
+      const set = held.get(String(row.user_id)) ?? new Set<string>();
+      set.add(String(row.type));
+      held.set(String(row.user_id), set);
+    }
+    return items.map((item) => ({ ...item, pledgeOk: held.get(item.id)?.size === 2 }));
   } catch {
     return [];
   }

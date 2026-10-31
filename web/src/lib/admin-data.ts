@@ -41,6 +41,7 @@ export function parseApplications(raw: unknown): ApplicationItem[] {
     department: row.department ?? '',
     classYear: row.class_year ?? null,
     status: row.status,
+    pledgeOk: false,
   }));
 }
 

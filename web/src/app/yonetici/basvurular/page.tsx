@@ -38,11 +38,15 @@ export default async function ApplicationsPage() {
                     .join(' · ')}
                 />
                 <div className={styles.claimRow}>
-                  <form action={reviewVolunteerAction}>
-                    <input type="hidden" name="volunteerId" value={item.id} />
-                    <input type="hidden" name="decision" value="onayla" />
-                    <Button type="submit">{tr.admin.approve}</Button>
-                  </form>
+                  {item.pledgeOk ? (
+                    <form action={reviewVolunteerAction}>
+                      <input type="hidden" name="volunteerId" value={item.id} />
+                      <input type="hidden" name="decision" value="onayla" />
+                      <Button type="submit">{tr.admin.approve}</Button>
+                    </form>
+                  ) : (
+                    <p className={styles.note}>{tr.legalPledge.missingAdmin}</p>
+                  )}
                   <form action={reviewVolunteerAction} className={styles.claimRow}>
                     <input type="hidden" name="volunteerId" value={item.id} />
                     <input type="hidden" name="decision" value="reddet" />

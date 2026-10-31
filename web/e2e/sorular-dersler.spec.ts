@@ -20,7 +20,7 @@ test.describe('Soru ve ders ekranları', { tag: '@kisa' }, () => {
     });
   }
 
-  for (const path of ['/ogrenci/sorular', '/ogrenci/dersler', '/gonullu/dersler', '/veli/dersler', '/veli/ozet', '/yonetici/basvurular']) {
+  for (const path of ['/ogrenci/sorular', '/ogrenci/dersler', '/gonullu/dersler', '/veli/dersler', '/veli/ozet', '/gonullu/taahhut', '/yonetici/basvurular']) {
     test(`oturumsuz ${path} girişe yönlendirir`, async ({ page }) => {
       await page.goto(path);
       await expect(page).toHaveURL(/\/giris/);

@@ -7,7 +7,26 @@ import type { SupabaseClient } from '@supabase/supabase-js';
  * istemci yalnızca tür, sürüm ve seçimi gönderir (supabase/migrations: consents).
  */
 
-export type ConsentType = 'aydinlatma_veli' | 'aydinlatma_gonullu' | 'kullanim_kosullari';
+export type ConsentType =
+  | 'aydinlatma_veli'
+  | 'aydinlatma_gonullu'
+  | 'kullanim_kosullari'
+  | 'gonullu_davranis_kurallari'
+  | 'gonullu_taahhut';
+
+/** Kullanıcının geçerli (verilmiş ve geri çekilmemiş) onayı olmayan türler. Okunamazsa hepsi eksik sayılır (güvenli yön). */
+export async function missingConsents(supabase: SupabaseClient, userId: string, types: ConsentType[]): Promise<ConsentType[]> {
+  const { data, error } = await supabase
+    .from('consents')
+    .select('type')
+    .eq('user_id', userId)
+    .eq('granted', true)
+    .is('withdrawn_at', null)
+    .in('type', types);
+  if (error || !Array.isArray(data)) return types;
+  const held = new Set(data.map((row) => String(row.type)));
+  return types.filter((type) => !held.has(type));
+}
 
 /** Bir metin türünün en güncel yayımlanmış sürümü; yayımlanmış metin yoksa null. */
 async function latestVersion(supabase: SupabaseClient, docType: string): Promise<string | null> {

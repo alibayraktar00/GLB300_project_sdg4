@@ -9,6 +9,7 @@ import {
   volunteerSignupSchema,
   type VolunteerFieldErrors,
 } from '@/lib/volunteer';
+import { MVP_GRADES, MVP_SUBJECTS } from '@/lib/scope';
 import { recordConsents } from '@/server/consents';
 import { createSupabaseServerClient, setRememberChoice } from '@/server/supabase';
 import { tr } from '@/strings/tr';
@@ -110,6 +111,18 @@ export async function verifyVolunteerCode(_previous: VolunteerState, formData: F
       class_year: fields.data.classYear,
     });
     if (insertError) return back({ formError: tr.volunteer.errors.profileFailed });
+
+    // Hangi ders ve sınıfta destek verebileceği: prototip kapsamı (8. sınıf Matematik) otomatik yazılır; eşleştirme
+    // (propose_match) gönüllünün bu satırına bakar. Kapsam genişleyince bu satır seçim ekranına dönüşür.
+    const userId = data.user.id;
+    const { data: subjects } = await supabase.from('subjects').select('id, code').in('code', [...MVP_SUBJECTS]);
+    const rows = (subjects ?? []).flatMap((subject) =>
+      MVP_GRADES.map((grade) => ({ volunteer_id: userId, subject_id: subject.id, grade })),
+    );
+    if (rows.length > 0) {
+      const { error: subjectError } = await supabase.from('volunteer_subjects').insert(rows);
+      if (subjectError) return back({ formError: tr.volunteer.errors.profileFailed });
+    }
 
     const recorded = await recordConsents(supabase, data.user.id, ['aydinlatma_gonullu', 'kullanim_kosullari']);
     if (!recorded) return back({ formError: tr.signup.errors.unavailable });

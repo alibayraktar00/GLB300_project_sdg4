@@ -1,12 +1,15 @@
 import type { Metadata } from 'next';
 
-import { Button } from '@/components/Button';
+import { Banner } from '@/components/Banner';
+import { Button, ButtonLink } from '@/components/Button';
 import { Card, CardContent } from '@/components/Card';
 import { SectionHeader } from '@/components/SectionHeader';
 import { EmptyState } from '@/components/StateViews';
 import { QuestionList } from '@/features/questions/QuestionList';
 import styles from '@/features/questions/page.module.css';
+import { missingConsents } from '@/server/consents';
 import { loadVolunteerBoard } from '@/server/questions';
+import { createSupabaseServerClient } from '@/server/supabase';
 import { requireRole } from '@/server/session';
 import { tr } from '@/strings/tr';
 
@@ -19,10 +22,21 @@ export const dynamic = 'force-dynamic';
 export default async function VolunteerBoardPage() {
   const user = await requireRole('gonullu');
   const { assigned, pool } = await loadVolunteerBoard(user.id);
+  const missing = await createSupabaseServerClient()
+    .then((supabase) => missingConsents(supabase, user.id, ['gonullu_taahhut', 'gonullu_davranis_kurallari']))
+    .catch(() => []);
 
   return (
     <div className={styles.page}>
       <h1 className={styles.title}>{tr.questions.volunteerBoard}</h1>
+      {missing.length > 0 ? (
+        <Banner
+          tone="warning"
+          action={<ButtonLink href="/gonullu/taahhut">{tr.legalPledge.link}</ButtonLink>}
+        >
+          {tr.legalPledge.needed}
+        </Banner>
+      ) : null}
 
       <section className={styles.section} aria-labelledby="atanan">
         <SectionHeader id="atanan" title={tr.questions.assignedTitle} />

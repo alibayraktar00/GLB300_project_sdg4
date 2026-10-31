@@ -6,6 +6,8 @@ export type ApplicationItem = {
   department: string;
   classYear: number | null;
   status: 'basvuru' | 'egitim' | 'inceleme';
+  /** Taahhüt ve davranış kuralları onayı verilmiş mi? Değilse onay düğmesi kapalıdır (RPC de reddeder). */
+  pledgeOk: boolean;
 };
 
 export type MatchingData = {
