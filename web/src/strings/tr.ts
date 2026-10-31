@@ -204,6 +204,18 @@ export const tr = {
     subjectLine: (subject: string, grade: number) => `${subject} · ${grade}. sınıf`,
   },
 
+  settings: {
+    title: 'Ayarlar',
+    appearance: 'Görünüm ve erişilebilirlik',
+    storedNote: 'Bu ayarlar yalnızca bu cihazda saklanır; sunucuya gönderilmez.',
+    theme: 'Tema',
+    themeOptions: { system: 'Sistem', light: 'Açık', dark: 'Koyu' },
+    highContrast: 'Yüksek kontrast',
+    textSize: 'Yazı boyutu',
+    textSizes: { '1': 'Normal', '1.15': 'Büyük', '1.3': 'Daha büyük' },
+    reduceMotion: 'Animasyonları azalt',
+    reset: 'Varsayılana dön',
+  },
   family: {
     childrenTitle: 'Çocuklarım',
     noChildren: 'Henüz çocuk hesabı yok',

@@ -10,6 +10,7 @@ import { dismissCookieNotice, expectNoAxeViolations, GALLERY_URL, horizontalOver
 const PAGES = [
   { path: '/galeri/sorular', heading: 'Sorularım' },
   { path: '/galeri/dersler', heading: 'Dersler' },
+  { path: '/galeri/ayarlar', heading: 'Ayarlar' },
 ];
 
 test.describe('Soru ve ders ekranları', { tag: '@kisa' }, () => {
@@ -20,7 +21,7 @@ test.describe('Soru ve ders ekranları', { tag: '@kisa' }, () => {
     });
   }
 
-  for (const path of ['/ogrenci/sorular', '/ogrenci/dersler', '/gonullu/dersler', '/veli/dersler', '/veli/ozet', '/gonullu/taahhut', '/yonetici/sikayetler', '/yonetici/denetim', '/gonullu/ogrenciler', '/veli/panel', '/yonetici/basvurular']) {
+  for (const path of ['/ogrenci/sorular', '/ogrenci/dersler', '/gonullu/dersler', '/veli/dersler', '/veli/ozet', '/gonullu/taahhut', '/yonetici/sikayetler', '/ogrenci/ayarlar', '/yonetici/denetim', '/gonullu/ogrenciler', '/veli/panel', '/yonetici/basvurular']) {
     test(`oturumsuz ${path} girişe yönlendirir`, async ({ page }) => {
       await page.goto(path);
       await expect(page).toHaveURL(/\/giris/);
@@ -69,6 +70,23 @@ test.describe('Soru ve ders ekranları', { tag: '@kisa' }, () => {
       await expect(join).toHaveAttribute('rel', /noopener/);
       await expect(page.getByLabel('İptal nedeni')).toHaveValue('zaman_uygun_degil');
       await expect(page.getByRole('button', { name: 'Dersi iptal et' })).toBeVisible();
+    });
+
+    test('ayarlar: seçim <html>e uygulanır, yalnızca değişince cihaza yazılır, sıfırlayınca silinir', async ({ page }) => {
+      await dismissCookieNotice(page);
+      await page.goto('/galeri/ayarlar');
+      expect(await page.evaluate(() => window.localStorage.getItem('ek-gorunum'))).toBeNull();
+
+      await page.getByRole('radio', { name: 'Koyu' }).click();
+      await expect(page.locator('html')).toHaveAttribute('data-theme', 'dark');
+      expect(await page.evaluate(() => window.localStorage.getItem('ek-gorunum'))).toContain('"theme":"dark"');
+
+      await page.getByRole('switch', { name: 'Animasyonları azalt' }).click();
+      await expect(page.locator('html')).toHaveAttribute('data-motion', 'reduce');
+
+      await page.getByRole('button', { name: 'Varsayılana dön' }).click();
+      await expect(page.locator('html')).not.toHaveAttribute('data-theme', /.+/);
+      expect(await page.evaluate(() => window.localStorage.getItem('ek-gorunum'))).toBeNull();
     });
   });
 });

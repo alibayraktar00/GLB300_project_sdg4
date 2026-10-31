@@ -1,0 +1,12 @@
+.root {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-xl);
+  max-inline-size: var(--measure-form);
+}
+
+.note {
+  composes: bodyMd from '../../styles/text.module.css';
+  margin: 0;
+  color: var(--color-on-surface-variant);
+}
