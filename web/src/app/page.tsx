@@ -1,10 +1,7 @@
 import { BrandMark } from '@/components/BrandMark';
 import { ButtonLink } from '@/components/Button';
-import { HomeSections } from '@/components/HomeSections';
 import { PublicPage } from '@/components/PublicPage';
 import { SectionHeader } from '@/components/SectionHeader';
-import { WelcomeChoices } from '@/components/WelcomeChoices';
-import { isGalleryEnabled } from '@/lib/gallery';
 import { tr } from '@/strings/tr';
 
 import styles from './page.module.css';
@@ -14,8 +11,6 @@ import styles from './page.module.css';
  * Oturum varsa rolün ana sayfasına yönlendirme Faz A'da eklenecek.
  */
 export default function HomePage() {
-  const showGalleryLink = isGalleryEnabled(process.env);
-
   return (
     <PublicPage>
       <div className={styles.layout}>
@@ -26,19 +21,12 @@ export default function HomePage() {
         </div>
 
         <section className={styles.choices} aria-labelledby="giris-secenekleri">
-          <SectionHeader id="giris-secenekleri" title={tr.home.chooseTitle} />
-          <WelcomeChoices />
-          <p className={styles.note}>{tr.home.studentNote}</p>
-          {showGalleryLink ? (
-            <div>
-              <ButtonLink href="/galeri" variant="text" icon="palette">
-                {tr.home.galleryLink}
-              </ButtonLink>
-            </div>
-          ) : null}
+          <SectionHeader id="giris-secenekleri" title="Başlayalım" />
+          <ButtonLink href="/giris" icon="family_restroom">
+            Giriş yap
+          </ButtonLink>
         </section>
       </div>
-      <HomeSections />
     </PublicPage>
   );
 }

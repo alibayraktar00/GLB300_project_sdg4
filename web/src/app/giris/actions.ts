@@ -5,8 +5,6 @@ import { redirect } from 'next/navigation';
 import {
   emailLoginSchema,
   fieldErrors,
-  isAppRole,
-  landingPath,
   studentEmail,
   studentLoginSchema,
   type FieldErrors,
@@ -19,7 +17,7 @@ export type LoginState = { fieldErrors?: FieldErrors; formError?: string } | nul
 
 type Credentials = { email: string; password: string; remember: boolean };
 
-async function signIn({ email, password, remember }: Credentials, next: FormDataEntryValue | null): Promise<LoginState> {
+async function signIn({ email, password, remember }: Credentials): Promise<LoginState> {
   let destination: string;
   try {
     const supabase = await createSupabaseServerClient({ remember });
@@ -29,10 +27,7 @@ async function signIn({ email, password, remember }: Credentials, next: FormData
 
     await setRememberChoice(remember);
 
-    const { data: profile } = await supabase.from('profiles').select('role').eq('id', data.user.id).maybeSingle();
-    destination = isAppRole(profile?.role)
-      ? landingPath(profile.role, typeof next === 'string' ? next : null)
-      : '/uygulama';
+    destination = '/';
   } catch {
     return { formError: tr.auth.errors.unavailable };
   }
@@ -48,7 +43,7 @@ export async function loginWithEmail(_previous: LoginState, formData: FormData):
     remember: formData.get('remember'),
   });
   if (!parsed.success) return { fieldErrors: fieldErrors(parsed.error) };
-  return signIn(parsed.data, formData.get('devam'));
+  return signIn(parsed.data);
 }
 
 /** Öğrenci girişi (kullanıcı adı + şifre). Kullanıcı adı sentetik e-postaya çevrilir. */
@@ -62,7 +57,7 @@ export async function loginStudent(_previous: LoginState, formData: FormData): P
 
   const email = studentEmail(parsed.data.username);
   if (!email) return { formError: tr.auth.errors.wrongCredentials };
-  return signIn({ email, password: parsed.data.password, remember: parsed.data.remember }, formData.get('devam'));
+  return signIn({ email, password: parsed.data.password, remember: parsed.data.remember });
 }
 
 /** Çıkış: oturumu ve "açık kalsın" tercihini siler. */

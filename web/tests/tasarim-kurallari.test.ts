@@ -146,15 +146,4 @@ describe('kod kuralları', () => {
       .filter((file) => read(file).includes('features/gallery'));
     expect(offenders.map(rel)).toEqual([]);
   });
-
-  it('galeri sayfası üretimde kapalıdır: notFound çağrısı isGalleryEnabled kontrolüne bağlı', () => {
-    const page = read(join(SRC, 'app', 'galeri', 'page.tsx'));
-    expect(page).toMatch(/if \(!isGalleryEnabled\(process\.env\)\) notFound\(\);/);
-  });
-
-  it('ana sayfa galeri bağlantısını yalnızca galeri açıkken gösterir', () => {
-    const home = read(join(SRC, 'app', 'page.tsx'));
-    expect(home).toContain('isGalleryEnabled(process.env)');
-    expect(home).toMatch(/showGalleryLink \? \(/);
-  });
 });

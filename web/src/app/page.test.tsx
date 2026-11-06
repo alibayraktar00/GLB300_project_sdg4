@@ -1,5 +1,5 @@
 import { render, screen } from '@testing-library/react';
-import { afterEach, describe, expect, it, vi } from 'vitest';
+import { describe, expect, it } from 'vitest';
 
 import { NoticeProvider } from '@/components/Notice';
 import { tr } from '@/strings/tr';
@@ -14,8 +14,6 @@ function renderHome() {
     </NoticeProvider>,
   );
 }
-
-afterEach(() => vi.unstubAllEnvs());
 
 describe('Ana sayfa', () => {
   it('tek bir ana başlık gösterir', () => {
@@ -38,28 +36,14 @@ describe('Ana sayfa', () => {
     expect(screen.getByRole('link', { name: 'Çerezler' })).toHaveAttribute('href', '/cerezler');
   });
 
-  it('Veliyim / Gönüllüyüm / Öğrenciyim seçenekleri ve öğrenci notu görünür', () => {
+  it('giriş bağlantısı görünür', () => {
     renderHome();
-    expect(screen.getByRole('link', { name: /Veliyim/ })).toBeInTheDocument();
-    expect(screen.getByRole('link', { name: /Gönüllüyüm/ })).toBeInTheDocument();
-    expect(screen.getByRole('link', { name: /Öğrenciyim/ })).toBeInTheDocument();
-    expect(screen.getByText(tr.home.studentNote)).toBeInTheDocument();
+    expect(screen.getByRole('link', { name: 'Giriş yap' })).toHaveAttribute('href', '/giris');
   });
 
   it('başlık sırası atlanmaz: h1 sonra h2', () => {
     renderHome();
-    expect(screen.getByRole('heading', { level: 2, name: tr.home.chooseTitle })).toBeInTheDocument();
-  });
-
-  it('üretimde galeri bağlantısı görünmez; geliştirmede görünür', () => {
-    vi.stubEnv('NODE_ENV', 'production');
-    const { unmount } = renderHome();
-    expect(screen.queryByRole('link', { name: tr.home.galleryLink })).toBeNull();
-    unmount();
-
-    vi.stubEnv('NODE_ENV', 'development');
-    renderHome();
-    expect(screen.getByRole('link', { name: tr.home.galleryLink })).toHaveAttribute('href', '/galeri');
+    expect(screen.getByRole('heading', { level: 2, name: 'Başlayalım' })).toBeInTheDocument();
   });
 });
 
