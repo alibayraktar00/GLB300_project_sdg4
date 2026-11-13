@@ -48,7 +48,7 @@ export const tr = {
     remember: 'Bu cihazda oturumum açık kalsın',
     rememberHelp: 'Ortak kullanılan bir cihazda işaretleme. Oturum en fazla 30 gün açık kalır.',
     submit: 'Giriş yap',
-    studentLink: 'Öğrenci girişi',
+    studentLink: 'Öğrenciyim',
     adultLink: 'Veli ya da gönüllü girişi',
     signupPrompt: 'Veli hesabı aç',
     signOut: 'Çıkış yap',

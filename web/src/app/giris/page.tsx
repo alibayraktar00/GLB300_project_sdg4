@@ -1,5 +1,6 @@
 import type { Metadata } from 'next';
 
+import { ButtonLink } from '@/components/Button';
 import { PublicPage } from '@/components/PublicPage';
 import { safeNextPath } from '@/lib/auth';
 import { tr } from '@/strings/tr';
@@ -23,6 +24,11 @@ export default async function LoginPage({ searchParams }: PageProps) {
         <h1 className={styles.title}>{tr.auth.loginTitle}</h1>
         <p className={styles.intro}>{tr.auth.loginIntro}</p>
         <LoginForm mode="email" action={loginWithEmail} next={next} />
+        <div className={styles.links}>
+          <ButtonLink href="/giris/ogrenci" variant="text" icon="backpack">
+            {tr.auth.studentLink}
+          </ButtonLink>
+        </div>
       </div>
     </PublicPage>
   );
