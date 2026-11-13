@@ -6,9 +6,10 @@ create extension if not exists pgtap with schema extensions;
 select plan(9);
 
 -- Başka aile: veli 4444…, çocuğu 5555… (postgres olarak, RLS'siz eklenir).
-insert into auth.users (id, email) values
-  ('44444444-4444-4444-4444-444444444444', 'baska-veli@example.com'),
-  ('55555555-5555-5555-5555-555555555555', 'baska-ogrenci@example.com');
+-- profile_created_by_server: kayıt tetikleyicisi atlanır, profiller aşağıda elle eklenir.
+insert into auth.users (id, email, raw_app_meta_data) values
+  ('44444444-4444-4444-4444-444444444444', 'baska-veli@example.com',    '{"profile_created_by_server":true}'),
+  ('55555555-5555-5555-5555-555555555555', 'baska-ogrenci@example.com', '{"profile_created_by_server":true}');
 insert into public.profiles (id, role, display_name) values
   ('44444444-4444-4444-4444-444444444444', 'veli',    'Başka Veli'),
   ('55555555-5555-5555-5555-555555555555', 'ogrenci', 'Başka Öğrenci');

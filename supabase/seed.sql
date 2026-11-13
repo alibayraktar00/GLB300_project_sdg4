@@ -1,5 +1,6 @@
 -- Yalnızca yerel geliştirme için test verisi (supabase db reset). Tüm şifreler: test1234
 -- 1 veli, o velinin 1 öğrencisi, 1 gönüllü.
+-- profile_created_by_server: kayıt tetikleyicisi bu kullanıcıları atlar; profilleri aşağıda elle eklenir.
 
 insert into auth.users (
   instance_id, id, aud, role, email, encrypted_password, email_confirmed_at,
@@ -9,7 +10,7 @@ insert into auth.users (
 select
   '00000000-0000-0000-0000-000000000000', u.id, 'authenticated', 'authenticated', u.email,
   extensions.crypt('test1234', extensions.gen_salt('bf')), now(),
-  '{"provider":"email","providers":["email"]}', '{}', now(), now(),
+  '{"provider":"email","providers":["email"],"profile_created_by_server":true}', '{}', now(), now(),
   '', '', '', ''
 from (values
   ('11111111-1111-1111-1111-111111111111'::uuid, 'veli@example.com'),
