@@ -4,7 +4,7 @@
 #   1. web      : bağımlılık denetimi, ESLint + Stylelint, tip denetimi, Vitest, üretim derlemesi
 #                 (derleme sırasında gizli anahtar ve dış CDN denetimleri de çalışır)
 #   2. e2e      : Playwright kısa seti (Android Chrome, iPhone/WebKit, masaüstü Chrome ve Firefox)
-#   3. db-check : veritabanı migration'ları ve pgTAP testleri (Docker'sız, PGlite)
+#   3. db-check : Supabase CLI ile yerel veritabanı (Docker), migration + seed, pgTAP testleri
 #
 # Güvenlik notları:
 #   - Bu dosyada hiçbir gizli anahtar yok ve gerekmiyor. Web testleri Supabase'siz çalışır.
@@ -120,27 +120,28 @@ jobs:
           retention-days: 7
 
   db-check:
-    name: Veritabanı testleri (pgTAP, db-check)
+    name: Veritabanı testleri (pgTAP, Supabase CLI)
     runs-on: ubuntu-latest
     timeout-minutes: 15
-    defaults:
-      run:
-        working-directory: tools/db-check
     steps:
       - name: Depoyu al
         uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
         with:
           persist-credentials: false
 
-      - name: Node 24 kur
-        uses: actions/setup-node@949feb2413d6458794dcd2491c4babbbce0c15c1 # v7.1.0
+      - name: Supabase CLI kur
+        uses: supabase/setup-cli@689adcfb80d947100a1eab127289b97d1fb07b13 # v3.2.0
         with:
-          node-version: 24
-          cache: npm
-          cache-dependency-path: tools/db-check/package-lock.json
+          version: 3.1.0
 
-      - name: Bağımlılıkları kur
-        run: npm ci
+      # supabase/config.toml depoda; yine de yoksa (ör. silinmişse) oluştur.
+      - name: Supabase projesini hazırla (gerekirse)
+        run: test -f supabase/config.toml || supabase init
 
-      - name: Migration'ları uygula ve pgTAP testlerini çalıştır
-        run: npm test
+      # Yerel Postgres'i Docker'da başlatır; migration'ları ve supabase/seed.sql'i uygular.
+      - name: Veritabanını başlat
+        run: supabase db start
+
+      # supabase/tests/database/*.sql (pgTAP): RLS ve sütun yetkileri seed verisiyle sınanır.
+      - name: pgTAP testlerini çalıştır
+        run: supabase test db
