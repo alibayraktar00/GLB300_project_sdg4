@@ -1,3 +1,12 @@
+## Current scope (GLB 300)
+
+- Yalnızca **8. sınıf Matematik**.
+- Üç rol: **veli**, **ogrenci**, **gonullu**.
+- Ders oturumları **Google Meet veya Zoom bağlantısıyla** yapılır; uygulamada yerleşik görüntülü görüşme yoktur.
+- Bu belgenin geri kalanı uzun vadeli vizyondur ve bu dönemin kapsamı dışındadır.
+
+---
+
 # Eğitim Köprüsü — Mimari Plan ve İş Planı
 
 > **Durum:** Taslak v2 · **Tarih:** 18 Ekim 2026 · **Hazırlayan:** mimar ajanı
