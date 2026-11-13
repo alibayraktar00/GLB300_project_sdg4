@@ -30,10 +30,10 @@ where u.id in (
   '33333333-3333-3333-3333-333333333333'
 );
 
-insert into public.profiles (id, role, display_name) values
-  ('11111111-1111-1111-1111-111111111111', 'parent',  'Ayşe Yılmaz'),
-  ('22222222-2222-2222-2222-222222222222', 'student', 'Elif Yılmaz'),
-  ('33333333-3333-3333-3333-333333333333', 'tutor',   'Mehmet Demir');
+insert into public.profiles (id, role, status, display_name) values
+  ('11111111-1111-1111-1111-111111111111', 'veli',    'aktif', 'Ayşe Yılmaz'),
+  ('22222222-2222-2222-2222-222222222222', 'ogrenci', 'aktif', 'Elif Yılmaz'),
+  ('33333333-3333-3333-3333-333333333333', 'gonullu', 'aktif', 'Mehmet Demir');
 
 insert into public.students (profile_id, parent_id) values
   ('22222222-2222-2222-2222-222222222222', '11111111-1111-1111-1111-111111111111');

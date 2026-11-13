@@ -52,8 +52,9 @@ export const tr = {
     adultLink: 'Veli ya da gönüllü girişi',
     signupPrompt: 'Veli hesabı aç',
     signOut: 'Çıkış yap',
-    statusTitle: 'Hesabın şu an kullanılamıyor',
-    statusBody: 'Hesabın henüz etkin değil. Veli ya da yönetici ile iletişime geçilebilir.',
+    statusTitle: 'Hesabın henüz aktif değil',
+    statusBody: 'Hesap etkinleştirildiğinde buradan devam edilebilir. Veli ya da yönetici ile iletişime geçilebilir.',
+    welcome: (name: string) => `Hoş geldin, ${name}`,
     comingSoonTitle: 'Bu bölüm hazırlanıyor',
     comingSoonBody: 'Bu sayfa yakında açılacak.',
     errors: {

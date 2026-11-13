@@ -1,9 +1,11 @@
 -- Kullanıcı tabloları: yalnızca 8. sınıf Matematik; roller: veli (parent), öğrenci (student), gönüllü (tutor).
 
--- Her giriş yapan kullanıcı için bir profil. Rol, kayıt sırasında sunucu tarafında belirlenir.
+-- Her giriş yapan kullanıcı için bir profil. Rol ve durum sunucu tarafında belirlenir; istemci değiştiremez.
+-- Rol değerleri uygulamadaki adres önekleriyle aynıdır (web/src/lib/role-navigation.ts).
 create table public.profiles (
   id           uuid primary key references auth.users (id) on delete cascade,
-  role         text not null check (role in ('parent', 'student', 'tutor')),
+  role         text not null check (role in ('veli', 'ogrenci', 'gonullu')),
+  status       text not null default 'aktif' check (status in ('aktif', 'beklemede', 'askida')),
   display_name text not null,
   created_at   timestamptz not null default now()
 );
@@ -58,43 +60,67 @@ alter table public.topics   enable row level security;
 revoke all on public.profiles, public.students, public.tutors, public.topics from anon, authenticated;
 
 grant select on public.profiles, public.students, public.tutors, public.topics to authenticated;
--- Rol ve student_id_verified istemciden değiştirilemez: yalnızca bu sütunlar güncellenebilir.
+-- Rol, durum ve student_id_verified istemciden değiştirilemez: yalnızca bu sütunlar güncellenebilir.
 grant update (display_name) on public.profiles to authenticated;
 grant update (university)   on public.tutors   to authenticated;
 
--- profiles: kullanıcı kendi profilini okur ve günceller; veli kendi çocuklarının profilini okur.
+-- Oturumdaki kullanıcının rolü (yalnızca hesabı aktifse; değilse null). Politikalar bunu kullanır.
+-- security definer: profiles politikası içinden profiles'ı okurken sonsuz özyinelemeyi önler.
+-- API'ye açık olmayan ayrı bir şemada durur.
+create schema if not exists private;
+
+create function private.active_role()
+returns text
+language sql
+stable
+security definer
+set search_path = ''
+as $$
+  select p.role from public.profiles p
+  where p.id = (select auth.uid()) and p.status = 'aktif'
+$$;
+
+revoke all on function private.active_role() from public;
+grant usage on schema private to authenticated;
+grant execute on function private.active_role() to authenticated;
+
+-- profiles: kullanıcı kendi profilini her durumda okur (uygulama durumunu buradan öğrenir).
+-- Aktif veli çocuklarının profilini okur; yalnızca aktif kullanıcı kendi profilini günceller.
 create policy "profiles: kendi profilini oku" on public.profiles
   for select to authenticated
   using (id = (select auth.uid()));
 
 create policy "profiles: veli çocuklarını okur" on public.profiles
   for select to authenticated
-  using (exists (
+  using ((select private.active_role()) = 'veli' and exists (
     select 1 from public.students s
     where s.profile_id = profiles.id and s.parent_id = (select auth.uid())
   ));
 
 create policy "profiles: kendi profilini güncelle" on public.profiles
   for update to authenticated
-  using (id = (select auth.uid()))
+  using (id = (select auth.uid()) and (select private.active_role()) is not null)
   with check (id = (select auth.uid()));
 
--- students: öğrenci kendi kaydını, veli kendi çocuklarının kaydını okur.
+-- students: aktif öğrenci kendi kaydını, aktif veli kendi çocuklarının kaydını okur.
 create policy "students: kendi kaydı veya velisi okur" on public.students
   for select to authenticated
-  using (profile_id = (select auth.uid()) or parent_id = (select auth.uid()));
+  using (
+    ((select private.active_role()) = 'ogrenci' and profile_id = (select auth.uid()))
+    or ((select private.active_role()) = 'veli' and parent_id = (select auth.uid()))
+  );
 
--- tutors: gönüllü kendi kaydını okur ve üniversitesini güncelleyebilir.
+-- tutors: gönüllü kendi kaydını her durumda okur (başvuru incelenirken de); aktifse üniversitesini günceller.
 create policy "tutors: kendi kaydını oku" on public.tutors
   for select to authenticated
   using (profile_id = (select auth.uid()));
 
 create policy "tutors: kendi kaydını güncelle" on public.tutors
   for update to authenticated
-  using (profile_id = (select auth.uid()))
+  using (profile_id = (select auth.uid()) and (select private.active_role()) = 'gonullu')
   with check (profile_id = (select auth.uid()));
 
--- topics: giriş yapmış herkes okur; istemciden değiştirilemez.
-create policy "topics: giriş yapanlar okur" on public.topics
+-- topics: aktif hesabı olan herkes okur; istemciden değiştirilemez.
+create policy "topics: aktif kullanıcılar okur" on public.topics
   for select to authenticated
-  using (true);
+  using ((select private.active_role()) is not null);
