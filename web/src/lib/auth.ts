@@ -28,8 +28,11 @@ export function studentEmail(username: string): string | null {
   return USERNAME_PATTERN.test(name) ? `${name}@${STUDENT_EMAIL_DOMAIN}` : null;
 }
 
-/** Şifre alanı: uzunluk dışında kural dayatmaz (yapıştırma serbest). Üst sınır kötüye kullanıma karşı. */
-const passwordSchema = z.string().min(1, tr.auth.errors.passwordRequired).max(200, tr.auth.errors.invalid);
+/**
+ * Şifre alanı: uzunluk dışında kural dayatmaz (yapıştırma serbest). Üst sınır kötüye kullanıma karşı.
+ * Sınır aşılırsa giriş türüne uygun mesaj gösterilir (e-posta ya da kullanıcı adı).
+ */
+const passwordSchema = (tooLong: string) => z.string().min(1, tr.auth.errors.passwordRequired).max(200, tooLong);
 
 /** Onay kutusu: işaretliyse "on" gelir, işaretsizse alan hiç gelmez. */
 const rememberSchema = z.string().nullish().transform((value) => value != null);
@@ -39,15 +42,15 @@ export const emailLoginSchema = z.object({
     .string()
     .trim()
     .min(1, tr.auth.errors.emailRequired)
-    .max(254, tr.auth.errors.invalid)
+    .max(254, tr.auth.errors.invalidEmailLogin)
     .pipe(z.email(tr.auth.errors.emailInvalid)),
-  password: passwordSchema,
+  password: passwordSchema(tr.auth.errors.invalidEmailLogin),
   remember: rememberSchema,
 });
 
 export const studentLoginSchema = z.object({
-  username: z.string().trim().min(1, tr.auth.errors.usernameRequired).max(60, tr.auth.errors.invalid),
-  password: passwordSchema,
+  username: z.string().trim().min(1, tr.auth.errors.usernameRequired).max(60, tr.auth.errors.invalidStudentLogin),
+  password: passwordSchema(tr.auth.errors.invalidStudentLogin),
   remember: rememberSchema,
 });
 

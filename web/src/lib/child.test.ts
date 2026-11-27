@@ -2,12 +2,12 @@ import { describe, expect, it } from 'vitest';
 
 import { childFieldErrors, childSchema } from './child';
 
-const valid = { nickname: 'Mavi Kuş', grade: '6', username: 'MaviKus', password: 'sifre12345', consent: 'verdi' };
+const valid = { nickname: 'Mavi Kuş', grade: '8', username: 'MaviKus', password: 'sifre12345', consent: 'verdi' };
 
 describe('childSchema', () => {
   it('geçerli bilgiler kabul edilir; kullanıcı adı küçültülür, sınıf sayıya çevrilir', () => {
     const result = childSchema.safeParse(valid);
-    expect(result.success && result.data).toMatchObject({ nickname: 'Mavi Kuş', grade: 6, username: 'mavikus' });
+    expect(result.success && result.data).toMatchObject({ nickname: 'Mavi Kuş', grade: 8, username: 'mavikus' });
   });
 
   it.each(['Ali 12', 'ali@x.com', 'Ali insta: ali', '', 'a'.repeat(31), 'Ali  Kaya'])(
@@ -17,7 +17,7 @@ describe('childSchema', () => {
     },
   );
 
-  it.each(['4', '9', '', 'abc', '6.5'])('sınıf 5-8 dışında reddedilir: %j', (grade) => {
+  it.each(['4', '5', '7', '9', '', 'abc', '7.5'])('8. sınıf dışında reddedilir: %j', (grade) => {
     expect(childSchema.safeParse({ ...valid, grade }).success).toBe(false);
   });
 

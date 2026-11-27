@@ -23,7 +23,7 @@ export const childSchema = z.object({
   grade: z.coerce
     .number(tr.child.errors.gradeInvalid)
     .int(tr.child.errors.gradeInvalid)
-    .min(5, tr.child.errors.gradeInvalid)
+    .min(8, tr.child.errors.gradeInvalid)
     .max(8, tr.child.errors.gradeInvalid),
   username: z
     .string()
