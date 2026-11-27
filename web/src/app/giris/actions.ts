@@ -17,7 +17,14 @@ import { tr } from '@/strings/tr';
 /** Form durumu: sunucudan dönen hata (başarıda yönlendirme yapıldığı için durum dönmez). */
 export type LoginState = { fieldErrors?: FieldErrors; formError?: string } | null;
 
-type Credentials = { email: string; password: string; remember: boolean; next: string | null };
+type Credentials = {
+  email: string;
+  password: string;
+  remember: boolean;
+  next: string | null;
+  /** Bilgiler eşleşmediğinde gösterilecek mesaj (e-posta ve öğrenci girişi farklı alan adları kullanır). */
+  mismatchError: string;
+};
 
 /** Formdaki gizli `devam` alanı (yalnızca metin; asıl denetim `landingPath` içinde). */
 function nextFrom(formData: FormData): string | null {
@@ -25,13 +32,13 @@ function nextFrom(formData: FormData): string | null {
   return typeof value === 'string' ? value : null;
 }
 
-async function signIn({ email, password, remember, next }: Credentials): Promise<LoginState> {
+async function signIn({ email, password, remember, next, mismatchError }: Credentials): Promise<LoginState> {
   let destination: string;
   try {
     const supabase = await createSupabaseServerClient({ remember });
     const { data, error } = await supabase.auth.signInWithPassword({ email, password });
     // Hata nedeni (yanlış şifre / hesap yok) kullanıcıya ayrı ayrı söylenmez: hesap sızdırmayı önler.
-    if (error || !data.user) return { formError: tr.auth.errors.wrongCredentials };
+    if (error || !data.user) return { formError: mismatchError };
 
     await setRememberChoice(remember);
 
@@ -54,7 +61,7 @@ export async function loginWithEmail(_previous: LoginState, formData: FormData):
     remember: formData.get('remember'),
   });
   if (!parsed.success) return { fieldErrors: fieldErrors(parsed.error) };
-  return signIn({ ...parsed.data, next: nextFrom(formData) });
+  return signIn({ ...parsed.data, next: nextFrom(formData), mismatchError: tr.auth.errors.invalidEmailLogin });
 }
 
 /** Öğrenci girişi (kullanıcı adı + şifre). Kullanıcı adı sentetik e-postaya çevrilir. */
@@ -67,12 +74,13 @@ export async function loginStudent(_previous: LoginState, formData: FormData): P
   if (!parsed.success) return { fieldErrors: fieldErrors(parsed.error) };
 
   const email = studentEmail(parsed.data.username);
-  if (!email) return { formError: tr.auth.errors.wrongCredentials };
+  if (!email) return { formError: tr.auth.errors.invalidStudentLogin };
   return signIn({
     email,
     password: parsed.data.password,
     remember: parsed.data.remember,
     next: nextFrom(formData),
+    mismatchError: tr.auth.errors.invalidStudentLogin,
   });
 }
 

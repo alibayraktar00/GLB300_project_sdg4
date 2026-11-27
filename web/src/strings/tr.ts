@@ -22,7 +22,7 @@ export const tr = {
     studentNote: 'Öğrenci hesabını veli açar. Kullanıcı adı ve şifre veliden alınır.',
     howTitle: 'Nasıl çalışır',
     steps: [
-      { icon: 'family_restroom', title: 'Veli hesap açar', text: 'Çocuğun hesabını veli oluşturur. Çocuğunun gönderdiği soruları, aldığı cevapları ve ders geçmişini görebilirsin.' },
+      { icon: 'family_restroom', title: 'Veli hesap açar', text: 'Çocuğun hesabını veli oluşturur. Veli, çocuğunun gönderdiği soruları, aldığı cevapları ve ders geçmişini görebilir.' },
       { icon: 'wb_twilight', title: 'Kişisel telafi planı', text: 'Derslere ara verilen haftalarda işlenen konulardan, çocuğa özel kısa günlük hedefler çıkar.' },
       { icon: 'info', title: 'Soru sor, cevap al', text: 'Anlaşılmayan soru fotoğrafla gönderilir; gönüllü adım adım açıklar.' },
       { icon: 'play_arrow', title: 'Birebir ders', text: 'Aynı gönüllüyle, velinin onayıyla planlanan kısa görüntülü dersler.' },
@@ -65,7 +65,6 @@ export const tr = {
       emailInvalid: 'E-posta adresi geçerli görünmüyor.',
       usernameRequired: 'Kullanıcı adı yazılmalı.',
       passwordRequired: 'Şifre yazılmalı.',
-      wrongCredentials: 'Giriş bilgileri doğru değil. Kontrol edip tekrar denenebilir.',
       unavailable: 'Şu anda giriş yapılamıyor. Biraz bekleyip tekrar dene.',
     },
   },
