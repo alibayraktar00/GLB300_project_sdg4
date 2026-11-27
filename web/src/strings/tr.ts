@@ -58,7 +58,9 @@ export const tr = {
     comingSoonTitle: 'Bu bölüm henüz hazır değil',
     comingSoonBody: 'Çok yakında burada olacak.',
     errors: {
-      invalid: 'Bilgiler eşleşmedi. E-posta adresini ve şifreni kontrol edip tekrar dene.',
+      invalid: 'Bilgiler eşleşmedi. Yazdıklarını kontrol edip tekrar dene.',
+      invalidEmailLogin: 'Bilgiler eşleşmedi. E-posta adresini ve şifreni kontrol edip tekrar dene.',
+      invalidStudentLogin: 'Bilgiler eşleşmedi. Kullanıcı adını ve şifreni kontrol edip tekrar dene.',
       emailRequired: 'E-posta adresi yazılmalı.',
       emailInvalid: 'E-posta adresi geçerli görünmüyor.',
       usernameRequired: 'Kullanıcı adı yazılmalı.',

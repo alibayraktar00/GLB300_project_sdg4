@@ -45,6 +45,28 @@ describe('giriş şemaları', () => {
       expect(errors.password).toBe('Şifre yazılmalı.');
     }
   });
+
+  it('e-posta girişinde fazla uzun alanlar e-postaya özgü mesaj verir', () => {
+    const result = emailLoginSchema.safeParse({ email: `${'a'.repeat(250)}@x.com`, password: 'x'.repeat(201), remember: null });
+    expect(result.success).toBe(false);
+    if (!result.success) {
+      const errors = fieldErrors(result.error);
+      const message = 'Bilgiler eşleşmedi. E-posta adresini ve şifreni kontrol edip tekrar dene.';
+      expect(errors.email).toBe(message);
+      expect(errors.password).toBe(message);
+    }
+  });
+
+  it('öğrenci girişinde fazla uzun alanlar kullanıcı adına özgü mesaj verir', () => {
+    const result = studentLoginSchema.safeParse({ username: 'a'.repeat(61), password: 'x'.repeat(201), remember: null });
+    expect(result.success).toBe(false);
+    if (!result.success) {
+      const errors = fieldErrors(result.error);
+      const message = 'Bilgiler eşleşmedi. Kullanıcı adını ve şifreni kontrol edip tekrar dene.';
+      expect(errors.username).toBe(message);
+      expect(errors.password).toBe(message);
+    }
+  });
 });
 
 describe('safeNextPath (açık yönlendirme koruması)', () => {
