@@ -1,0 +1,7 @@
+/* Rol ana sayfası (geçici): karşılama başlığı ve çıkış düğmesi. */
+.page {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-xl);
+  align-items: flex-start;
+}

@@ -17,6 +17,7 @@ export type SessionUser = {
   role: AppRole;
   /** `profiles.status`: aktif, beklemede, askida. */
   status: string;
+  display_name: string;
 };
 
 /**
@@ -31,9 +32,14 @@ export async function getSessionUser(): Promise<SessionUser | null> {
     const id = claims?.claims?.sub;
     if (!id) return null;
 
-    const { data: profile } = await supabase.from('profiles').select('role, status').eq('id', id).maybeSingle();
+    const { data: profile } = await supabase.from('profiles').select('role, status, display_name').eq('id', id).maybeSingle();
     if (!profile || !isAppRole(profile.role)) return null;
-    return { id, role: profile.role, status: String(profile.status) };
+    return {
+      id,
+      role: profile.role,
+      status: String(profile.status),
+      display_name: String(profile.display_name),
+    };
   } catch (error) {
     if (error instanceof SupabaseNotConfiguredError) return null;
     return null;

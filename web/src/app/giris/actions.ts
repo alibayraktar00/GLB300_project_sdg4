@@ -5,6 +5,8 @@ import { redirect } from 'next/navigation';
 import {
   emailLoginSchema,
   fieldErrors,
+  isAppRole,
+  landingPath,
   studentEmail,
   studentLoginSchema,
   type FieldErrors,
@@ -15,9 +17,15 @@ import { tr } from '@/strings/tr';
 /** Form durumu: sunucudan dönen hata (başarıda yönlendirme yapıldığı için durum dönmez). */
 export type LoginState = { fieldErrors?: FieldErrors; formError?: string } | null;
 
-type Credentials = { email: string; password: string; remember: boolean };
+type Credentials = { email: string; password: string; remember: boolean; next: string | null };
 
-async function signIn({ email, password, remember }: Credentials): Promise<LoginState> {
+/** Formdaki gizli `devam` alanı (yalnızca metin; asıl denetim `landingPath` içinde). */
+function nextFrom(formData: FormData): string | null {
+  const value = formData.get('devam');
+  return typeof value === 'string' ? value : null;
+}
+
+async function signIn({ email, password, remember, next }: Credentials): Promise<LoginState> {
   let destination: string;
   try {
     const supabase = await createSupabaseServerClient({ remember });
@@ -27,7 +35,10 @@ async function signIn({ email, password, remember }: Credentials): Promise<Login
 
     await setRememberChoice(remember);
 
-    destination = '/';
+    // Rol `profiles` tablosundan okunur (RLS: kullanıcı kendi satırını okur). Profil yoksa ya da rol
+    // tanınmıyorsa hesap kullanılamaz durumdadır.
+    const { data: profile } = await supabase.from('profiles').select('role').eq('id', data.user.id).maybeSingle();
+    destination = profile && isAppRole(profile.role) ? landingPath(profile.role, next) : '/durum';
   } catch {
     return { formError: tr.auth.errors.unavailable };
   }
@@ -43,7 +54,7 @@ export async function loginWithEmail(_previous: LoginState, formData: FormData):
     remember: formData.get('remember'),
   });
   if (!parsed.success) return { fieldErrors: fieldErrors(parsed.error) };
-  return signIn(parsed.data);
+  return signIn({ ...parsed.data, next: nextFrom(formData) });
 }
 
 /** Öğrenci girişi (kullanıcı adı + şifre). Kullanıcı adı sentetik e-postaya çevrilir. */
@@ -57,7 +68,12 @@ export async function loginStudent(_previous: LoginState, formData: FormData): P
 
   const email = studentEmail(parsed.data.username);
   if (!email) return { formError: tr.auth.errors.wrongCredentials };
-  return signIn({ email, password: parsed.data.password, remember: parsed.data.remember });
+  return signIn({
+    email,
+    password: parsed.data.password,
+    remember: parsed.data.remember,
+    next: nextFrom(formData),
+  });
 }
 
 /** Çıkış: oturumu ve "açık kalsın" tercihini siler. */
