@@ -164,6 +164,13 @@ export const tr = {
     },
   },
 
+  studentPlan: {
+    title: '8. Sınıf Matematik Üniteleri',
+    intro: 'Telafi planın bu ünitelerden oluşacak.',
+    emptyTitle: 'Üniteler henüz eklenmedi',
+    emptyMessage: 'Ünite listesi hazır olunca burada görünecek. Daha sonra tekrar bakabilirsin.',
+  },
+
   /**
    * Yasal metinler (hukuk belgesi docs/hukuk/acik-riza-veli.md §3). `legal` öneki: sağlık sözcüğü kuralının
    * bilinçli istisnasıdır; yalnızca velinin ayrı rıza ekranında gösterilir.

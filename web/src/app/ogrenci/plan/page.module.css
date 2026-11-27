@@ -1,0 +1,19 @@
+/* Öğrenci planı: başlık ve numaralı ünite listesi. */
+.page {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-xl);
+}
+
+.list {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-sm);
+  margin: 0;
+  padding-inline-start: var(--space-xl);
+}
+
+.item {
+  composes: bodyLg from '../../../styles/text.module.css';
+  color: var(--color-on-surface);
+}
